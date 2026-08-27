@@ -3,8 +3,8 @@
 
    @layer base {
      :root {
-       --font-serif: 'Cormorant Garamond', serif;
-       --font-sans: 'Montserrat', sans-serif;
+       --font-serif: 'Fraunces', Georgia, serif;
+    --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
      }
 
      * {

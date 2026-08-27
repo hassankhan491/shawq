@@ -1,7 +1,7 @@
 // src/components/layout/FullScreenMenu.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 interface FullScreenMenuProps {
@@ -18,7 +18,7 @@ const menuSections = [
       { name: 'New Arrivals', href: '/products?filter=new' },
       { name: 'Best Sellers', href: '/products?filter=bestsellers' },
       { name: 'Limited Edition', href: '/products?filter=limited' },
-    ]
+    ],
   },
   {
     title: 'Categories',
@@ -27,7 +27,7 @@ const menuSections = [
       { name: 'Fresh & Aquatic', href: '/categories/fresh-aquatic' },
       { name: 'Floral & Romantic', href: '/categories/floral-romantic' },
       { name: 'Citrus & Zesty', href: '/categories/citrus-zesty' },
-    ]
+    ],
   },
   {
     title: 'Collections',
@@ -36,7 +36,7 @@ const menuSections = [
       { name: 'Evening Elegance', href: '/collections/evening' },
       { name: 'Daily Fresh', href: '/collections/daily' },
       { name: 'Gift Sets', href: '/collections/gifts' },
-    ]
+    ],
   },
   {
     title: 'About',
@@ -45,79 +45,152 @@ const menuSections = [
       { name: 'Craftsmanship', href: '/about/craftsmanship' },
       { name: 'Ingredients', href: '/about/ingredients' },
       { name: 'Contact', href: '/contact' },
-    ]
-  }
+    ],
+  },
 ];
 
+// Right side images (Abel style)
+const menuImages = [
+  {
+    src: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop',
+    caption: 'The Creative Process: Oud Royale',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&h=900&fit=crop',
+    caption: 'New: Amber Essence',
+  },
+];
+
+const CloseIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
 export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
-  if (!isOpen) return null;
+  // ✅ Body scroll lock when menu open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  // ✅ Escape key se close
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50">
-      {/* Backdrop with blur */}
-      <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity"
-        onClick={onClose}
-      />
+    <div
+      className={`fixed inset-0 z-[60] transition-transform duration-700 ease-[cubic-bezier(0.76,0,0.24,1)] ${
+        isOpen ? 'translate-y-0 pointer-events-auto' : '-translate-y-full pointer-events-none'
+      }`}
+      aria-hidden={!isOpen}
+    >
+      <div className="h-full flex flex-col bg-[#0f0a08] overflow-y-auto">
+        
+        {/* ✅ Top Bar - Abel style: CLOSE left | Logo center | Search+Cart right */}
+        <div className="relative flex items-center justify-between px-6 lg:px-12 py-6 shrink-0">
+          <button
+            onClick={onClose}
+            className="flex items-center gap-3 text-[#f5f0eb] text-xs tracking-[0.25em] uppercase hover:opacity-70 transition-opacity"
+          >
+            <CloseIcon />
+            Close
+          </button>
 
-      {/* Menu Content */}
-      <div className={`absolute inset-0 transition-transform duration-700 ease-in-out ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
-        <div className="h-full flex flex-col bg-white">
-          
-          {/* Close Button */}
-          <div className="flex justify-end p-6 lg:p-12">
-            <button 
-              onClick={onClose}
-              className="text-4xl text-black hover:opacity-70 transition-opacity"
-            >
-              ×
+          <Link
+            href="/"
+            onClick={onClose}
+            className="absolute left-1/2 -translate-x-1/2 font-serif text-3xl text-[#f5f0eb]"
+          >
+            Shawq.
+          </Link>
+
+          <div className="flex items-center gap-6 text-[#f5f0eb]">
+            <button aria-label="Search" className="hover:opacity-70 transition-opacity">
+              <SearchIcon />
             </button>
+            <Link
+              href="/cart"
+              onClick={onClose}
+              className="text-xs tracking-[0.25em] uppercase hover:opacity-70 transition-opacity"
+            >
+              Cart
+            </Link>
           </div>
+        </div>
 
-          {/* Menu Sections */}
-          <div className="flex-1 overflow-y-auto px-6 lg:px-12 pb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 max-w-7xl mx-auto">
-              {menuSections.map((section, index) => (
-                <div 
-                  key={section.title}
-                  className="space-y-4"
-                  style={{
-                    animationDelay: `${index * 100}ms`
-                  }}
+        {/* ✅ Content - Links left, Images right */}
+        <div className="flex-1 px-6 lg:px-12 pb-12 pt-8 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20">
+          
+          {/* Link Columns - staggered reveal */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-16 max-w-3xl content-start">
+            {menuSections.map((section, sIndex) => (
+              <div key={section.title}>
+                <h3
+                  className={`text-xs tracking-[0.3em] uppercase text-[#f5f0eb] mb-6 transition-all duration-500 ${
+                    isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                  }`}
+                  style={{ transitionDelay: isOpen ? `${150 + sIndex * 80}ms` : '0ms' }}
                 >
-                  <h3 className="font-serif text-xl font-medium text-black border-b border-gray-200 pb-2">
-                    {section.title}
-                  </h3>
-                  <ul className="space-y-3">
-                    {section.links.map((link) => (
-                      <li key={link.name}>
-                        <Link 
-                          href={link.href}
-                          onClick={onClose}
-                          className="text-gray-600 hover:text-black transition-colors text-sm tracking-wide block py-1"
-                        >
-                          {link.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+                  {section.title}
+                </h3>
+                <ul className="space-y-3">
+                  {section.links.map((link, i) => (
+                    <li
+                      key={link.name}
+                      className={`transition-all duration-500 ${
+                        isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                      }`}
+                      style={{ transitionDelay: isOpen ? `${200 + sIndex * 80 + i * 50}ms` : '0ms' }}
+                    >
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className="text-xs tracking-[0.2em] uppercase text-[#c9a962]/80 hover:text-[#f5f0eb] transition-colors"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          {/* Bottom Info */}
-          <div className="border-t border-gray-100 p-6 lg:p-12 bg-gray-50">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="font-serif text-2xl text-gray-800">Shawq.</p>
-              <div className="flex gap-6 text-sm text-gray-600">
-                <Link href="/policies/privacy" className="hover:text-black transition-colors">Privacy</Link>
-                <Link href="/policies/terms" className="hover:text-black transition-colors">Terms</Link>
-                <Link href="/contact" className="hover:text-black transition-colors">Contact</Link>
+          {/* Right Images - Abel style */}
+          <div className="hidden lg:flex gap-5">
+            {menuImages.map((img, i) => (
+              <div
+                key={img.caption}
+                className={`w-[280px] xl:w-[320px] shrink-0 transition-all duration-700 ${
+                  isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: isOpen ? `${450 + i * 150}ms` : '0ms' }}
+              >
+                <p className="text-[10px] tracking-[0.25em] uppercase text-[#f5f0eb]/70 mb-3">
+                  {img.caption}
+                </p>
+                <div className="h-[420px] xl:h-[480px] overflow-hidden">
+                  <img
+                    src={img.src}
+                    alt={img.caption}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
