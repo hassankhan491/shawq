@@ -133,8 +133,11 @@ export default function Header() {
         <div
           className={`transition-all duration-500 ease-out ${
             isScrolled
-              ? "max-w-6xl mx-auto mt-4 px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
-              : "px-6 lg:px-12 bg-transparent"
+                ? "w-[calc(100%-16px)] mx-2 mt-4 px-4 sm:mx-4 sm:w-auto sm:px-6 max-w-6xl rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
+                : "px-4 sm:px-6 lg:px-12 bg-transparent"
+            // isScrolled
+            //   ? "max-w-6xl mx-auto mt-4 px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
+            //   : "px-6 lg:px-12 bg-transparent"
           }`}
         >
           {/* 3-COLUMN GRID - logo always perfectly centered */}
@@ -171,8 +174,11 @@ export default function Header() {
               <h1
                 className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
                   isScrolled
-                    ? "text-2xl text-[#c9a962]"
-                    : "text-[50px] text-white"
+                    ? "text-lg sm:text-2xl text-[#c9a962]"
+                    : "text-2xl sm:text-4xl lg:text-[50px] text-white"
+                  // isScrolled
+                  //   ? "text-2xl text-[#c9a962]"
+                  //   : "text-[50px] text-white"
                 }`}
               >
                 SHAWQ

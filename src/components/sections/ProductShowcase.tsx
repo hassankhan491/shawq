@@ -1,38 +1,44 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
     id: 1,
-    name: 'Oud Royale',
-    price: '$189.00',
-    description: 'A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.',
-    image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=800&fit=crop',
-    colors: ['#1a1a1a', '#8B4513', '#DAA520'],
-    sizes: ['30ml', '50ml', '100ml'],
+    name: "Oud Royale",
+    price: "$189.00",
+    description:
+      "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
+    image:
+      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200&h=1600&fit=crop",
+    colors: ["#1a1a1a", "#8B4513", "#DAA520"],
+    sizes: ["30ml", "50ml", "100ml"],
   },
   {
     id: 2,
-    name: 'Amber Essence',
-    price: '$165.00',
-    description: 'Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.',
-    image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&h=800&fit=crop',
-    colors: ['#F5E6D3', '#D4A574', '#8B7355'],
-    sizes: ['30ml', '50ml', '100ml'],
+    name: "Amber Essence",
+    price: "$165.00",
+    description:
+      "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
+    image:
+      "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&h=1600&fit=crop",
+    colors: ["#F5E6D3", "#D4A574", "#8B7355"],
+    sizes: ["30ml", "50ml", "100ml"],
   },
   {
     id: 3,
-    name: 'Golden Musk',
-    price: '$199.00',
-    description: 'Pure gold-infused musk with hints of rose and patchouli. An opulent fragrance for the distinguished few.',
-    image: 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=600&h=800&fit=crop',
-    colors: ['#FFD700', '#C9A962', '#2F2F2F'],
-    sizes: ['30ml', '50ml', '100ml'],
+    name: "Golden Musk",
+    price: "$199.00",
+    description:
+      "Pure gold-infused musk with hints of rose and patchouli. An opulent fragrance for the distinguished few.",
+    image:
+      "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1200&h=1600&fit=crop",
+    colors: ["#FFD700", "#C9A962", "#2F2F2F"],
+    sizes: ["30ml", "50ml", "100ml"],
   },
 ];
 
@@ -45,71 +51,171 @@ export default function ProductShowcase() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      productRefs.current.forEach((product) => {
-        if (!product) return;
+      const mm = gsap.matchMedia();
 
-        const coloredImage = product.querySelector('.colored-image') as HTMLElement;
-        const title = product.querySelector('.product-title');
-        const price = product.querySelector('.product-price');
-        const description = product.querySelector('.product-description');
-        const options = product.querySelector('.product-options');
-        const button = product.querySelector('.product-button');
+      // =========================
+      // DESKTOP
+      // =========================
+      mm.add("(min-width: 1024px)", () => {
+        productRefs.current.forEach((product) => {
+          if (!product) return;
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: product,
-            start: 'top top',
-            end: '+=2000',
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-          },
+          const coloredImage = product.querySelector(
+            ".colored-image"
+          ) as HTMLElement;
+
+          const title = product.querySelector(".product-title");
+          const price = product.querySelector(".product-price");
+          const description = product.querySelector(".product-description");
+          const options = product.querySelector(".product-options");
+          const button = product.querySelector(".product-button");
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: product,
+              start: "top top+=80px",
+              end: "+=2000",
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          // Image color reveal
+          tl.to(
+            coloredImage,
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: 0.9,
+              ease: "none",
+            },
+            0
+          );
+
+          // Text animations
+          tl.fromTo(
+            title,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.2 },
+            0.12
+          );
+
+          tl.fromTo(
+            price,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.2 },
+            0.2
+          );
+
+          tl.fromTo(
+            description,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.2 },
+            0.28
+          );
+
+          tl.fromTo(
+            options,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.2 },
+            0.36
+          );
+
+          tl.fromTo(
+            button,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.2 },
+            0.44
+          );
         });
+      });
 
-        tl.to(
-          coloredImage,
-          {
-            clipPath: 'inset(0% 0% 0% 0%)',
-            duration: 0.6,
-            ease: 'none',
-          },
-          0
-        );
+      // =========================
+      // MOBILE + TABLET
+      // =========================
+      mm.add("(max-width: 1023px)", () => {
+        productRefs.current.forEach((product) => {
+          if (!product) return;
 
-        tl.fromTo(
-          title,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' },
-          0.2
-        );
+          const coloredImage = product.querySelector(
+            ".colored-image"
+          ) as HTMLElement;
 
-        tl.fromTo(
-          price,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' },
-          0.3
-        );
+          const title = product.querySelector(".product-title");
+          const price = product.querySelector(".product-price");
+          const description = product.querySelector(".product-description");
+          const options = product.querySelector(".product-options");
+          const button = product.querySelector(".product-button");
 
-        tl.fromTo(
-          description,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' },
-          0.4
-        );
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: product,
 
-        tl.fromTo(
-          options,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' },
-          0.5
-        );
+              // Account for mobile header
+              start: "top top+=72px",
 
-        tl.fromTo(
-          button,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.15, ease: 'power2.out' },
-          0.6
-        );
+              // Shorter animation on smaller screens
+              end: "+=1100",
+
+              // Faster response on mobile
+              scrub: 0.45,
+
+              pin: true,
+
+              anticipatePin: 1,
+
+              invalidateOnRefresh: true,
+            },
+          });
+
+          // Faster image color reveal on mobile
+          tl.to(
+            coloredImage,
+            {
+              clipPath: "inset(0% 0% 0% 0%)",
+              duration: 0.45,
+              ease: "none",
+            },
+            0
+          );
+
+          // Faster text animations
+          tl.fromTo(
+            title,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.12 },
+            0.08
+          );
+
+          tl.fromTo(
+            price,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.12 },
+            0.14
+          );
+
+          tl.fromTo(
+            description,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.12 },
+            0.20
+          );
+
+          tl.fromTo(
+            options,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.12 },
+            0.26
+          );
+
+          tl.fromTo(
+            button,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.12 },
+            0.32
+          );
+        });
       });
     }, section);
 
@@ -119,113 +225,364 @@ export default function ProductShowcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-white">
-      {products.map((product, index) => (
-        <div
-          key={product.id}
-          ref={(el) => {
-            productRefs.current[index] = el;
-          }}
-          className="relative h-screen w-full overflow-hidden"
-        >
-          <div className="flex h-full w-full">
-            {/* LEFT: Image with B&W to Color reveal */}
-            <div className="relative w-full lg:w-1/2 h-full flex items-center justify-center p-8 lg:p-16">
-              {/* ✅ Reduced max-width and added top margin to clear the header */}
-              <div className="relative w-full max-w-[320px] lg:max-w-[400px] aspect-[3/4] overflow-hidden rounded-lg shadow-2xl mt-16 lg:mt-0">
-                {/* B&W Image (bottom layer) */}
-                <img
-                  src={product.image}
-                  alt={`${product.name} B&W`}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ filter: 'grayscale(100%)' }}
-                />
-                
-                {/* Colored Image (top layer, revealed via clip-path) */}
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="colored-image absolute inset-0 w-full h-full object-cover"
-                  style={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-                />
-              </div>
-            </div>
+    <section
+      ref={sectionRef}
+      className="relative w-full bg-white"
+    >
+      {products.map((product, index) => {
+        const isReversed = index % 2 !== 0;
 
-            {/* RIGHT: Product Details */}
-            <div className="hidden lg:flex w-1/2 items-center justify-center px-16 xl:px-24">
-              <div className="max-w-md">
-                <h2
-                  className="product-title text-5xl xl:text-6xl font-medium text-[#0f0a08] mb-4 leading-tight"
-                  style={{ fontFamily: "'Fraunces', Georgia, serif", opacity: 0 }}
+        return (
+          <div
+            key={product.id}
+            ref={(el) => {
+              productRefs.current[index] = el;
+            }}
+            className="
+              product-item
+              relative
+              min-h-[calc(100svh-72px)]
+              lg:min-h-screen
+              w-full
+              overflow-hidden
+              bg-white
+            "
+          >
+            <div
+              className={`
+                flex
+                h-full
+                min-h-[calc(100svh-72px)]
+                w-full
+                flex-col
+                lg:min-h-screen
+                lg:flex-row
+                ${isReversed ? "lg:flex-row-reverse" : ""}
+              `}
+            >
+              {/* =========================================
+                  IMAGE
+              ========================================= */}
+              <div
+                className="
+                  relative
+                  flex
+                  w-full
+                  h-[45svh]
+                  min-h-[300px]
+                  items-center
+                  justify-center
+                  px-5
+                  pt-4
+                  pb-3
+                  sm:h-[50svh]
+                  sm:px-8
+                  md:h-[52svh]
+                  lg:h-full
+                  lg:w-1/2
+                  lg:px-10
+                  lg:py-12
+                  xl:px-16
+                  2xl:px-24
+                "
+              >
+                <div
+                  className="
+                    relative
+                    h-full
+                    w-auto
+                    aspect-[3/4]
+                    overflow-hidden
+                    rounded-lg
+                    shadow-2xl
+
+                    max-h-[42svh]
+                    max-w-[82vw]
+
+                    sm:max-h-[46svh]
+                    sm:max-w-[360px]
+
+                    md:max-h-[48svh]
+                    md:max-w-[400px]
+
+                    lg:h-[72vh]
+                    lg:max-h-none
+                    lg:max-w-[520px]
+
+                    xl:h-[78vh]
+                    xl:max-w-[560px]
+
+                    2xl:h-[82vh]
+                    2xl:max-w-[620px]
+                  "
                 >
-                  {product.name}
-                </h2>
+                  {/* B&W image */}
+                  <img
+                    src={product.image}
+                    alt={`${product.name} B&W`}
+                    className="
+                      absolute
+                      inset-0
+                      h-full
+                      w-full
+                      object-cover
+                    "
+                    style={{
+                      filter: "grayscale(100%)",
+                    }}
+                  />
 
-                <p
-                  className="product-price text-2xl text-[#c9a962] mb-8"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", opacity: 0 }}
-                >
-                  {product.price}
-                </p>
-
-                <p
-                  className="product-description text-[#6b6b6b] text-base leading-relaxed mb-10"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", opacity: 0 }}
-                >
-                  {product.description}
-                </p>
-
-                <div className="product-options mb-10" style={{ opacity: 0 }}>
-                  <div className="mb-6">
-                    <span
-                      className="text-xs uppercase tracking-[0.2em] text-[#8b8378] block mb-3"
-                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                    >
-                      Concentration
-                    </span>
-                    <div className="flex gap-3">
-                      {product.colors.map((color, i) => (
-                        <button
-                          key={i}
-                          className="w-8 h-8 rounded-full border-2 border-gray-200 hover:border-[#c9a962] hover:scale-110 transition-all duration-300"
-                          style={{ backgroundColor: color }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <span
-                      className="text-xs uppercase tracking-[0.2em] text-[#8b8378] block mb-3"
-                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                    >
-                      Volume
-                    </span>
-                    <div className="flex gap-3">
-                      {product.sizes.map((size) => (
-                        <button
-                          key={size}
-                          className="px-5 py-2 border-2 border-[#c9a962]/30 text-[#c9a962] text-sm hover:bg-[#c9a962] hover:text-white transition-all duration-300"
-                          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Colored image */}
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="
+                      colored-image
+                      absolute
+                      inset-0
+                      h-full
+                      w-full
+                      object-cover
+                    "
+                    style={{
+                      clipPath: "inset(0% 0% 100% 0%)",
+                    }}
+                  />
                 </div>
+              </div>
 
-                <button
-                  className="product-button w-full px-12 py-4 bg-[#0f0a08] text-white text-sm uppercase tracking-[0.2em] font-medium hover:bg-[#c9a962] transition-all duration-300"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", opacity: 0 }}
-                >
-                  Quick View
-                </button>
+              {/* =========================================
+                  CONTENT
+              ========================================= */}
+              <div
+                className="
+                  flex
+                  w-full
+                  flex-1
+                  items-center
+                  justify-center
+                  px-6
+                  py-8
+
+                  sm:px-8
+                  sm:py-10
+
+                  md:px-12
+                  md:py-12
+
+                  lg:w-1/2
+                  lg:flex-none
+                  lg:px-12
+                  lg:py-0
+
+                  xl:px-20
+
+                  2xl:px-28
+                "
+              >
+                <div className="w-full max-w-md lg:max-w-lg">
+
+                  <h2
+                    className="
+                      product-title
+                      mb-3
+                      text-3xl
+                      leading-tight
+                      font-medium
+                      text-[#0f0a08]
+
+                      sm:text-4xl
+
+                      md:text-5xl
+
+                      lg:mb-4
+                      lg:text-5xl
+
+                      xl:text-6xl
+                    "
+                    style={{
+                      fontFamily: "'Fraunces', Georgia, serif",
+                      opacity: 0,
+                    }}
+                  >
+                    {product.name}
+                  </h2>
+
+                  <p
+                    className="
+                      product-price
+                      mb-5
+                      text-lg
+                      text-[#c9a962]
+
+                      sm:text-xl
+
+                      lg:mb-8
+                      lg:text-2xl
+                    "
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      opacity: 0,
+                    }}
+                  >
+                    {product.price}
+                  </p>
+
+                  <p
+                    className="
+                      product-description
+                      mb-6
+                      text-sm
+                      leading-relaxed
+                      text-[#6b6b6b]
+
+                      sm:text-base
+
+                      lg:mb-10
+                    "
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      opacity: 0,
+                    }}
+                  >
+                    {product.description}
+                  </p>
+
+                  {/* OPTIONS */}
+                  <div
+                    className="
+                      product-options
+                      mb-6
+
+                      lg:mb-10
+                    "
+                    style={{
+                      opacity: 0,
+                    }}
+                  >
+                    {/* Colors */}
+                    <div className="mb-5 lg:mb-6">
+                      <span
+                        className="
+                          mb-3
+                          block
+                          text-[10px]
+                          uppercase
+                          tracking-[0.2em]
+                          text-[#8b8378]
+                        "
+                        style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                        }}
+                      >
+                        Concentration
+                      </span>
+
+                      <div className="flex gap-3">
+                        {product.colors.map((color, i) => (
+                          <button
+                            key={i}
+                            aria-label={`Color ${i + 1}`}
+                            className="
+                              h-8
+                              w-8
+                              rounded-full
+                              border-2
+                              border-gray-200
+                              transition-all
+                              duration-300
+                              hover:scale-110
+                              hover:border-[#c9a962]
+                            "
+                            style={{
+                              backgroundColor: color,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Sizes */}
+                    <div>
+                      <span
+                        className="
+                          mb-3
+                          block
+                          text-[10px]
+                          uppercase
+                          tracking-[0.2em]
+                          text-[#8b8378]
+                        "
+                        style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                        }}
+                      >
+                        Volume
+                      </span>
+
+                      <div className="flex flex-wrap gap-2 sm:gap-3">
+                        {product.sizes.map((size) => (
+                          <button
+                            key={size}
+                            className="
+                              border-2
+                              border-[#c9a962]/30
+                              px-4
+                              py-2
+                              text-xs
+                              text-[#c9a962]
+                              transition-all
+                              duration-300
+                              hover:bg-[#c9a962]
+                              hover:text-white
+
+                              sm:px-5
+                              sm:text-sm
+                            "
+                            style={{
+                              fontFamily: "'Space Grotesk', sans-serif",
+                            }}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* BUTTON */}
+                  <button
+                    className="
+                      product-button
+                      w-full
+                      bg-[#0f0a08]
+                      px-8
+                      py-3.5
+                      text-xs
+                      font-medium
+                      uppercase
+                      tracking-[0.2em]
+                      text-white
+                      transition-all
+                      duration-300
+                      hover:bg-[#c9a962]
+
+                      sm:py-4
+                      sm:text-sm
+                    "
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      opacity: 0,
+                    }}
+                  >
+                    Quick View
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </section>
   );
 }
