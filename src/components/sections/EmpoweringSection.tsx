@@ -18,7 +18,7 @@ const users = [
   { id: 8, src: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300&h=300&fit=crop', alt: 'Pink Aura' },
 ];
 
-const CARD_RADIUS_DESKTOP = 270;
+const CARD_RADIUS_DESKTOP = 250;
 const CARD_RADIUS_MOBILE = 160;
 const CARD_RADIUS_TABLET = 220;
 
@@ -121,12 +121,11 @@ export default function EmpoweringSection() {
       <div className="relative z-10 flex h-full w-full items-center justify-center px-4">
         
         {/* Inner gold gradient ring */}
-<div className="absolute">
-  <svg 
-    width="100%" 
-    height="100%" 
-    viewBox="0 0 600 600"
-    className="w-[min(85vw,600px)] h-[min(85vw,600px)] overflow-visible"
+<div className="absolute scale-90">
+  <svg
+    width="600"
+    height="600"
+    className="overflow-visible"
   >
     <defs>
       <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -153,12 +152,11 @@ export default function EmpoweringSection() {
 </div>
 
 {/* Outer gold ring */}
-<div className="absolute">
-  <svg 
-    width="100%" 
-    height="100%" 
-    viewBox="0 0 750 750"
-    className="w-[min(105vw,750px)] h-[min(105vw,750px)] overflow-visible"
+<div className="absolute scale-90">
+  <svg
+    width="750"
+    height="750"
+    className="overflow-visible"
   >
     <circle cx="375" cy="375" r="350" fill="none" stroke="#c9a962" strokeWidth="1" opacity="0.3" />
   </svg>

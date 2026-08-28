@@ -18,7 +18,7 @@ export default function RootLayout({
       {/* Yahan suppressHydrationWarning add kiya hai */}
       <body className="antialiased" suppressHydrationWarning>
         <Header />
-        <main className="pt-20">
+        <main>
           {children}
         </main>
       </body>

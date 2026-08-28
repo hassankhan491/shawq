@@ -31,7 +31,7 @@ export default function HeroSection() {
       tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: `top+=${HEADER_HEIGHT} top`,
+          start: 'top top',
           end: isMobile ? '+=1200' : '+=1800', // mobile par chota scroll
           scrub: 1,
           pin: true,
@@ -124,7 +124,7 @@ export default function HeroSection() {
     <section
       ref={sectionRef}
       id="hero-banner"
-      className="relative overflow-hidden bg-[#0f0a08]"
+      className="relative h-screen overflow-hidden bg-[#0f0a08]"
       style={{
         marginTop: `-${HEADER_HEIGHT}px`,
         height: `calc(100vh + ${HEADER_HEIGHT}px)`,

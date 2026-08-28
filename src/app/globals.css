@@ -15,14 +15,16 @@
 
      html,
      body {
-       max-width: 100vw;
-       overflow-x: hidden;
-       font-family: var(--font-sans);
+      max-width: 100vw;
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+    background: #0f0a08;
+    color: #f5f0eb;
      }
 
      body {
        color: #000;
-       background: #fff;
+       background: #0f0a08;
      }
 
      a {
