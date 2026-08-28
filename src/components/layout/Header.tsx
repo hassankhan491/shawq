@@ -105,12 +105,16 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount] = useState(2);
 
-  // Header will shrink after approximately the hero section
+  // ✅ UPDATED: Header shrinks right after hero section ends
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 850);
+      // Hero section = 100vh (screen height) + 1500px (pinned scroll distance)
+      // Add small buffer (100px) for smooth transition
+      const heroEndThreshold = window.innerHeight + 1500;
+      setIsScrolled(window.scrollY > heroEndThreshold - 100);
     };
 
+    // Initial check
     handleScroll();
 
     window.addEventListener("scroll", handleScroll, {

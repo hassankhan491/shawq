@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import Link from 'next/link';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -31,49 +31,62 @@ export default function HeroSection() {
       tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: isMobile ? '+=1200' : '+=1800', // mobile par chota scroll
+          start: "top top",
+          end: isMobile ? "+=1200" : "+=1800",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
 
-          // Custom events - Header ko banner ka state batayenge
           onEnter: () => {
             window.dispatchEvent(
-              new CustomEvent('hero-state', { detail: { active: true } })
+              new CustomEvent("hero-state", { detail: { active: true } }),
             );
           },
           onLeave: () => {
             window.dispatchEvent(
-              new CustomEvent('hero-state', { detail: { active: false } })
+              new CustomEvent("hero-state", { detail: { active: false } }),
             );
           },
           onEnterBack: () => {
             window.dispatchEvent(
-              new CustomEvent('hero-state', { detail: { active: true } })
+              new CustomEvent("hero-state", { detail: { active: true } }),
             );
           },
           onLeaveBack: () => {
             window.dispatchEvent(
-              new CustomEvent('hero-state', { detail: { active: false } })
+              new CustomEvent("hero-state", { detail: { active: false } }),
             );
           },
         },
       });
 
       // 1) Caption/CTA pehle fade out
-      tl.to(fadeRef.current, { opacity: 0, y: -40, duration: 0.4, ease: 'power1.out' }, 0);
+      tl.to(
+        fadeRef.current,
+        { opacity: 0, y: -40, duration: 0.4, ease: "power1.out" },
+        0,
+      );
 
       // 2) Text lines sides par split - mobile par poori bahar
       tl.to(
         line1Ref.current,
-        { x: isMobile ? '-110vw' : '-45vw', opacity: 0, duration: 1, ease: 'power2.inOut' },
-        0
+        {
+          x: isMobile ? "-110vw" : "-45vw",
+          opacity: 0,
+          duration: 1,
+          ease: "power2.inOut",
+        },
+        0,
       );
       tl.to(
         line2Ref.current,
-        { x: isMobile ? '110vw' : '45vw', opacity: 0, duration: 1, ease: 'power2.inOut' },
-        0
+        {
+          x: isMobile ? "110vw" : "45vw",
+          opacity: 0,
+          duration: 1,
+          ease: "power2.inOut",
+        },
+        0,
       );
 
       // 3) PX-based video expansion - mobile par controlled
@@ -84,16 +97,19 @@ export default function HeroSection() {
           height: Math.round(vh * (isMobile ? 0.7 : 0.88)),
           borderRadius: 16,
           duration: 1.6,
-          ease: 'power2.inOut',
+          ease: "power2.inOut",
         },
-        0.1
+        0.1,
       );
 
       // 4) Background dark taake video star lage
-      tl.to(bgRef.current, { opacity: 0.25, scale: 1.08, duration: 1.6, ease: 'power2.inOut' }, 0.1);
+      tl.to(
+        bgRef.current,
+        { opacity: 0.25, scale: 1.08, duration: 1.6, ease: "power2.inOut" },
+        0.1,
+      );
     }, section);
 
-    // ✅ SAFE CLEANUP - HMR/StrictMode par crash nahi hoga
     return () => {
       try {
         if (tl) {
@@ -112,12 +128,12 @@ export default function HeroSection() {
     const setBg = () => {
       if (bgRef.current) {
         bgRef.current.style.backgroundPosition =
-          window.innerWidth < 640 ? '75% center' : 'center 30%';
+          window.innerWidth < 640 ? "75% center" : "center 30%";
       }
     };
     setBg();
-    window.addEventListener('resize', setBg);
-    return () => window.removeEventListener('resize', setBg);
+    window.addEventListener("resize", setBg);
+    return () => window.removeEventListener("resize", setBg);
   }, []);
 
   return (
@@ -134,22 +150,25 @@ export default function HeroSection() {
       <div
         ref={bgRef}
         className="absolute inset-0 bg-[url('/images/new.png')] bg-cover bg-center bg-no-repeat"
-        style={{ backgroundPosition: 'center 30%' }}
+        style={{ backgroundPosition: "center 30%" }}
       />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0f0a08]/80 via-[#0f0a08]/30 to-[#0f0a08]/80" />
 
-      {/* Content area - header ke neeche se start */}
+      {/* ✅ Content area - shifted upward to center everything */}
       <div
-        className="absolute left-0 right-0 bottom-0"
-        style={{ top: `${HEADER_HEIGHT}px` }}
+        className="absolute left-0 right-0 flex flex-col items-center justify-center"
+        style={{ 
+          top: `${HEADER_HEIGHT}px`,
+          bottom: 0,
+          transform: 'translateY(-8%)', // ✅ Moves ALL content up together
+        }}
       >
-        {/* Video Card - responsive sizes */}
+        {/* ✅ Video Card - ORIGINAL dimensions restored */}
         <div
           ref={videoWrapRef}
-        //   className="absolute inset-0 m-auto z-10 w-[260px] h-[360px] sm:w-[300px] sm:h-[420px] md:w-[380px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
-        className="absolute inset-0 m-auto z-10 w-[240px] h-[320px] sm:w-[280px] sm:h-[380px] md:w-[340px] md:h-[min(460px,56vh)] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
+          className="absolute inset-0 m-auto z-10 w-[260px] h-[360px] sm:w-[300px] sm:h-[420px] md:w-[380px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
         >
           <video
             src="/videos/hero.mp4"
@@ -161,7 +180,7 @@ export default function HeroSection() {
           />
         </div>
 
-        {/* Heading - scroll par sides par split hogi */}
+        {/* ✅ Heading - centered with video */}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
           <div
             ref={line1Ref}
@@ -177,9 +196,12 @@ export default function HeroSection() {
           </div>
         </div>
 
-        {/* Bottom Caption + CTA */}
+        {/* ✅ Bottom Caption + CTA */}
         <div className="absolute inset-x-0 bottom-[5vh] z-20 flex justify-center">
-          <div ref={fadeRef} className="flex flex-col items-center gap-4 text-center px-6">
+          <div
+            ref={fadeRef}
+            className="flex flex-col items-center gap-4 text-center px-6"
+          >
             <div className="flex items-center gap-3">
               <div className="w-12 h-px bg-[#c9a962]" />
               <span className="text-[#c9a962] text-xs tracking-[0.3em] uppercase font-medium">
@@ -195,7 +217,7 @@ export default function HeroSection() {
 
             <Link
               href="/products"
-              className="inline-block px-8 py-3 bg-[#c9a962] text-[#0f0a08] font-medium text-sm tracking-wider uppercase hover:bg-[#e0c78a] transition-all"
+              className="inline-block px-10 py-3.5 border-2 border-[#c9a962] text-[#c9a962] font-medium text-sm tracking-[0.2em] uppercase hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
             >
               Explore Collection
             </Link>
