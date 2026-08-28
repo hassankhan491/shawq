@@ -210,19 +210,22 @@ export default function HeroSection() {
               <div className="w-12 h-px bg-[#c9a962]" />
             </div>
 
-            <p className="text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md">
+            {/* ✅ Brighter text on mobile */}
+            <p className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium">
               Experience the essence of craftsmanship through our exclusive
               collection of oud, amber, and rare botanicals.
             </p>
 
+            {/* ✅ More prominent button on mobile */}
             <Link
               href="/products"
-              className="inline-block px-10 py-3.5 border-2 border-[#c9a962] text-[#c9a962] font-medium text-sm tracking-[0.2em] uppercase hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
+              className="inline-block px-8 sm:px-10 py-3.5 border-2 border-[#c9a962] text-white sm:text-[#c9a962] font-medium text-sm tracking-[0.2em] uppercase bg-[#c9a962]/10 sm:bg-transparent hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
             >
               Explore Collection
             </Link>
 
-            <span className="text-[#a89f95]/80 text-[10px] tracking-[0.3em] uppercase animate-pulse">
+            {/* ✅ Brighter scroll text on mobile */}
+            <span className="text-[#e8e0d5] sm:text-[#a89f95]/80 text-[11px] sm:text-[10px] tracking-[0.3em] uppercase animate-pulse font-medium">
               Scroll to Explore
             </span>
           </div>
