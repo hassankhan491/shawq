@@ -114,7 +114,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
             onClick={onClose}
             className="absolute left-1/2 -translate-x-1/2 font-serif text-3xl text-[#f5f0eb]"
           >
-            Shawq.
+            SHAWQ
           </Link>
 
           <div className="flex items-center gap-6 text-[#f5f0eb]">
