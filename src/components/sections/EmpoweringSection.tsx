@@ -188,14 +188,14 @@ export default function EmpoweringSection() {
           </svg>
         </div>
 
-        {/* ✅ PERFUME BOTTLE CARDS */}
+        {/* ✅ PERFUME BOTTLE CARDS - Borders removed */}
         {users.map((user, index) => (
           <div
             key={user.id}
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
-            className="absolute w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white/90 will-change-transform"
+            className="absolute w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl will-change-transform"
             style={index === 0 ? undefined : { opacity: 0, transform: 'scale(0)' }}
           >
             <img src={user.src} alt={user.alt} className="w-full h-full object-cover" loading="lazy" />

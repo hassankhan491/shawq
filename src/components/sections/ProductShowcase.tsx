@@ -61,7 +61,7 @@ export default function ProductShowcase() {
           if (!product) return;
 
           const coloredImage = product.querySelector(
-            ".colored-image"
+            ".colored-image",
           ) as HTMLElement;
 
           const title = product.querySelector(".product-title");
@@ -90,7 +90,7 @@ export default function ProductShowcase() {
               duration: 0.9,
               ease: "none",
             },
-            0
+            0,
           );
 
           // Text animations
@@ -98,35 +98,35 @@ export default function ProductShowcase() {
             title,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.12
+            0.12,
           );
 
           tl.fromTo(
             price,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.2
+            0.2,
           );
 
           tl.fromTo(
             description,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.28
+            0.28,
           );
 
           tl.fromTo(
             options,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.36
+            0.36,
           );
 
           tl.fromTo(
             button,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.44
+            0.44,
           );
         });
       });
@@ -139,7 +139,7 @@ export default function ProductShowcase() {
           if (!product) return;
 
           const coloredImage = product.querySelector(
-            ".colored-image"
+            ".colored-image",
           ) as HTMLElement;
 
           const title = product.querySelector(".product-title");
@@ -177,7 +177,7 @@ export default function ProductShowcase() {
               duration: 0.45,
               ease: "none",
             },
-            0
+            0,
           );
 
           // Faster text animations
@@ -185,35 +185,35 @@ export default function ProductShowcase() {
             title,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.08
+            0.08,
           );
 
           tl.fromTo(
             price,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.14
+            0.14,
           );
 
           tl.fromTo(
             description,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.20
+            0.2,
           );
 
           tl.fromTo(
             options,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.26
+            0.26,
           );
 
           tl.fromTo(
             button,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.32
+            0.32,
           );
         });
       });
@@ -225,10 +225,7 @@ export default function ProductShowcase() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full bg-white"
-    >
+    <section ref={sectionRef} className="relative w-full bg-white">
       {products.map((product, index) => {
         const isReversed = index % 2 !== 0;
 
@@ -381,7 +378,6 @@ export default function ProductShowcase() {
                 "
               >
                 <div className="w-full max-w-md lg:max-w-lg">
-
                   <h2
                     className="
                       product-title
