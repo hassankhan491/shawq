@@ -129,121 +129,115 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out">
-        {/* Container - full width at top, boxed when scrolled */}
-        <div
-          className={`transition-all duration-500 ease-out ${
+  {/* Container - full width at top, boxed when scrolled */}
+  <div
+    className={`transition-all duration-500 ease-out ${
+      isScrolled
+        ? "max-w-6xl mx-auto mt-4 px-4 sm:px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
+        : "px-4 sm:px-6 lg:px-12 bg-transparent"
+    }`}
+  >
+    {/* 3-COLUMN GRID - logo always perfectly centered */}
+    <div
+      className={`grid grid-cols-[1fr_auto_1fr] items-center ${
+        isScrolled ? "py-3" : "py-5 lg:py-6"
+      }`}
+    >
+      {/* Left - Menu Button */}
+      <div className="justify-self-start">
+        <button
+          onClick={() => setIsMenuOpen(true)}
+          className={`flex items-center gap-3 group transition-all duration-300 ${
+            isScrolled ? "text-[#c9a962]" : "text-white"
+          } hover:opacity-80`}
+          aria-label="Open menu"
+        >
+          <span className="font-medium text-xs tracking-[0.2em] uppercase hidden sm:block">
+            Menu
+          </span>
+
+          <span className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+            <MenuIcon />
+          </span>
+        </button>
+      </div>
+
+      {/* Center - Logo */}
+      <Link
+        href="/"
+        className="justify-self-center"
+        aria-label="Shawq Home"
+      >
+        <h1
+          className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
             isScrolled
-                ? "w-[calc(100%-16px)] mx-2 mt-4 px-4 sm:mx-4 sm:w-auto sm:px-6 max-w-6xl rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
-                : "px-4 sm:px-6 lg:px-12 bg-transparent"
-            // isScrolled
-            //   ? "max-w-6xl mx-auto mt-4 px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
-            //   : "px-6 lg:px-12 bg-transparent"
+              ? "text-lg sm:text-2xl text-[#c9a962]"
+              : "text-2xl sm:text-4xl lg:text-[50px] text-white"
           }`}
         >
-          {/* 3-COLUMN GRID - logo always perfectly centered */}
-          <div
-            className={`grid grid-cols-[1fr_auto_1fr] items-center ${
-              isScrolled ? "py-3" : "py-5 lg:py-6"
-            }`}
-          >
-            {/* Left - Menu Button */}
-            <div className="justify-self-start">
-              <button
-                onClick={() => setIsMenuOpen(true)}
-                className={`flex items-center gap-3 group transition-all duration-300 ${
-                  isScrolled ? "text-[#c9a962]" : "text-white"
-                } hover:opacity-80`}
-                aria-label="Open menu"
-              >
-                <span className="font-medium text-xs tracking-[0.2em] uppercase hidden sm:block">
-                  Menu
-                </span>
+          SHAWQ
+        </h1>
+      </Link>
 
-                <span className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-                  <MenuIcon />
-                </span>
-              </button>
-            </div>
+      {/* Right - Icons */}
+      <div className="justify-self-end flex items-center gap-2 sm:gap-3 lg:gap-4">
+        {/* Search */}
+        <button
+          className={`hidden md:flex p-2 rounded-full transition-all duration-300 ${
+            isScrolled
+              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
+              : "text-white hover:bg-white/10"
+          }`}
+          aria-label="Search"
+        >
+          <SearchIcon />
+        </button>
 
-            {/* Center - Logo */}
-            <Link
-              href="/"
-              className="justify-self-center"
-              aria-label="Shawq Home"
-            >
-              <h1
-                className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
-                  isScrolled
-                    ? "text-lg sm:text-2xl text-[#c9a962]"
-                    : "text-2xl sm:text-4xl lg:text-[50px] text-white"
-                  // isScrolled
-                  //   ? "text-2xl text-[#c9a962]"
-                  //   : "text-[50px] text-white"
-                }`}
-              >
-                SHAWQ
-              </h1>
-            </Link>
+        {/* Account */}
+        <button
+          className={`hidden sm:flex p-2 rounded-full transition-all duration-300 ${
+            isScrolled
+              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
+              : "text-white hover:bg-white/10"
+          }`}
+          aria-label="Account"
+        >
+          <AccountIcon />
+        </button>
 
-            {/* Right - Icons */}
-            <div className="justify-self-end flex items-center gap-2 sm:gap-3 lg:gap-4">
-              {/* Search */}
-              <button
-                className={`hidden md:flex p-2 rounded-full transition-all duration-300 ${
-                  isScrolled
-                    ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-                    : "text-white hover:bg-white/10"
-                }`}
-                aria-label="Search"
-              >
-                <SearchIcon />
-              </button>
+        {/* Wishlist */}
+        <button
+          className={`p-2 rounded-full transition-all duration-300 ${
+            isScrolled
+              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
+              : "text-white hover:bg-white/10"
+          }`}
+          aria-label="Wishlist"
+        >
+          <WishlistIcon />
+        </button>
 
-              {/* Account */}
-              <button
-                className={`hidden sm:flex p-2 rounded-full transition-all duration-300 ${
-                  isScrolled
-                    ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-                    : "text-white hover:bg-white/10"
-                }`}
-                aria-label="Account"
-              >
-                <AccountIcon />
-              </button>
+        {/* Cart */}
+        <button
+          className={`relative p-2 rounded-full transition-all duration-300 ${
+            isScrolled
+              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
+              : "text-white hover:bg-white/10"
+          }`}
+          aria-label="Shopping cart"
+        >
+          <CartIcon />
 
-              {/* Wishlist */}
-              <button
-                className={`p-2 rounded-full transition-all duration-300 ${
-                  isScrolled
-                    ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-                    : "text-white hover:bg-white/10"
-                }`}
-                aria-label="Wishlist"
-              >
-                <WishlistIcon />
-              </button>
-
-              {/* Cart */}
-              <button
-                className={`relative p-2 rounded-full transition-all duration-300 ${
-                  isScrolled
-                    ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-                    : "text-white hover:bg-white/10"
-                }`}
-                aria-label="Shopping cart"
-              >
-                <CartIcon />
-
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a962] text-[#0f0a08] text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+          {cartCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a962] text-[#0f0a08] text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
 
       <FullScreenMenu
         isOpen={isMenuOpen}
