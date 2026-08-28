@@ -131,12 +131,12 @@ export default function Header() {
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out">
   {/* Container - full width at top, boxed when scrolled */}
   <div
-    className={`transition-all duration-500 ease-out ${
-      isScrolled
-        ? "max-w-6xl mx-auto mt-4 px-4 sm:px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
-        : "px-4 sm:px-6 lg:px-12 bg-transparent"
-    }`}
-  >
+  className={`transition-all duration-500 ease-out ${
+    isScrolled
+      ? "max-w-6xl w-[calc(100%-20px)] mx-auto mt-[10px] px-4 sm:px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
+      : "px-4 sm:px-6 lg:px-12 bg-transparent"
+  }`}
+>
     {/* 3-COLUMN GRID - logo always perfectly centered */}
     <div
       className={`grid grid-cols-[1fr_auto_1fr] items-center ${
