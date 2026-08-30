@@ -3,6 +3,7 @@ import SmoothScroll from '@/components/SmoothScroll';
 import HeroSection from '@/components/sections/HeroSection';
 import EmpoweringSection from '@/components/sections/EmpoweringSection';
 import ProductShowcase from '@/components/sections/ProductShowcase';
+import ProductGrid from "@/components/sections/ProductGrid";
 
 export default function HomePage() {
   return (
@@ -15,6 +16,8 @@ export default function HomePage() {
 
       {/* 3. New Product Showcase Section */}
       <ProductShowcase />
+
+       <ProductGrid />
 
       {/* 2. EMPOWERING SECTION */}
       <EmpoweringSection />

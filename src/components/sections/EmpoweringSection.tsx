@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -18,34 +18,88 @@ const users = [
   { id: 8, src: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300&h=300&fit=crop', alt: 'Pink Aura' },
 ];
 
-const CARD_RADIUS_DESKTOP = 250;
-const CARD_RADIUS_MOBILE = 160;
-const CARD_RADIUS_TABLET = 220;
+interface ResponsiveValues {
+  innerRingSize: number;
+  outerRingSize: number;
+  cardRadius: number;
+  cardSize: string;
+  ringStrokeWidth: number;
+  arcStrokeWidth: number;
+}
 
-const RING_RADIUS = 280;
-const ARC_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+const getResponsiveValues = (vw: number): ResponsiveValues => {
+  if (vw < 640) { // Mobile
+    return {
+      innerRingSize: 320,
+      outerRingSize: 380,
+      cardRadius: 120,
+      cardSize: 'w-12 h-12',
+      ringStrokeWidth: 2,
+      arcStrokeWidth: 3,
+    };
+  } else if (vw < 1024) { // Tablet
+    return {
+      innerRingSize: 450,
+      outerRingSize: 520,
+      cardRadius: 180,
+      cardSize: 'w-16 h-16',
+      ringStrokeWidth: 2.5,
+      arcStrokeWidth: 3.5,
+    };
+  } else { // Desktop
+    return {
+      innerRingSize: 520,
+      outerRingSize: 600,
+      cardRadius: 220,
+      cardSize: 'w-20 h-20',
+      ringStrokeWidth: 3,
+      arcStrokeWidth: 4,
+    };
+  }
+};
 
 export default function EmpoweringSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const textRef = useRef<HTMLDivElement | null>(null);
   const arcRef = useRef<SVGCircleElement | null>(null);
+  const [values, setValues] = useState<ResponsiveValues>({
+    innerRingSize: 520,
+    outerRingSize: 600,
+    cardRadius: 220,
+    cardSize: 'w-20 h-20',
+    ringStrokeWidth: 3,
+    arcStrokeWidth: 4,
+  });
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    
+    const updateValues = () => {
+      const vw = window.innerWidth;
+      setValues(getResponsiveValues(vw));
+    };
+
+    // Initial calculation
+    updateValues();
+
+    // Listen for resize
+    window.addEventListener('resize', updateValues);
+    
+    return () => {
+      window.removeEventListener('resize', updateValues);
+    };
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || !isMounted) return;
 
     let tl: gsap.core.Timeline | null = null;
+    const ARC_CIRCUMFERENCE = 2 * Math.PI * values.cardRadius;
 
     const ctx = gsap.context(() => {
-      const vw = window.innerWidth;
-      // ✅ Responsive radius for all devices
-      let radius: number;
-      if (vw < 480) radius = 130;           // small mobile
-      else if (vw < 640) radius = CARD_RADIUS_MOBILE; // mobile
-      else if (vw < 1024) radius = CARD_RADIUS_TABLET; // tablet
-      else radius = CARD_RADIUS_DESKTOP;   // desktop
-
       const total = users.length;
 
       tl = gsap.timeline({
@@ -63,8 +117,8 @@ export default function EmpoweringSection() {
       cardRefs.current.forEach((card, i) => {
         if (!card) return;
         const angle = (i / total) * Math.PI * 2 - Math.PI / 2;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
+        const x = Math.cos(angle) * values.cardRadius;
+        const y = Math.sin(angle) * values.cardRadius;
 
         if (i !== 0) {
           tl!.to(card, { scale: 1, opacity: 1, duration: 0.5, ease: 'power1.out' }, 0);
@@ -88,11 +142,7 @@ export default function EmpoweringSection() {
       }
     }, section);
 
-    const onLoad = () => ScrollTrigger.refresh();
-    window.addEventListener('load', onLoad);
-
     return () => {
-      window.removeEventListener('load', onLoad);
       try {
         if (tl) {
           tl.scrollTrigger?.kill();
@@ -103,35 +153,39 @@ export default function EmpoweringSection() {
         // ignore - HMR safe
       }
     };
-  }, []);
+  }, [isMounted, values]);
+
+  const ARC_CIRCUMFERENCE = 2 * Math.PI * values.cardRadius;
 
   return (
     <section ref={sectionRef} className="relative h-screen overflow-hidden">
       
-      {/* ✅ BACKGROUND IMAGE */}
+      {/* BACKGROUND IMAGE */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/woman2.jpeg')" }}
       />
 
-      {/* ✅ DARK OVERLAY - Ensures rings & text pop against the image */}
+      {/* DARK OVERLAY */}
       <div className="absolute inset-0 z-0 bg-[#0f0a08]/40" />
 
-      {/* ✅ CONTENT - fully responsive */}
-      <div className="relative z-10 flex h-full w-full items-center justify-center px-4">
+      {/* CONTENT - Properly centered */}
+      <div className="relative z-10 flex h-full w-full items-center justify-center">
         
-        {/* ✅ INNER GOLD RING - More prominent with glow */}
-        <div className="absolute scale-90">
-          <svg width="600" height="600" className="overflow-visible">
+        {/* INNER GOLD RING */}
+        <div className="absolute">
+          <svg 
+            width={values.innerRingSize} 
+            height={values.innerRingSize} 
+            className="overflow-visible"
+          >
             <defs>
-              {/* Enhanced gradient for more prominence */}
               <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#f0e4a8" />
                 <stop offset="50%" stopColor="#d4b978" />
                 <stop offset="100%" stopColor="#b8956a" />
               </linearGradient>
               
-              {/* Glow filter */}
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge>
@@ -143,73 +197,77 @@ export default function EmpoweringSection() {
             
             {/* Outer subtle ring */}
             <circle 
-              cx="300" 
-              cy="300" 
-              r="280" 
+              cx={values.innerRingSize / 2} 
+              cy={values.innerRingSize / 2} 
+              r={values.cardRadius} 
               fill="none" 
               stroke="url(#goldGradient)" 
-              strokeWidth="2.5" 
+              strokeWidth={values.ringStrokeWidth} 
               opacity="0.6"
               filter="url(#glow)"
             />
             
-            {/* Animated arc - more prominent */}
+            {/* Animated arc */}
             <circle
               ref={arcRef}
-              cx="300"
-              cy="300"
-              r="280"
+              cx={values.innerRingSize / 2}
+              cy={values.innerRingSize / 2}
+              r={values.cardRadius}
               fill="none"
               stroke="url(#goldGradient)"
-              strokeWidth="4"
+              strokeWidth={values.arcStrokeWidth}
               strokeLinecap="round"
               strokeDasharray={ARC_CIRCUMFERENCE}
               strokeDashoffset={ARC_CIRCUMFERENCE}
-              transform="rotate(-90 300 300)"
+              transform={`rotate(-90 ${values.innerRingSize / 2} ${values.innerRingSize / 2})`}
               filter="url(#glow)"
               style={{ filter: 'drop-shadow(0 0 8px rgba(212, 185, 120, 0.6))' }}
             />
           </svg>
         </div>
 
-        {/* ✅ OUTER GOLD RING - More visible */}
-        <div className="absolute scale-90">
-          <svg width="750" height="750" className="overflow-visible">
+        {/* OUTER GOLD RING */}
+        <div className="absolute">
+          <svg 
+            width={values.outerRingSize} 
+            height={values.outerRingSize} 
+            className="overflow-visible"
+          >
             <circle 
-              cx="375" 
-              cy="375" 
-              r="350" 
+              cx={values.outerRingSize / 2} 
+              cy={values.outerRingSize / 2} 
+              r={values.cardRadius + 50} 
               fill="none" 
               stroke="#d4b978" 
-              strokeWidth="2" 
+              strokeWidth={values.ringStrokeWidth - 0.5} 
               opacity="0.5"
               style={{ filter: 'drop-shadow(0 0 4px rgba(212, 185, 120, 0.4))' }}
             />
           </svg>
         </div>
 
-        {/* ✅ PERFUME BOTTLE CARDS - Borders removed */}
+        {/* PERFUME BOTTLE CARDS */}
         {users.map((user, index) => (
           <div
             key={user.id}
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
-            className="absolute w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl will-change-transform"
+            className={`absolute ${values.cardSize} rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl will-change-transform`}
             style={index === 0 ? undefined : { opacity: 0, transform: 'scale(0)' }}
           >
             <img src={user.src} alt={user.alt} className="w-full h-full object-cover" loading="lazy" />
           </div>
         ))}
 
-        {/* ✅ CENTER TEXT - Fraunces font with enhanced visibility */}
+        {/* CENTER TEXT */}
         <div
           ref={textRef}
           className="relative z-10 text-center px-4 max-w-[220px] sm:max-w-[300px] md:max-w-[360px]"
           style={{ opacity: 0, transform: 'translateY(30px)' }}
         >
           <h2 
-            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-[#f0e4a8] leading-[1.1] tracking-tight"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-[#f0e4a8] leading-[1.1] tracking-tight"
             style={{ 
               fontFamily: "'Fraunces', Georgia, serif",
               textShadow: "0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 185, 120, 0.3)"
@@ -221,7 +279,7 @@ export default function EmpoweringSection() {
           </h2>
           
           <p 
-            className="font-body text-[#e8e0d5] text-xs sm:text-sm md:text-base mt-3 sm:mt-4 md:mt-5 leading-relaxed font-light tracking-wide"
+            className="font-body text-[#e8e0d5] text-[10px] sm:text-xs md:text-sm mt-2 sm:mt-3 md:mt-4 leading-relaxed font-light tracking-wide"
             style={{ 
               fontFamily: "'Space Grotesk', 'Helvetica Neue', Arial, sans-serif",
               textShadow: "0 2px 10px rgba(0, 0, 0, 0.7)"

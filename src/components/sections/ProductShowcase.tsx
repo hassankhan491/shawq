@@ -279,6 +279,7 @@ export default function ProductShowcase() {
                   lg:w-1/2
                   lg:px-10
                   lg:py-12
+                  lg:-translate-y-6
                   xl:px-16
                   2xl:px-24
                 "
@@ -302,7 +303,7 @@ export default function ProductShowcase() {
                     md:max-h-[48svh]
                     md:max-w-[400px]
 
-                    lg:h-[72vh]
+                    lg:h-[70vh]
                     lg:max-h-none
                     lg:max-w-[520px]
 
