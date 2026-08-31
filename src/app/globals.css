@@ -1,34 +1,78 @@
-   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
-  @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
-   @layer base {
-     :root {
-       --font-serif: 'Fraunces', Georgia, serif;
-    --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
-     }
+@layer base {
+  :root {
+    /* ─── Typography ── */
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+    
+    /* ─── Theme Colors (Black & Gold Elegance) ── */
+    --color-bg: #FFFFFF;      /* White */
+    --color-text: #000000;    /* Black */
+    --color-gold: #FCA311;    /* Regal Gold */
+    --color-navy: #14213D;    /* Deep Navy */
+    --color-light: #E5E5E5;   /* Luminous White/Gray */
+  }
 
-     * {
-       box-sizing: border-box;
-       padding: 0;
-       margin: 0;
-     }
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
 
-     html,
-     body {
-      max-width: 100vw;
+  html {
+    scroll-behavior: smooth;
+    max-width: 100vw;
     overflow-x: hidden;
+  }
+
+  body {
     font-family: var(--font-sans);
-    background: #0f0a08;
-    color: #f5f0eb;
-     }
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
 
-     body {
-       color: #000;
-       background: #0f0a08;
-     }
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
 
-     a {
-       color: inherit;
-       text-decoration: none;
-     }
-   }
+  /* ─── Gold Text Selection ─── */
+  ::selection {
+    background-color: var(--color-gold);
+    color: #ffffff;
+  }
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+}
+
+/* ─── Custom Scrollbar (Gold Accent) ─── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FCA311; /* Gold */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #14213D; /* Navy on hover */
+}

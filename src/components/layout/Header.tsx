@@ -1,248 +1,162 @@
-// src/components/layout/Header.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import FullScreenMenu from "./FullScreenMenu";
+import { Menu, ShoppingBag, Heart, Search, User } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Premium Icons - Refined SVGs
-const MenuIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="w-5 h-5"
-  >
-    <path
-      d="M3 12h18M3 6h18M3 18h18"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
+gsap.registerPlugin(ScrollTrigger);
 
-const CartIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="w-5 h-5"
-  >
-    <path
-      d="M16 11V7a4 4 0 10-8 0v4M5 9h14l1 12H4L5 9z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const WishlistIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="w-5 h-5"
-  >
-    <path
-      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const SearchIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="w-5 h-5"
-  >
-    <circle
-      cx="11"
-      cy="11"
-      r="8"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    />
-    <path
-      d="M21 21l-4.35-4.35"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const AccountIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    className="w-5 h-5"
-  >
-    <path
-      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
+// ⚙️ If your hero pin distance changes, adjust this (0 = no pin, just 100vh hero)
+const HERO_PIN_DISTANCE = 1500;
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartCount] = useState(2);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // ✅ UPDATED: Header shrinks right after hero section ends
   useEffect(() => {
-    const handleScroll = () => {
-      // Hero section = 100vh (screen height) + 1500px (pinned scroll distance)
-      // Add small buffer (100px) for smooth transition
-      const heroEndThreshold = window.innerHeight + 1500;
-      setIsScrolled(window.scrollY > heroEndThreshold - 100);
-    };
+    const ctx = gsap.context(() => {
+      const threshold = () => window.innerHeight + HERO_PIN_DISTANCE - 100;
+      const morphStart = () => threshold() - 400;
 
-    // Initial check
-    handleScroll();
+      // ✅ FIXED: animate `width` (not maxWidth) with a responsive function.
+      // Desktop/laptop → 920px pill | Tablet/mobile → full width minus 24px gaps
+      gsap.to(containerRef.current, {
+        width: () => Math.min(920, window.innerWidth - 24),
+        marginTop: 16,
+        borderRadius: 9999,
+        paddingInline: 16,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: "rgba(255, 255, 255, 0.92)",
+        borderColor: "rgba(0, 0, 0, 0.06)",
+        boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
+        ease: "none",
+        scrollTrigger: {
+          trigger: document.body,
+          start: morphStart,
+          end: threshold,
+          scrub: 0.6,
+          invalidateOnRefresh: true, // recalculates width on resize (responsive)
+        },
+      });
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
+      // Toggle text/icon colors + blur at the same scroll point
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: morphStart,
+        end: threshold,
+        onEnter: () => setIsScrolled(true),
+        onLeaveBack: () => setIsScrolled(false),
+      });
     });
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out">
-  {/* Container - full width at top, boxed when scrolled */}
-  <div
-  className={`transition-all duration-500 ease-out ${
-    isScrolled
-      ? "max-w-6xl w-[calc(100%-20px)] mx-auto mt-[10px] px-4 sm:px-6 rounded-2xl border border-[#c9a962]/30 bg-[#0f0a08]/90 backdrop-blur-md"
-      : "px-4 sm:px-6 lg:px-12 bg-transparent"
-  }`}
->
-    {/* 3-COLUMN GRID - logo always perfectly centered */}
-    <div
-      className={`grid grid-cols-[1fr_auto_1fr] items-center ${
-        isScrolled ? "py-3" : "py-5 lg:py-6"
-      }`}
-    >
-      {/* Left - Menu Button */}
-      <div className="justify-self-start">
-        <button
-          onClick={() => setIsMenuOpen(true)}
-          className={`flex items-center gap-3 group transition-all duration-300 ${
-            isScrolled ? "text-[#c9a962]" : "text-white"
-          } hover:opacity-80`}
-          aria-label="Open menu"
-        >
-          <span className="font-medium text-xs tracking-[0.2em] uppercase hidden sm:block">
-            Menu
-          </span>
-
-          <span className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
-            <MenuIcon />
-          </span>
-        </button>
-      </div>
-
-      {/* Center - Logo */}
-      <Link
-        href="/"
-        className="justify-self-center"
-        aria-label="Shawq Home"
-      >
-        <h1
-          className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
-            isScrolled
-              ? "text-lg sm:text-2xl text-[#c9a962]"
-              : "text-2xl sm:text-4xl lg:text-[50px] text-white"
+      <header className="fixed top-0 left-0 right-0 z-50 w-full">
+        <div
+          ref={containerRef}
+          className={`mx-auto w-full px-4 sm:px-6 lg:px-10 py-4 lg:py-5 bg-transparent border border-transparent ${
+            isScrolled ? "backdrop-blur-xl" : ""
           }`}
         >
-          SHAWQ
-        </h1>
-      </Link>
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center">
+            {/* Left - Menu */}
+            <div className="justify-self-start">
+              <button
+                onClick={() => setIsMenuOpen(true)}
+                className={`flex items-center gap-2 sm:gap-3 group transition-colors duration-300 ${
+                  isScrolled ? "text-brand-black" : "text-[#FCA311]"
+                } hover:opacity-80`}
+                aria-label="Open menu"
+              >
+                <span className="font-medium text-[10px] sm:text-xs tracking-[0.2em] uppercase hidden sm:block">
+                  Menu
+                </span>
+                <span
+                  className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
+                    isScrolled
+                      ? "bg-brand-black/5 group-hover:bg-brand-black/10"
+                      : "bg-[#FCA311]/10 group-hover:bg-[#FCA311]/20"
+                  }`}
+                >
+                  <Menu className="w-5 h-5" />
+                </span>
+              </button>
+            </div>
 
-      {/* Right - Icons */}
-      <div className="justify-self-end flex items-center gap-2 sm:gap-3 lg:gap-4">
-        {/* Search */}
-        <button
-          className={`hidden md:flex p-2 rounded-full transition-all duration-300 ${
-            isScrolled
-              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-              : "text-white hover:bg-white/10"
-          }`}
-          aria-label="Search"
-        >
-          <SearchIcon />
-        </button>
+            {/* Center - Logo */}
+            <Link href="/" className="justify-self-center" aria-label="Shawq Home">
+              <h1
+                className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
+                  isScrolled
+                    ? "text-lg sm:text-xl lg:text-2xl text-brand-black"
+                    : "text-2xl sm:text-4xl lg:text-[50px] text-[#FCA311]"
+                }`}
+              >
+                SHAWQ
+              </h1>
+            </Link>
 
-        {/* Account */}
-        <button
-          className={`hidden sm:flex p-2 rounded-full transition-all duration-300 ${
-            isScrolled
-              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-              : "text-white hover:bg-white/10"
-          }`}
-          aria-label="Account"
-        >
-          <AccountIcon />
-        </button>
+            {/* Right - Icons */}
+            <div className="justify-self-end flex items-center gap-0.5 sm:gap-1.5 lg:gap-2">
+              <button
+                className={`hidden md:flex p-2 rounded-full transition-colors duration-300 ${
+                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                }`}
+                aria-label="Search"
+              >
+                <Search className="w-5 h-5" />
+              </button>
 
-        {/* Wishlist */}
-        <button
-          className={`p-2 rounded-full transition-all duration-300 ${
-            isScrolled
-              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-              : "text-white hover:bg-white/10"
-          }`}
-          aria-label="Wishlist"
-        >
-          <WishlistIcon />
-        </button>
+              <button
+                className={`hidden sm:flex p-2 rounded-full transition-colors duration-300 ${
+                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                }`}
+                aria-label="Account"
+              >
+                <User className="w-5 h-5" />
+              </button>
 
-        {/* Cart */}
-        <button
-          className={`relative p-2 rounded-full transition-all duration-300 ${
-            isScrolled
-              ? "text-[#c9a962] hover:bg-[#c9a962]/10"
-              : "text-white hover:bg-white/10"
-          }`}
-          aria-label="Shopping cart"
-        >
-          <CartIcon />
+              <button
+                className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
+                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                }`}
+                aria-label="Wishlist"
+              >
+                <Heart className="w-5 h-5" />
+              </button>
 
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a962] text-[#0f0a08] text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
-              {cartCount}
-            </span>
-          )}
-        </button>
-      </div>
-    </div>
-  </div>
-</header>
+              <button
+                className={`relative p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
+                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                }`}
+                aria-label="Shopping cart"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                {cartCount > 0 && (
+                  <span
+                    className={`absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ${
+                      isScrolled ? "bg-brand-black text-brand-white" : "bg-[#000000] text-brand-black"
+                    }`}
+                  >
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-      <FullScreenMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      />
+      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </>
   );
 }
