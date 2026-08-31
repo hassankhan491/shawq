@@ -8,38 +8,26 @@ gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
-    id: 1,
-    name: "Oud Royale",
-    price: "$189.00",
-    description:
-      "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
-    image:
-      "https://images.unsplash.com/photo-1541643600914-78b084683601?w=1200&h=1600&fit=crop",
-    colors: ["#1a1a1a", "#8B4513", "#DAA520"],
-    sizes: ["30ml", "50ml", "100ml"],
-  },
+  id: 1,
+  name: "Oud Royale",
+  price: "$189.00",
+  description:
+    "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
+  image: "/images/NB-12.png",
+  colors: ["#1a1a1a", "#8B4513", "#DAA520"],
+  sizes: ["30ml", "50ml", "100ml"],
+},
   {
-    id: 2,
-    name: "Amber Essence",
-    price: "$165.00",
-    description:
-      "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
-    image:
-      "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1200&h=1600&fit=crop",
-    colors: ["#F5E6D3", "#D4A574", "#8B7355"],
-    sizes: ["30ml", "50ml", "100ml"],
-  },
-  {
-    id: 3,
-    name: "Golden Musk",
-    price: "$199.00",
-    description:
-      "Pure gold-infused musk with hints of rose and patchouli. An opulent fragrance for the distinguished few.",
-    image:
-      "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1200&h=1600&fit=crop",
-    colors: ["#FFD700", "#C9A962", "#2F2F2F"],
-    sizes: ["30ml", "50ml", "100ml"],
-  },
+  id: 2,
+  name: "Amber Essence",
+  price: "$165.00",
+  description:
+    "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
+  image: "/images/NB-06.jpg",
+  colors: ["#F5E6D3", "#D4A574", "#8B7355"],
+  sizes: ["30ml", "50ml", "100ml"],
+},
+  
 ];
 
 export default function ProductShowcase() {

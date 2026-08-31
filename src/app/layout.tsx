@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./globals.css";
+import Preloader from "@/components/layout/Preloader";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-white text-black" suppressHydrationWarning>
+        <Preloader />
         <Header />
         <main>{children}</main>
         <Footer />
