@@ -30,8 +30,15 @@
   font-display: swap;
 }
 @font-face {
-  font-family: 'Vartigo';
-  src: url('/fonts/Vartigo.otf') format('opentype');
+  font-family: 'Classic-Quality';
+  src: url('/fonts/Classic-Quality.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Okrite';
+  src: url('/fonts/Okrite.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -44,9 +51,10 @@
     /* --font-serif: 'Fraunces', Georgia, serif;
     --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; */
 
+    --font-body: 'Okrite', system-ui, sans-serif;
     --font-sans: 'Qaftan', serif;
     --font-serif: 'Perfect Girl Sans Serif', system-ui, sans-serif; 
-    --font-decorative: 'Vartigo', cursive;
+    --font-decorative: 'Classic-Quality', cursive;
     
     /* ─── Theme Colors (Black & Gold Elegance) ── */
     --color-bg: #FFFFFF;      /* White */
@@ -89,7 +97,7 @@
   }
 
   body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-text);
     -webkit-font-smoothing: antialiased;

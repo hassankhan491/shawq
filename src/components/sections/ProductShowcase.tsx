@@ -374,7 +374,7 @@ export default function ProductShowcase() {
                       lg:mb-10
                     "
                     style={{
-                      fontFamily: "var(--font-sans)",
+                      fontFamily: "var(--font-body)",
                       opacity: 0,
                     }}
                   >
