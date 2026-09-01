@@ -94,8 +94,8 @@ export default function Header() {
 
             {/* Center - Logo */}
             <Link href="/" className="justify-self-center" aria-label="Shawq Home">
-              <h1
-                className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
+              <h1 style={{ fontFamily: 'var(--font-decorative)' }}
+                className={` font-medium tracking-wide leading-none transition-all duration-500 ${
                   isScrolled
                     ? "text-lg sm:text-xl lg:text-2xl text-[var(--font-color-5)]"
                     : "text-2xl sm:text-4xl lg:text-[50px] text-[var(--font-color-5)]"

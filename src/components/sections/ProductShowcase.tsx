@@ -374,7 +374,7 @@ export default function ProductShowcase() {
                       lg:mb-10
                     "
                     style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "var(--font-sans)",
                       opacity: 0,
                     }}
                   >
