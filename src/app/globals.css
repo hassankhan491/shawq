@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @layer base {
   :root {
     /* ─── Typography ── */
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
     
     /* ─── Theme Colors (Black & Gold Elegance) ── */
     --color-bg: #FFFFFF;      /* White */

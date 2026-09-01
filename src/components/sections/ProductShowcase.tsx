@@ -8,26 +8,23 @@ gsap.registerPlugin(ScrollTrigger);
 
 const products = [
   {
-  id: 1,
-  name: "Oud Royale",
-  price: "$189.00",
-  description:
-    "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
-  image: "/images/NB-12.png",
-  colors: ["#1a1a1a", "#8B4513", "#DAA520"],
-  sizes: ["30ml", "50ml", "100ml"],
-},
+    id: 1,
+    name: "Oud Royale",
+    description:
+      "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
+    image: "/images/NB-12.png",
+    colors: ["#1a1a1a", "#8B4513", "#DAA520"],
+    sizes: ["30ml", "50ml", "100ml"],
+  },
   {
-  id: 2,
-  name: "Amber Essence",
-  price: "$165.00",
-  description:
-    "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
-  image: "/images/NB-06.jpg",
-  colors: ["#F5E6D3", "#D4A574", "#8B7355"],
-  sizes: ["30ml", "50ml", "100ml"],
-},
-  
+    id: 2,
+    name: "Amber Essence",
+    description:
+      "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
+    image: "/images/NB-15.png",
+    colors: ["#F5E6D3", "#D4A574", "#8B7355"],
+    sizes: ["30ml", "50ml", "100ml"],
+  },
 ];
 
 export default function ProductShowcase() {
@@ -53,9 +50,7 @@ export default function ProductShowcase() {
           ) as HTMLElement;
 
           const title = product.querySelector(".product-title");
-          const price = product.querySelector(".product-price");
           const description = product.querySelector(".product-description");
-          const options = product.querySelector(".product-options");
           const button = product.querySelector(".product-button");
 
           const tl = gsap.timeline({
@@ -90,31 +85,17 @@ export default function ProductShowcase() {
           );
 
           tl.fromTo(
-            price,
+            description,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
             0.2,
           );
 
           tl.fromTo(
-            description,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.2 },
-            0.28,
-          );
-
-          tl.fromTo(
-            options,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.2 },
-            0.36,
-          );
-
-          tl.fromTo(
             button,
             { opacity: 0, y: 30 },
             { opacity: 1, y: 0, duration: 0.2 },
-            0.44,
+            0.28,
           );
         });
       });
@@ -131,9 +112,7 @@ export default function ProductShowcase() {
           ) as HTMLElement;
 
           const title = product.querySelector(".product-title");
-          const price = product.querySelector(".product-price");
           const description = product.querySelector(".product-description");
-          const options = product.querySelector(".product-options");
           const button = product.querySelector(".product-button");
 
           const tl = gsap.timeline({
@@ -177,31 +156,17 @@ export default function ProductShowcase() {
           );
 
           tl.fromTo(
-            price,
+            description,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
             0.14,
           );
 
           tl.fromTo(
-            description,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.12 },
-            0.2,
-          );
-
-          tl.fromTo(
-            options,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.12 },
-            0.26,
-          );
-
-          tl.fromTo(
             button,
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.12 },
-            0.32,
+            0.2,
           );
         });
       });
@@ -213,7 +178,10 @@ export default function ProductShowcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[var(--color-lavender-mist)]">
+    <section
+      ref={sectionRef}
+      className="relative w-full bg-[var(--color-lavender-mist)]"
+    >
       {products.map((product, index) => {
         const isReversed = index % 2 !== 0;
 
@@ -395,26 +363,6 @@ export default function ProductShowcase() {
 
                   <p
                     className="
-                      product-price
-                      mb-5
-                      text-lg
-                      text-[#c9a962]
-
-                      sm:text-xl
-
-                      lg:mb-8
-                      lg:text-2xl
-                    "
-                    style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
-                      opacity: 0,
-                    }}
-                  >
-                    {product.price}
-                  </p>
-
-                  <p
-                    className="
                       product-description
                       mb-6
                       text-sm
@@ -433,124 +381,23 @@ export default function ProductShowcase() {
                     {product.description}
                   </p>
 
-                  {/* OPTIONS */}
-                  <div
-                    className="
-                      product-options
-                      mb-6
-
-                      lg:mb-10
-                    "
-                    style={{
-                      opacity: 0,
-                    }}
-                  >
-                    {/* Colors */}
-                    <div className="mb-5 lg:mb-6">
-                      <span
-                        className="
-                          mb-3
-                          block
-                          text-[10px]
-                          uppercase
-                          tracking-[0.2em]
-                          text-[#8b8378]
-                        "
-                        style={{
-                          fontFamily: "'Space Grotesk', sans-serif",
-                        }}
-                      >
-                        Concentration
-                      </span>
-
-                      <div className="flex gap-3">
-                        {product.colors.map((color, i) => (
-                          <button
-                            key={i}
-                            aria-label={`Color ${i + 1}`}
-                            className="
-                              h-8
-                              w-8
-                              rounded-full
-                              border-2
-                              border-gray-200
-                              transition-all
-                              duration-300
-                              hover:scale-110
-                              hover:border-[#c9a962]
-                            "
-                            style={{
-                              backgroundColor: color,
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Sizes */}
-                    <div>
-                      <span
-                        className="
-                          mb-3
-                          block
-                          text-[10px]
-                          uppercase
-                          tracking-[0.2em]
-                          text-[#8b8378]
-                        "
-                        style={{
-                          fontFamily: "'Space Grotesk', sans-serif",
-                        }}
-                      >
-                        Volume
-                      </span>
-
-                      <div className="flex flex-wrap gap-2 sm:gap-3">
-                        {product.sizes.map((size) => (
-                          <button
-                            key={size}
-                            className="
-                              border-2
-                              border-[#c9a962]/30
-                              px-4
-                              py-2
-                              text-xs
-                              text-[#c9a962]
-                              transition-all
-                              duration-300
-                              hover:bg-[#c9a962]
-                              hover:text-white
-
-                              sm:px-5
-                              sm:text-sm
-                            "
-                            style={{
-                              fontFamily: "'Space Grotesk', sans-serif",
-                            }}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
                   {/* BUTTON */}
                   <button
                     className="
                       product-button
                       w-full
-                      bg-[#0f0a08]
+                      
+                      bg-[var(--color-old-heliotrope))]
                       px-8
                       py-3.5
                       text-xs
                       font-medium
                       uppercase
                       tracking-[0.2em]
-                      text-white
+                      text-[var(--font-color-4)]
                       transition-all
                       duration-300
-                      hover:bg-[#c9a962]
+                      hover:bg-[var(--color-space-cadet)]
 
                       sm:py-4
                       sm:text-sm

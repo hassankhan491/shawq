@@ -15,8 +15,8 @@ const correctCSS = `@import "tailwindcss";
     --color-accent-gold-light: #e0c78a;
     --color-text-primary: #f5f0eb;
     --color-text-secondary: #a89f95;
-    --font-serif: 'Cormorant Garamond', serif;
-    --font-sans: 'Montserrat', sans-serif;
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
   }
 
   * {
