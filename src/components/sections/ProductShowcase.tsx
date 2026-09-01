@@ -213,7 +213,7 @@ export default function ProductShowcase() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-white">
+    <section ref={sectionRef} className="relative w-full bg-[var(--color-lavender-mist)]">
       {products.map((product, index) => {
         const isReversed = index % 2 !== 0;
 
@@ -230,7 +230,7 @@ export default function ProductShowcase() {
               lg:min-h-screen
               w-full
               overflow-hidden
-              bg-white
+              bg-[var(--color-lavender-mist)]
             "
           >
             <div
@@ -374,7 +374,7 @@ export default function ProductShowcase() {
                       text-3xl
                       leading-tight
                       font-medium
-                      text-[#0f0a08]
+                      text-[var(--font-color-3)]
 
                       sm:text-4xl
 

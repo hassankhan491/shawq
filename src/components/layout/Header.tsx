@@ -32,7 +32,7 @@ export default function Header() {
         paddingInline: 16,
         paddingTop: 10,
         paddingBottom: 10,
-        backgroundColor: "rgba(255, 255, 255, 0.92)",
+        backgroundColor: "#560A39",
         borderColor: "rgba(0, 0, 0, 0.06)",
         boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)",
         ease: "none",
@@ -64,7 +64,7 @@ export default function Header() {
         <div
           ref={containerRef}
           className={`mx-auto w-full px-4 sm:px-6 lg:px-10 py-4 lg:py-5 bg-transparent border border-transparent ${
-            isScrolled ? "backdrop-blur-xl" : ""
+            isScrolled ? "backdrop-blur-xl " : ""
           }`}
         >
           <div className="grid grid-cols-[1fr_auto_1fr] items-center">
@@ -73,7 +73,7 @@ export default function Header() {
               <button
                 onClick={() => setIsMenuOpen(true)}
                 className={`flex items-center gap-2 sm:gap-3 group transition-colors duration-300 ${
-                  isScrolled ? "text-brand-black" : "text-[#FCA311]"
+                  isScrolled ? "text-[var(--font-color-5)]" : "text-[var(--font-color-5)]"
                 } hover:opacity-80`}
                 aria-label="Open menu"
               >
@@ -83,8 +83,8 @@ export default function Header() {
                 <span
                   className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
                     isScrolled
-                      ? "bg-brand-black/5 group-hover:bg-brand-black/10"
-                      : "bg-[#FCA311]/10 group-hover:bg-[#FCA311]/20"
+                      ? "bg-[var(--font-color-5)]/5 group-hover:bg-[var(--font-color-5)]/10"
+                      : "bg-[var(--font-color-5)]/10 group-hover:bg-[var(--font-color-5)]/20"
                   }`}
                 >
                   <Menu className="w-5 h-5" />
@@ -97,8 +97,8 @@ export default function Header() {
               <h1
                 className={`font-serif font-medium tracking-wide leading-none transition-all duration-500 ${
                   isScrolled
-                    ? "text-lg sm:text-xl lg:text-2xl text-brand-black"
-                    : "text-2xl sm:text-4xl lg:text-[50px] text-[#FCA311]"
+                    ? "text-lg sm:text-xl lg:text-2xl text-[var(--font-color-5)]"
+                    : "text-2xl sm:text-4xl lg:text-[50px] text-[var(--font-color-5)]"
                 }`}
               >
                 SHAWQ
@@ -109,7 +109,7 @@ export default function Header() {
             <div className="justify-self-end flex items-center gap-0.5 sm:gap-1.5 lg:gap-2">
               <button
                 className={`hidden md:flex p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                  isScrolled ? "text-[var(--font-color-5)] hover:bg-brand-black/10" : "text-[var(--font-color-5)] hover:bg-[var(--font-color-5)]/10"
                 }`}
                 aria-label="Search"
               >
@@ -118,7 +118,7 @@ export default function Header() {
 
               <button
                 className={`hidden sm:flex p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                  isScrolled ? "text-[var(--font-color-5)] hover:bg-brand-black/10" : "text-[var(--font-color-5)] hover:bg-[var(--font-color-5)]/10"
                 }`}
                 aria-label="Account"
               >
@@ -127,7 +127,7 @@ export default function Header() {
 
               <button
                 className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                  isScrolled ? "text-[var(--font-color-5)] hover:bg-brand-black/10" : "text-[var(--font-color-5)] hover:bg-[var(--font-color-5)]/10"
                 }`}
                 aria-label="Wishlist"
               >
@@ -136,7 +136,7 @@ export default function Header() {
 
               <button
                 className={`relative p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-brand-black hover:bg-brand-black/10" : "text-[#FCA311] hover:bg-[#FCA311]/10"
+                  isScrolled ? "text-[var(--font-color-5)] hover:bg-brand-black/10" : "text-[var(--font-color-5)] hover:bg-[var(--font-color-5)]/10"
                 }`}
                 aria-label="Shopping cart"
               >
