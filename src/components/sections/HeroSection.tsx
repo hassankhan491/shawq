@@ -211,10 +211,17 @@ export default function HeroSection() {
             </div>
 
             {/* ✅ Brighter text on mobile */}
-            <p className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium">
-              Experience the essence of craftsmanship through our exclusive
-              collection of oud, amber, and rare botanicals.
-            </p>
+            <p
+  className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium"
+  style={{
+    fontFamily: "var(--font-body)",
+    fontSize: "16px",
+    letterSpacing: "0.03em",
+  }}
+>
+  Experience the essence of craftsmanship through our exclusive
+  collection of oud, amber, and rare botanicals.
+</p>
 
             {/* ✅ More prominent button on mobile */}
             <Link
