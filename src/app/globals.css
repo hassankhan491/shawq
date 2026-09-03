@@ -51,9 +51,9 @@
     /* --font-serif: 'Fraunces', Georgia, serif;
     --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; */
 
-    --font-body: 'Okrite', system-ui, sans-serif;
+    --font-body: 'Okrite', system-ui, sans-serif; /*paras*/
     --font-sans: 'Qaftan', serif;
-    --font-serif: 'Perfect Girl Sans Serif', system-ui, sans-serif; 
+    --font-serif: 'Perfect Girl Sans Serif', system-ui, sans-serif; /*main headings*/ 
     --font-decorative: 'Classic-Quality', cursive;
     
     /* ─── Theme Colors (Black & Gold Elegance) ── */
