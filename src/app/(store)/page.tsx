@@ -31,10 +31,11 @@ export default function HomePage() {
 
        <ProductGrid />
 
-      {/* 2. EMPOWERING SECTION */}
-      <EmpoweringSection />
       {/* 2. ShowcaseGrid SECTION */}
       <ShowcaseGrid />
+      {/* 2. EMPOWERING SECTION */}
+      <EmpoweringSection />
+      
 
       {/* NEWS LETTER */}
       <NewsletterSection />

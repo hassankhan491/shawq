@@ -78,7 +78,7 @@ export default function HeroGalleryScroll() {
             className="relative col-span-2 origin-top overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1600&h=900&fit=crop"
+              src="/images/unisex.jpeg"
               alt="Unisex fragrance collection"
               className="h-full w-full object-cover object-center"
             />
