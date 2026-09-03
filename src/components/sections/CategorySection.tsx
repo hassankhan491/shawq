@@ -14,13 +14,11 @@ export default function HeroGalleryScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Tracks scroll across the whole tall section (like the original ContainerScroll)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Spring smoothing = the buttery feel in the video (pairs with Lenis)
   const smoothProgress = useSpring(scrollYProgress, {
     damping: 30,
     stiffness: 400,
@@ -29,61 +27,99 @@ export default function HeroGalleryScroll() {
 
   const progress = prefersReducedMotion ? scrollYProgress : smoothProgress;
 
-  /* IMAGES: start as a full-screen grid (scale 1), shrink on scroll forward */
+  /* IMAGES: full-screen grid at top → shrink on scroll */
   const topScale = useTransform(progress, [0, 0.6], [1, 0.55]);
   const leftScale = useTransform(progress, [0, 0.6], [1, 0.5]);
   const rightScale = useTransform(progress, [0, 0.6], [1, 0.5]);
 
-  /* TEXT: hidden at top, scales + fades in as the images move apart */
+  /* TEXT: fades/scales in as images move apart */
   const textOpacity = useTransform(progress, [0.15, 0.5], [0, 1]);
   const textScale = useTransform(progress, [0.15, 0.5], [0.8, 1]);
   const textY = useTransform(progress, [0.15, 0.5], [60, 0]);
 
   return (
-    /* Tall container = the scroll "runway" (video uses 350vh) */
     <section ref={containerRef} className="relative h-[300vh] bg-black">
       {/* Sticky full-screen stage */}
       <div className="sticky top-0 h-screen h-svh w-full overflow-hidden p-3 sm:p-4">
-        {/* BENTO GRID — fills the screen at scroll top */}
         <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
-          {/* TOP WIDE IMAGE — shrinks toward the top edge */}
+          {/* TOP IMAGE — UNISEX */}
           <motion.div
             style={{ scale: topScale, willChange: "transform" }}
-            className="col-span-2 origin-top overflow-hidden rounded-xl shadow-xl"
+            className="relative col-span-2 origin-top overflow-hidden shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1600&h=900&fit=crop"
-              alt="Luxury fragrance bottles in warm light"
+              alt="Unisex fragrance collection"
               className="h-full w-full object-cover object-center"
             />
+            {/* Subtle overlay for label readability */}
+            <div className="absolute inset-0 bg-black/20" aria-hidden="true" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="text-4xl text-white sm:text-5xl md:text-6xl lg:text-7xl"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  textShadow: "0 2px 24px rgba(0,0,0,0.4)",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                UNISEX
+              </span>
+            </div>
           </motion.div>
 
-          {/* BOTTOM LEFT — shrinks toward the bottom-left corner */}
+          {/* BOTTOM LEFT — MEN */}
           <motion.div
             style={{ scale: leftScale, willChange: "transform" }}
-            className="origin-bottom-left overflow-hidden rounded-xl shadow-xl"
+            className="relative origin-bottom-left overflow-hidden shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=900&h=900&fit=crop"
-              alt="Perfume bottle with soft pink roses"
+              alt="Men's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
+            <div className="absolute inset-0 bg-black/20" aria-hidden="true" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="text-3xl text-white sm:text-4xl md:text-5xl"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  textShadow: "0 2px 24px rgba(0,0,0,0.4)",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                MEN
+              </span>
+            </div>
           </motion.div>
 
-          {/* BOTTOM RIGHT — shrinks toward the bottom-right corner */}
+          {/* BOTTOM RIGHT — WOMEN */}
           <motion.div
             style={{ scale: rightScale, willChange: "transform" }}
-            className="origin-bottom-right overflow-hidden rounded-xl shadow-xl"
+            className="relative origin-bottom-right overflow-hidden shadow-xl"
           >
             <img
               src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=900&h=900&fit=crop"
-              alt="Black perfume bottle on pink background"
+              alt="Women's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
+            <div className="absolute inset-0 bg-black/20" aria-hidden="true" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="text-3xl text-white sm:text-4xl md:text-5xl"
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  textShadow: "0 2px 24px rgba(0,0,0,0.4)",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                WOMEN
+              </span>
+            </div>
           </motion.div>
         </div>
 
-        {/* CENTER TEXT — scales/fades in as images move apart */}
+        {/* CENTER TEXT — appears as images move apart */}
         <motion.div
           style={{ opacity: textOpacity, scale: textScale, y: textY }}
           className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
@@ -95,7 +131,7 @@ export default function HeroGalleryScroll() {
             The Art of Scent
           </h2>
           <p
-            className="mt-4 max-w-xl text-sm text-white/70 md:text-base"
+            className="mt-4 max-w-xl text-white/70"
             style={{
               fontFamily: "var(--font-body)",
               fontSize: "16px",
