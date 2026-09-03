@@ -73,13 +73,12 @@ export default function Header() {
               <button
                 onClick={() => setIsMenuOpen(true)}
                 className={`flex items-center gap-2 sm:gap-3 group transition-colors duration-300 ${
-                  isScrolled ? "text-[var(--color-text)]" : "text-[var(--color-header-font)]"
+                  isScrolled
+                    ? "text-[var(--color-text)]"
+                    : "text-[var(--color-header-font)]"
                 } hover:opacity-80`}
                 aria-label="Open menu"
               >
-                <span className="font-medium text-[10px] sm:text-xs tracking-[0.2em] uppercase hidden sm:block">
-                  Menu
-                </span>
                 <span
                   className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
                     isScrolled
@@ -89,12 +88,20 @@ export default function Header() {
                 >
                   <Menu className="w-5 h-5" />
                 </span>
+                <span className="font-medium text-[10px] sm:text-xs tracking-[0.2em] uppercase hidden sm:block">
+                  Menu
+                </span>
               </button>
             </div>
 
             {/* Center - Logo */}
-            <Link href="/" className="justify-self-center" aria-label="Shawq Home">
-              <h1 style={{ fontFamily: 'var(--font-decorative)' }}
+            <Link
+              href="/"
+              className="justify-self-center"
+              aria-label="Shawq Home"
+            >
+              <h1
+                style={{ fontFamily: "var(--font-decorative)" }}
                 className={` font-medium tracking-wide leading-none transition-all duration-500 ${
                   isScrolled
                     ? "text-lg sm:text-xl lg:text-2xl text-[var(--color-text)]"
@@ -109,7 +116,9 @@ export default function Header() {
             <div className="justify-self-end flex items-center gap-0.5 sm:gap-1.5 lg:gap-2">
               <button
                 className={`hidden md:flex p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-[var(--color-text)] hover:bg-brand-black/10" : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
+                  isScrolled
+                    ? "text-[var(--color-text)] hover:bg-brand-black/10"
+                    : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
                 }`}
                 aria-label="Search"
               >
@@ -118,7 +127,9 @@ export default function Header() {
 
               <button
                 className={`hidden sm:flex p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-[var(--color-text)] hover:bg-brand-black/10" : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
+                  isScrolled
+                    ? "text-[var(--color-text)] hover:bg-brand-black/10"
+                    : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
                 }`}
                 aria-label="Account"
               >
@@ -127,7 +138,9 @@ export default function Header() {
 
               <button
                 className={`p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-[var(--color-text)] hover:bg-brand-black/10" : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
+                  isScrolled
+                    ? "text-[var(--color-text)] hover:bg-brand-black/10"
+                    : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
                 }`}
                 aria-label="Wishlist"
               >
@@ -136,7 +149,9 @@ export default function Header() {
 
               <button
                 className={`relative p-1.5 sm:p-2 rounded-full transition-colors duration-300 ${
-                  isScrolled ? "text-[var(--color-text)] hover:bg-brand-black/10" : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
+                  isScrolled
+                    ? "text-[var(--color-text)] hover:bg-brand-black/10"
+                    : "text-[var(--color-header-font)] hover:bg-[var(--color-header-font)]/10"
                 }`}
                 aria-label="Shopping cart"
               >
@@ -144,7 +159,9 @@ export default function Header() {
                 {cartCount > 0 && (
                   <span
                     className={`absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 text-[9px] sm:text-[10px] font-bold rounded-full flex items-center justify-center ${
-                      isScrolled ? "bg-brand-black text-brand-white" : "bg-[#000000] text-brand-black"
+                      isScrolled
+                        ? "bg-brand-black text-brand-white"
+                        : "bg-[#000000] text-brand-black"
                     }`}
                   >
                     {cartCount}
@@ -156,7 +173,10 @@ export default function Header() {
         </div>
       </header>
 
-      <FullScreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <FullScreenMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+      />
     </>
   );
 }

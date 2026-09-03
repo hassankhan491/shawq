@@ -268,7 +268,7 @@ export default function ProductGrid() {
                     sm:text-[10px]
                   "
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: 'var(--font-body)',
                   }}
                 >
                   VIEW DETAILS
