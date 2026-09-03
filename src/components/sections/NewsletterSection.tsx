@@ -21,7 +21,8 @@ export default function NewsletterSection() {
       aria-label="Newsletter subscription"
     >
       {/* Top black bar */}
-      <div className="h-0.5 w-full bg-black" aria-hidden="true" />
+      <hr className="h-[1px] w-full bg-gradient-to-r from-transparent via-black to-transparent border-0" aria-hidden="true" />
+
 
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-10 sm:px-10 sm:pt-28 sm:pb-14 md:pt-36 md:pb-16 lg:px-16">
         {/* THE INNER CIRCLE label */}
