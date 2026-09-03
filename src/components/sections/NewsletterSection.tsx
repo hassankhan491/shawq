@@ -47,7 +47,7 @@ export default function NewsletterSection() {
             <span
               className="block leading-none"
               style={{
-                fontFamily: "var(--font-serif)",
+                fontFamily: "var(--font-decorative)",
                 fontSize: "clamp(120px, 20vw, 280px)",
                 fontWeight: 400,
                 color: "transparent",

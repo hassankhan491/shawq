@@ -41,26 +41,22 @@ export default function HeroGalleryScroll() {
 
   const progress = prefersReducedMotion ? scrollYProgress : smoothProgress;
 
-  /* UNISEX — bigger on desktop (was 0.55 → now 0.7) */
-  const topScale = useTransform(progress, [0, 0.6], [1, isMobile ? 1 : 0.7]);
+  /* Uniform scales — no distortion */
+  const topScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.8]);
+  const leftScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.72]);
+  const rightScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.72]);
 
-  /* MEN / WOMEN — same width as before (0.5), but TALLER (scaleY 0.7) */
-  const leftScaleX = useTransform(progress, [0, 0.6], [1, isMobile ? 1 : 0.5]);
-  const leftScaleY = useTransform(progress, [0, 0.6], [1, isMobile ? 1 : 0.7]);
-  const rightScaleX = useTransform(progress, [0, 0.6], [1, isMobile ? 1 : 0.5]);
-  const rightScaleY = useTransform(progress, [0, 0.6], [1, isMobile ? 1 : 0.7]);
-
-  /* TEXT: fades/scales in on scroll */
-  const textOpacity = useTransform(progress, [0.15, 0.5], [0, 1]);
-  const textScale = useTransform(progress, [0.15, 0.5], [0.8, 1]);
-  const textY = useTransform(progress, [0.15, 0.5], [60, 0]);
+  /* TEXT */
+  const textOpacity = useTransform(progress, [0.2, 0.75], [0, 1]);
+  const textScale = useTransform(progress, [0.2, 0.75], [0.8, 1]);
+  const textY = useTransform(progress, [0.2, 0.75], [60, 0]);
 
   return (
     <section
       ref={containerRef}
-      className="relative h-[200vh] bg-black sm:h-[300vh]"
+      className="relative h-[200vh] bg-black sm:h-[350vh]"
     >
-      {/* Sticky stage */}
+      {/* Sticky stage — grid FILLS the viewport, so nothing hides or leaves dead space */}
       <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-0 sm:px-4 sm:pt-4">
         {/* SECTION HEADING */}
         <h2
@@ -70,15 +66,17 @@ export default function HeroGalleryScroll() {
           Shop by Category
         </h2>
 
-        {/* GRID */}
-        <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:gap-4">
+        {/* GRID — stretches to fill remaining height on ALL breakpoints:
+            • mobile: UNISEX 100% + MEN/WOMEN 50/50, edge-to-edge, no bottom gap
+            • desktop: full-bleed, bottom row taller, nothing clips below the fold */}
+        <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:grid-rows-[1fr_1.25fr] sm:gap-1">
           {/* TOP IMAGE — UNISEX */}
           <motion.div
             style={{ scale: topScale, willChange: "transform" }}
             className="relative col-span-2 origin-top overflow-hidden shadow-xl"
           >
             <img
-              src="/images/unisex.jpeg"
+              src="/images/unisex-01.jpeg"
               alt="Unisex fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -99,11 +97,11 @@ export default function HeroGalleryScroll() {
 
           {/* BOTTOM LEFT — MEN */}
           <motion.div
-            style={{ scaleX: leftScaleX, scaleY: leftScaleY, willChange: "transform" }}
+            style={{ scale: leftScale, willChange: "transform" }}
             className="relative origin-bottom-left overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=900&h=900&fit=crop"
+              src="/images/men-01.jpeg"
               alt="Men's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -124,11 +122,11 @@ export default function HeroGalleryScroll() {
 
           {/* BOTTOM RIGHT — WOMEN */}
           <motion.div
-            style={{ scaleX: rightScaleX, scaleY: rightScaleY, willChange: "transform" }}
+            style={{ scale: rightScale, willChange: "transform" }}
             className="relative origin-bottom-right overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=900&h=900&fit=crop"
+              src="/images/women-01.jpeg"
               alt="Women's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
