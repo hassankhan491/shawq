@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -97,27 +96,125 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative w-full bg-[#0a0a0a] overflow-hidden">
+    <footer
+      className="relative w-full bg-[#0a0a0a] overflow-hidden"
+      style={{ fontFamily: "var(--font-body)" }}
+    >
+
+
+      {/* ✅ SHAWQ Text - Responsive */}
+      <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 sm:mt-10 lg:mt-20 ">
+        <svg
+          viewBox="0 0 1600 600"
+          className="w-full h-full"
+          preserveAspectRatio="xMinYMid meet"
+        >
+          <defs>
+            {/* Ambient radial glow following the mouse interaction */}
+            <radialGradient
+              id="premiumGlow"
+              cx="30%"
+              cy="40%"
+              r="35%"
+              gradientUnits="objectBoundingBox"
+            >
+              <stop offset="0%" stopColor="#fbf4d5" />
+              <stop offset="50%" stopColor="#c9a962" />
+              <stop offset="100%" stopColor="#c9a962" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Group container shifted up slightly to make room for bottom links */}
+          <g transform="translate(0, 70)">
+            
+            {/* 1. SHAWQ - Solid filled text layer with added letter-spacing */}
+            <text
+              ref={svgTextRef}
+              x="10"
+              y="220"
+              textAnchor="start"
+              fontSize="290"
+              fontFamily="var(--font-decorative)"
+              fontWeight="400"
+              fill="white"
+              letterSpacing="15"
+            >
+              SHAWQ
+            </text>
+
+            {/* 2. SHAWQ INTERACTIVE GLOW */}
+            <text
+              x="10"
+              y="220"
+              textAnchor="start"
+              fontSize="290"
+              fontFamily="var(--font-decorative)"
+              fontWeight="400"
+              fill="none"
+              stroke="url(#premiumGlow)"
+              strokeWidth="2"
+              opacity="0.7"
+              letterSpacing="15"
+              className="pointer-events-none mix-blend-color-dodge"
+            >
+              SHAWQ
+            </text>
+
+            {/* 3. FRAGRANCES WIREFRAME - Outlined with matching letter-spacing */}
+            <text
+              x="10"
+              y="450"
+              textAnchor="start"
+              fontSize="200"
+              fontFamily="var(--font-decorative)"
+              fontWeight="300"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.25)"
+              strokeWidth="1.2"
+              letterSpacing="30"
+            >
+              FRAGRANCES
+            </text>
+
+            {/* 4. FRAGRANCES INTERACTIVE GLOW OVERLAY */}
+            <text
+              x="10"
+              y="450"
+              textAnchor="start"
+              fontSize="200"
+              fontFamily="var(--font-decorative)"
+              fontWeight="300"
+              fill="none"
+              stroke="url(#premiumGlow)"
+              strokeWidth="1.5"
+              opacity="0.85"
+              letterSpacing="30" 
+            >
+              FRAGRANCES
+            </text>
+            
+          </g>
+        </svg>
+
+      </div>
+
       {/* Main Footer Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              
-
               <h3
                 className="text-2xl font-display text-white"
-                style={{ fontFamily: "'Fraunces', serif" }}
+                style={{ fontFamily: "var(--font-decorative)" }}
               >
                 SHAWQ
               </h3>
             </div>
 
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-              Crafting luxurious fragrances that speak your language. From
-              royal oud to soft amber, each scent tells a story.
+              Crafting luxurious fragrances that speak your language. From royal
+              oud to soft amber, each scent tells a story.
             </p>
 
             {/* Social Icons */}
@@ -213,79 +310,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ✅ SHAWQ Text - Responsive */}
-<div className="relative w-full h-40 sm:h-64 lg:h-80 overflow-hidden">
-  <svg
-    viewBox="0 0 800 320"
-    className="absolute inset-0 w-full h-full"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <defs>
-      {/* Mouse-following gradient */}
-      <radialGradient id="mouseGradient" cx="400" cy="160" r="150" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#f0e4a8" stopOpacity="1" />
-        <stop offset="50%" stopColor="#c9a962" stopOpacity="0.6" />
-        <stop offset="100%" stopColor="#c9a962" stopOpacity="0" />
-      </radialGradient>
-    </defs>
+      
 
-    {/* Horizontal dashed line */}
-    <line
-      x1="100"
-      y1="160"
-      x2="700"
-      y2="160"
-      stroke="rgba(201, 169, 98, 0.3)"
-      strokeWidth="1"
-      strokeDasharray="8,8"
-    />
 
-    {/* ✅ Base text - ab viewBox ke andar fit (620/800) */}
-    <text
-      ref={svgTextRef}
-      x="400"
-      y="220"
-      textAnchor="middle"
-      fontSize="150"
-      fontFamily="'Fraunces', serif"
-      fontWeight="bold"
-      fill="none"
-      stroke="rgba(201, 169, 98, 0.3)"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ letterSpacing: "10px" }}
-    >
-      SHAWQ
-    </text>
 
-    {/* ✅ Glow overlay - same size taake align rahe */}
-    <text
-      x="400"
-      y="220"
-      textAnchor="middle"
-      fontSize="150"
-      fontFamily="'Fraunces', serif"
-      fontWeight="bold"
-      fill="none"
-      stroke="url(#mouseGradient)"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      opacity="0.8"
-      style={{ letterSpacing: "10px" }}
-    >
-      SHAWQ
-    </text>
-  </svg>
-
-  {/* Copyright overlay */}
-  <div className="absolute bottom-4 right-6 lg:bottom-8 lg:right-12">
-    <p className="text-xs text-gray-500">
-      © 2026 Shawq. All rights reserved.
-    </p>
-  </div>
-</div>
 
       {/* Copyright Bar */}
       <div className="relative z-10 border-t border-white/5">
@@ -309,7 +337,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      
     </footer>
   );
 }

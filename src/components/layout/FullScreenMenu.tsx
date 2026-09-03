@@ -112,7 +112,8 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
           <Link
             href="/"
             onClick={onClose}
-            className="absolute left-1/2 -translate-x-1/2 font-serif text-3xl text-[#f5f0eb]"
+            style={{ fontFamily: 'var(--font-decorative)' }}
+            className="absolute left-1/2 -translate-x-1/2 text-3xl text-[#f5f0eb]"
           >
             SHAWQ
           </Link>

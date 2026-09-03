@@ -10,7 +10,7 @@ const collectionProducts = [
     name: "MINIMALIST TRENCH COAT",
     price: "$299.00",
     image:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&h=1200&fit=crop",
+      "/images/NB-13.png",
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const collectionProducts = [
     name: "MINIMALIST SILK DRESS",
     price: "$279.00",
     image:
-      "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&h=1200&fit=crop",
+      "/images/NB-12.png",
   },
   {
     id: 3,
@@ -26,7 +26,7 @@ const collectionProducts = [
     name: "OVERSIZED CASHMERE KNIT",
     price: "$199.00",
     image:
-      "https://images.unsplash.com/photo-1578587018452-881b43249312?w=800&h=1200&fit=crop",
+      "/images/NB-14.png",
   },
 ];
 
@@ -138,13 +138,12 @@ export default function ProductGrid() {
   return (
     <section className="relative w-full bg-white py-12 sm:py-16 lg:py-24">
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8">
-
         {/* HEADER */}
         <div className="mb-8 flex items-center justify-between border-b border-black/10 pb-5 sm:mb-10 lg:mb-10">
           <h3
             className="text-[9px] uppercase tracking-[0.3em] text-[#6f6a64] sm:text-[10px]"
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-body)",
             }}
           >
             OVERVIEW
@@ -153,11 +152,10 @@ export default function ProductGrid() {
           <button
             className="group flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-[#0f0a08] sm:gap-2 sm:text-[10px]"
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "var(--font-body)",
             }}
           >
             VIEW COLLECTION
-
             <svg
               className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1 sm:h-3.5 sm:w-3.5"
               fill="none"
@@ -308,7 +306,8 @@ export default function ProductGrid() {
                     sm:tracking-[0.35em]
                   "
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 500,
                   }}
                 >
                   {product.category}
@@ -319,18 +318,18 @@ export default function ProductGrid() {
                     mx-auto
                     mb-2
                     max-w-[290px]
-                    text-[14px]
+                    text-[18px]
                     font-medium
                     leading-[1.35]
                     tracking-[0.06em]
                     text-[#171311]
 
                     sm:mb-3
-                    sm:text-[17px]
+                    sm:text-[20px]
                     sm:tracking-[0.08em]
                   "
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "var(--font-serif)",
                   }}
                 >
                   {product.name}
@@ -338,15 +337,16 @@ export default function ProductGrid() {
 
                 <p
                   className="
-                    text-[11px]
+                    text-[12px]
                     tracking-[0.1em]
                     text-[#55504c]
 
-                    sm:text-[13px]
+                    sm:text-[14px]
                     sm:tracking-[0.12em]
                   "
                   style={{
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "var(--font-body)",
+                    fontWeight: 500,
                   }}
                 >
                   {product.price}

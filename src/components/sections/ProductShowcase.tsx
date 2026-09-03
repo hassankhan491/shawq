@@ -13,8 +13,7 @@ const products = [
     description:
       "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
     image: "/images/NB-12.png",
-    colors: ["#1a1a1a", "#8B4513", "#DAA520"],
-    sizes: ["30ml", "50ml", "100ml"],
+
   },
   {
     id: 2,
@@ -22,8 +21,6 @@ const products = [
     description:
       "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
     image: "/images/NB-15.png",
-    colors: ["#F5E6D3", "#D4A574", "#8B7355"],
-    sizes: ["30ml", "50ml", "100ml"],
   },
 ];
 
@@ -180,7 +177,7 @@ export default function ProductShowcase() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-[var(--color-lavender-mist)]"
+      className="relative w-full bg-[var(--color-bg)]"
     >
       {products.map((product, index) => {
         const isReversed = index % 2 !== 0;
@@ -198,7 +195,7 @@ export default function ProductShowcase() {
               lg:min-h-screen
               w-full
               overflow-hidden
-              bg-[var(--color-lavender-mist)]
+              bg-[var(--color-bg)]
             "
           >
             <div
@@ -212,6 +209,7 @@ export default function ProductShowcase() {
                 lg:flex-row
                 ${isReversed ? "lg:flex-row-reverse" : ""}
               `}
+              
             >
               {/* =========================================
                   IMAGE
@@ -342,7 +340,7 @@ export default function ProductShowcase() {
                       text-3xl
                       leading-tight
                       font-medium
-                      text-[var(--font-color-3)]
+                      text-[var(--color-text)]
 
                       sm:text-4xl
 
@@ -354,7 +352,7 @@ export default function ProductShowcase() {
                       xl:text-6xl
                     "
                     style={{
-                      fontFamily: "'Fraunces', Georgia, serif",
+                      fontFamily: 'var(--font-serif)',
                       opacity: 0,
                     }}
                   >
@@ -375,6 +373,9 @@ export default function ProductShowcase() {
                     "
                     style={{
                       fontFamily: "var(--font-body)",
+                      fontSize: "16px",
+                      letterSpacing: "0.03em",
+                      lineHeight: "1.6",
                       opacity: 0,
                     }}
                   >
@@ -387,7 +388,7 @@ export default function ProductShowcase() {
                       product-button
                       w-full
                       
-                      bg-[var(--color-old-heliotrope))]
+                      bg-[var(--color-gold))]
                       px-8
                       py-3.5
                       text-xs
@@ -397,13 +398,13 @@ export default function ProductShowcase() {
                       text-[var(--font-color-4)]
                       transition-all
                       duration-300
-                      hover:bg-[var(--color-space-cadet)]
+                      hover:bg-[var(--color-navy)]
 
                       sm:py-4
                       sm:text-sm
                     "
                     style={{
-                      fontFamily: "'Space Grotesk', sans-serif",
+                     fontFamily: "var(--font-body)",
                       opacity: 0,
                     }}
                   >

@@ -59,11 +59,15 @@
     /* ─── Theme Colors (Black & Gold Elegance) ── */
     --color-bg: #FFFFFF;      /* White */
     --color-text: #000000;    /* Black */
-    --color-gold: #A48950;    /* Regal Gold */
+    --color-gold: #A48950;    /* Regal Gold  #EDC531*/
     --color-navy: #14213D;    /* Deep Navy */
     --color-light: #E5E5E5;   /* Luminous White/Gray */
+    --color-header-font: #EDC531;
 
     /* button-secondry-color  */
+    /* var(--color-header-font) */
+    /* var(--color-text: #000000) */
+
     --color-old-heliotrope: #6B4773;
     --font-color-1: #D78F8B;
 
