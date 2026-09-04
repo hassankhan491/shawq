@@ -103,7 +103,7 @@ export default function Footer() {
 
 
       {/* ✅ SHAWQ Text - Responsive */}
-      <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 sm:mt-10 lg:mt-20 ">
+      <div className="relative w-full h-[30vh] sm:h-[70vh] lg:h-[80vh] overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 sm:mt-10 lg:mt-20 ">
         <svg
           viewBox="0 0 1600 600"
           className="w-full h-full"
@@ -199,7 +199,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-16 lg:py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-10 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="space-y-6">

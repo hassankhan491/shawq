@@ -11,6 +11,7 @@ import ShowcaseGrid from '@/components/sections/ShowcaseGrid';
 import ProductShowcase from '@/components/sections/ProductShowcase';
 import ProductGrid from "@/components/sections/ProductGrid";
 import NewsletterSection from "@/components/sections/NewsletterSection";
+import ShawqScrollExperience from "@/components/sections/ShawqScrollExperience";
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
       <HeroGalleryScroll />
 
       {/* 1. CATEGORY SECTION */}
+      <ShawqScrollExperience />
       {/* <CategorySection /> */}
 
       {/* 3. New Product Showcase Section */}

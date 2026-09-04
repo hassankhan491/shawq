@@ -56,21 +56,25 @@ export default function HeroGalleryScroll() {
       ref={containerRef}
       className="relative h-[200vh] bg-black sm:h-[350vh]"
     >
-      {/* Sticky stage — pinned at top-0 with EXACT viewport height so the bottom
-          edge always aligns with the viewport bottom (no clipping/squeeze).
-          pt-20 / sm:pt-24 reserves space for the floating header INSIDE the box,
-          so the heading sits below the header while the grid fills the rest. */}
-      <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-20 sm:px-4 sm:pt-24">
-        {/* SECTION HEADING */}
+      {/* Desktop heading in normal flow */}
+      <h2
+        className="hidden pb-3 pt-18 text-center text-4xl text-white sm:block sm:text-5xl md:text-6xl"
+        style={{ fontFamily: "var(--font-serif)" }}
+      >
+        Shop by Category
+      </h2>
+
+      {/* Sticky stage */}
+      <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-20 sm:px-4 sm:pt-3">
+        {/* Mobile-only heading */}
         <h2
-          className="shrink-0 py-[30px] text-center text-4xl text-white sm:text-5xl md:text-6xl"
+          className="shrink-0 py-[30px] text-center text-4xl text-white sm:hidden"
           style={{ fontFamily: "var(--font-serif)" }}
         >
           Shop by Category
         </h2>
 
-        {/* GRID — fills ALL remaining height below the heading, edge-to-edge on
-            mobile, full-bleed on desktop; bottom row taller, nothing clips */}
+        {/* Grid */}
         <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:grid-rows-[1fr_1.25fr] sm:gap-1">
           {/* TOP IMAGE — UNISEX */}
           <motion.div
@@ -158,7 +162,7 @@ export default function HeroGalleryScroll() {
         {/* CENTER TEXT */}
         <motion.div
           style={{ opacity: textOpacity, scale: textScale, y: textY }}
-          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center sm:inset-x-0 sm:bottom-0 sm:top-[28%]"
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center sm:inset-x-0 sm:bottom-0 sm:top-[6%]"
         >
           <h2
             className="text-4xl text-white sm:text-5xl md:text-6xl"
