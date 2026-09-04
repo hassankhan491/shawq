@@ -138,14 +138,24 @@ export default function ShawqManifesto() {
       className="relative h-screen overflow-hidden bg-black"
       aria-label="SHAWQ manifesto"
     >
-      <img
-        ref={imgRef}
-        src="/images/manifesto-01.webp"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-        draggable={false}
-      />
+      
+    <picture className="absolute inset-0 h-full w-full">
+  {/* Mobile */}
+  <source
+    media="(max-width: 767px)"
+    srcSet="/images/manifesto-bg2.jpg"
+  />
+
+  {/* Desktop */}
+  <img
+    ref={imgRef}
+    src="/images/manifesto-desktop.jpeg"
+    alt=""
+    aria-hidden="true"
+    className="h-full w-full object-cover object-top"
+    draggable={false}
+  />
+</picture>
       <div ref={shadeRef} className="absolute inset-0 bg-black" />
 
       {/* huge statement — word-mask reveal */}
@@ -158,9 +168,8 @@ export default function ShawqManifesto() {
           style={{ fontFamily: "var(--font-serif)", color: C.cream }}
         >
           <Mask className="mr-[0.25em]">SHAWQ</Mask>
-          <Mask className="mr-[0.25em] align-middle">
-            <span className="text-[0.22em]">IS</span>
-          </Mask>
+          
+          <Mask className="mr-[0.25em]">IS</Mask>
           <Mask className="mr-[0.25em]">AN</Mask>
           <Mask className="mr-[0.25em]">INDEPENDENT,</Mask>
           <Mask className="mr-[0.25em]">ARTIST-FOUNDED</Mask>
