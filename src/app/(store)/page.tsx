@@ -34,12 +34,13 @@ export default function HomePage() {
 
        <ProductGrid />
 
+{/* 2. MANIFESTO SECTION */}
+      <ShawqManifesto />
       {/* 2. ShowcaseGrid SECTION */}
       <ShowcaseGrid />
       {/* 2. EMPOWERING SECTION */}
       <EmpoweringSection />
-      {/* 2. MANIFESTO SECTION */}
-      <ShawqManifesto />
+      
 
       {/* NEWS LETTER */}
       <NewsletterSection />
