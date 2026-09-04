@@ -56,8 +56,11 @@ export default function HeroGalleryScroll() {
       ref={containerRef}
       className="relative h-[200vh] bg-black sm:h-[350vh]"
     >
-      {/* Sticky stage — grid FILLS the viewport, so nothing hides or leaves dead space */}
-      <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-0 sm:px-4 sm:pt-4">
+      {/* Sticky stage — pinned at top-0 with EXACT viewport height so the bottom
+          edge always aligns with the viewport bottom (no clipping/squeeze).
+          pt-20 / sm:pt-24 reserves space for the floating header INSIDE the box,
+          so the heading sits below the header while the grid fills the rest. */}
+      <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-20 sm:px-4 sm:pt-24">
         {/* SECTION HEADING */}
         <h2
           className="shrink-0 py-[30px] text-center text-4xl text-white sm:text-5xl md:text-6xl"
@@ -66,9 +69,8 @@ export default function HeroGalleryScroll() {
           Shop by Category
         </h2>
 
-        {/* GRID — stretches to fill remaining height on ALL breakpoints:
-            • mobile: UNISEX 100% + MEN/WOMEN 50/50, edge-to-edge, no bottom gap
-            • desktop: full-bleed, bottom row taller, nothing clips below the fold */}
+        {/* GRID — fills ALL remaining height below the heading, edge-to-edge on
+            mobile, full-bleed on desktop; bottom row taller, nothing clips */}
         <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:grid-rows-[1fr_1.25fr] sm:gap-1">
           {/* TOP IMAGE — UNISEX */}
           <motion.div
