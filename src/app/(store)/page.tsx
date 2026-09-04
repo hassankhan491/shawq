@@ -12,6 +12,7 @@ import ProductShowcase from '@/components/sections/ProductShowcase';
 import ProductGrid from "@/components/sections/ProductGrid";
 import NewsletterSection from "@/components/sections/NewsletterSection";
 import ShawqScrollExperience from "@/components/sections/ShawqScrollExperience";
+import ShawqManifesto from "@/components/sections/ShawqManifesto";
 
 export default function HomePage() {
   return (
@@ -37,7 +38,8 @@ export default function HomePage() {
       <ShowcaseGrid />
       {/* 2. EMPOWERING SECTION */}
       <EmpoweringSection />
-      
+      {/* 2. MANIFESTO SECTION */}
+      <ShawqManifesto />
 
       {/* NEWS LETTER */}
       <NewsletterSection />
