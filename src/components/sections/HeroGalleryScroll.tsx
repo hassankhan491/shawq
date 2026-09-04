@@ -156,7 +156,7 @@ export default function HeroGalleryScroll() {
         {/* CENTER TEXT */}
         <motion.div
           style={{ opacity: textOpacity, scale: textScale, y: textY }}
-          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center sm:inset-x-0 sm:bottom-0 sm:top-[38%]"
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center sm:inset-x-0 sm:bottom-0 sm:top-[28%]"
         >
           <h2
             className="text-4xl text-white sm:text-5xl md:text-6xl"
