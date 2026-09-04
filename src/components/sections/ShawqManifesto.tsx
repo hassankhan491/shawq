@@ -175,7 +175,7 @@ export default function ShawqManifesto() {
         <div>
           <p
             className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]"
-            style={{ fontFamily: "var(--font-serif", color: C.red }}
+            style={{ fontFamily: "var(--font-serif)", color: C.red }}
           >
             TRUTH
           </p>
