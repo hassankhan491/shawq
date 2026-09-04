@@ -81,19 +81,31 @@ export default function ShawqManifesto() {
         .to(
           words,
           { y: "0%", duration: 1.4, ease: "power3.out", stagger: 0.08 },
-          0.2
+          0.2,
         )
         .to(titleRef.current, { y: "-6vh", opacity: 0, duration: 0.6 }, 2.6)
         .to(shadeRef.current, { opacity: 0.78, duration: 1, ease: "none" }, 2.6)
         .to(
           pillarWords,
-          { y: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.12 },
-          3.0
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            stagger: 0.12,
+          },
+          3.0,
         )
         .to(
           pillarParas,
-          { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.12 },
-          3.3
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            stagger: 0.12,
+          },
+          3.3,
         )
         .to(pillarNums, { opacity: 1, duration: 0.8, stagger: 0.12 }, 3.6)
         .set({}, {}, 5.0); // hold on the pillars frame
@@ -137,10 +149,13 @@ export default function ShawqManifesto() {
       <div ref={shadeRef} className="absolute inset-0 bg-black" />
 
       {/* huge statement — word-mask reveal */}
-      <div ref={titleRef} className="absolute inset-0 flex items-center justify-center px-4">
+      <div
+        ref={titleRef}
+        className="absolute inset-0 flex items-center justify-center px-4"
+      >
         <h2
           className="max-w-6xl text-center text-[9vw] font-black uppercase leading-[0.95] tracking-tight md:text-[6.5vw]"
-          style={{ fontFamily: "var(--font-body)", color: C.cream }}
+          style={{ fontFamily: "var(--font-serif)", color: C.cream }}
         >
           <Mask className="mr-[0.25em]">SHAWQ</Mask>
           <Mask className="mr-[0.25em] align-middle">
@@ -155,27 +170,39 @@ export default function ShawqManifesto() {
       </div>
 
       {/* pillars */}
-      <div className="absolute inset-0 grid grid-cols-2 gap-x-6 gap-y-10 px-6 pt-[16vh] md:grid-cols-4 md:gap-x-10 md:px-10">
+      <div className="absolute inset-0 grid grid-cols-1 gap-y-8 px-6 pt-[12vh] md:grid-cols-4 md:gap-x-10 md:gap-y-0 md:px-10 md:pt-[16vh]">
+        {" "}
         <div>
-          <p className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]" style={{ fontFamily: "var(--font-body)", color: C.red }}>
+          <p
+            className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]"
+            style={{ fontFamily: "var(--font-serif", color: C.red }}
+          >
             TRUTH
           </p>
           <p className="pillar-para mt-6 max-w-[26ch] text-justify text-[11px] leading-relaxed tracking-wide text-white/70 md:text-xs">
-            NO PERFORMANCE, NO FILTER. ONLY WHAT THE SKIN REMEMBERS WHEN THE ROOM GOES QUIET.
+            NO PERFORMANCE, NO FILTER. ONLY WHAT THE SKIN REMEMBERS WHEN THE
+            ROOM GOES QUIET.
           </p>
           <p className="pillar-num mt-3 text-xs text-white/50">01</p>
         </div>
         <div className="md:mt-24">
-          <p className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]" style={{ fontFamily: "var(--font-body)", color: C.red }}>
+          <p
+            className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]"
+            style={{ fontFamily: "var(--font-serif)", color: C.red }}
+          >
             DESIRE
           </p>
           <p className="pillar-para mt-6 max-w-[26ch] text-justify text-[11px] leading-relaxed tracking-wide text-white/70 md:text-xs">
-            WE DON&apos;T CHASE ATTENTION. WE LET PRESENCE LINGER UNTIL IT IS MISSED.
+            WE DON&apos;T CHASE ATTENTION. WE LET PRESENCE LINGER UNTIL IT IS
+            MISSED.
           </p>
           <p className="pillar-num mt-3 text-xs text-white/50">02</p>
         </div>
         <div>
-          <p className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]" style={{ fontFamily: "var(--font-body)", color: C.red }}>
+          <p
+            className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]"
+            style={{ fontFamily: "var(--font-serif)", color: C.red }}
+          >
             CRAFT
           </p>
           <p className="pillar-para mt-6 max-w-[26ch] text-justify text-[11px] leading-relaxed tracking-wide text-white/70 md:text-xs">
@@ -184,13 +211,18 @@ export default function ShawqManifesto() {
           <p className="pillar-num mt-3 text-xs text-white/50">03</p>
         </div>
         <div className="md:mt-24">
-          <p className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-[6.5vw]" style={{ fontFamily: "var(--font-body)", color: C.red }}>
+          <p
+            className="pillar-word text-[13vw] font-black uppercase leading-[0.9] md:text-right md:text-[6.5vw]"
+            style={{ fontFamily: "var(--font-serif)", color: C.red }}
+          >
             IDENTITY
           </p>
-          <p className="pillar-para mt-6 max-w-[26ch] text-justify text-[11px] leading-relaxed tracking-wide text-white/70 md:text-xs">
+          <p className="pillar-para mt-6 max-w-[26ch] text-justify text-[11px] leading-relaxed tracking-wide text-white/70 md:ml-auto md:text-right md:text-xs">
             A SCENT IS NOT WORN. IT IS RECOGNISED — IN YOU, BEFORE YOU SPEAK.
           </p>
-          <p className="pillar-num mt-3 text-xs text-white/50">04</p>
+          <p className="pillar-num mt-3 text-xs text-white/50 md:text-right">
+            04
+          </p>
         </div>
       </div>
 
