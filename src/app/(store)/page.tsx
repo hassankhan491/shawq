@@ -25,12 +25,12 @@ export default function HomePage() {
 
       {/* 3. SCROLL EXPERIENCE SECTION */}
       <ShawqStorySection  />
+      
 
       {/* 4. Signature Collection SECTION */}
       <SignatureCollectionSection />
 
-      {/* 5. EMPOWERING SECTION */}
-      <EmpoweringSection />
+      
 
       {/* 6. MANIFESTO SECTION */}
       <ShawqManifesto />
@@ -45,6 +45,8 @@ export default function HomePage() {
 
       {/* NEWS LETTER */}
       <NewsletterSection />
+      {/* 5. EMPOWERING SECTION */}
+      <EmpoweringSection />
 
 
      
