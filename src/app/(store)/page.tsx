@@ -41,12 +41,12 @@ export default function HomePage() {
       {/* 8. Best Sellers Section */}
        <BestSellersSections />
 
-      
+      {/* 5. EMPOWERING SECTION */}
+      <EmpoweringSection />
 
       {/* NEWS LETTER */}
       <NewsletterSection />
-      {/* 5. EMPOWERING SECTION */}
-      <EmpoweringSection />
+      
 
 
      
