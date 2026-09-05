@@ -1,17 +1,13 @@
 // src/app/(store)/page.tsx
 import SmoothScroll from '@/components/SmoothScroll';
 import HeroSection from '@/components/sections/HeroSection';
-
-import CategorySection from '@/components/sections/CategorySection';
-import HeroGalleryScroll from "@/components/sections/HeroGalleryScroll";
-
+import CategorySection from "@/components/sections/CategorySection";
 import EmpoweringSection from '@/components/sections/EmpoweringSection';
-import ShowcaseGrid from '@/components/sections/ShowcaseGrid';
-
+import SignatureCollectionSection from '@/components/sections/SignatureCollectionSection';
 import ProductShowcase from '@/components/sections/ProductShowcase';
-import ProductGrid from "@/components/sections/ProductGrid";
+import BestSellersSections from "@/components/sections/BestSellersSections";
 import NewsletterSection from "@/components/sections/NewsletterSection";
-import ShawqScrollExperience from "@/components/sections/ShawqScrollExperience";
+import ShawqStorySection  from "@/components/sections/ShawqStorySection";
 import ShawqManifesto from "@/components/sections/ShawqManifesto";
 
 export default function HomePage() {
@@ -23,27 +19,36 @@ export default function HomePage() {
       {/* 1. HERO SECTION (Video Expansion Banner) */}
       <HeroSection />
 
-      <HeroGalleryScroll />
+    
+      {/* 2. CATEGORY SECTION (NEB WOMEN UNISEX*/}
+      <CategorySection />
 
-      {/* 1. CATEGORY SECTION */}
-      <ShawqScrollExperience />
-      {/* <CategorySection /> */}
+      {/* 3. SCROLL EXPERIENCE SECTION */}
+      <ShawqStorySection  />
 
-      {/* 3. New Product Showcase Section */}
+      {/* 4. Signature Collection SECTION */}
+      <SignatureCollectionSection />
+
+      {/* 5. EMPOWERING SECTION */}
+      <EmpoweringSection />
+
+      {/* 6. MANIFESTO SECTION */}
+      <ShawqManifesto />
+
+      {/* 7. New Product Showcase Section */}
       <ProductShowcase />
 
-       <ProductGrid />
+      {/* 8. Best Sellers Section */}
+       <BestSellersSections />
 
-{/* 2. MANIFESTO SECTION */}
-      <ShawqManifesto />
-      {/* 2. ShowcaseGrid SECTION */}
-      <ShowcaseGrid />
-      {/* 2. EMPOWERING SECTION */}
-      <EmpoweringSection />
       
 
       {/* NEWS LETTER */}
       <NewsletterSection />
+
+
+     
+
     </>
   );
 }

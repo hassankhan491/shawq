@@ -1,7 +1,7 @@
 // components/sections/HeroGalleryScroll.tsx
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -10,9 +10,23 @@ import {
   useReducedMotion,
 } from "framer-motion";
 
+/* Detect mobile (< 640px) */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    setIsMobile(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return isMobile;
+}
+
 export default function HeroGalleryScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -27,32 +41,51 @@ export default function HeroGalleryScroll() {
 
   const progress = prefersReducedMotion ? scrollYProgress : smoothProgress;
 
-  /* IMAGES: full-screen grid at top → shrink on scroll */
-  const topScale = useTransform(progress, [0, 0.6], [1, 0.55]);
-  const leftScale = useTransform(progress, [0, 0.6], [1, 0.5]);
-  const rightScale = useTransform(progress, [0, 0.6], [1, 0.5]);
+  /* Uniform scales — no distortion */
+  const topScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.8]);
+  const leftScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.72]);
+  const rightScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.72]);
 
-  /* TEXT: fades/scales in as images move apart */
-  const textOpacity = useTransform(progress, [0.15, 0.5], [0, 1]);
-  const textScale = useTransform(progress, [0.15, 0.5], [0.8, 1]);
-  const textY = useTransform(progress, [0.15, 0.5], [60, 0]);
+  /* TEXT */
+  const textOpacity = useTransform(progress, [0.2, 0.75], [0, 1]);
+  const textScale = useTransform(progress, [0.2, 0.75], [0.8, 1]);
+  const textY = useTransform(progress, [0.2, 0.75], [60, 0]);
 
   return (
-    <section ref={containerRef} className="relative h-[300vh] bg-black">
-      {/* Sticky full-screen stage */}
-      <div className="sticky top-0 h-screen h-svh w-full overflow-hidden p-3 sm:p-4">
-        <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
+    <section
+      ref={containerRef}
+      className="relative h-[200vh] bg-black sm:h-[350vh]"
+    >
+      {/* Desktop heading in normal flow */}
+      <h2
+        className="hidden pb-3 pt-18 text-center text-4xl text-white sm:block sm:text-5xl md:text-6xl"
+        style={{ fontFamily: "var(--font-serif)" }}
+      >
+        Shop by Category
+      </h2>
+
+      {/* Sticky stage */}
+      <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-20 sm:px-4 sm:pt-3">
+        {/* Mobile-only heading */}
+        <h2
+          className="shrink-0 py-[30px] text-center text-4xl text-white sm:hidden"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          Shop by Category
+        </h2>
+
+        {/* Grid */}
+        <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:grid-rows-[1fr_1.25fr] sm:gap-1">
           {/* TOP IMAGE — UNISEX */}
           <motion.div
             style={{ scale: topScale, willChange: "transform" }}
             className="relative col-span-2 origin-top overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1600&h=900&fit=crop"
+              src="/images/unisex-01.jpeg"
               alt="Unisex fragrance collection"
               className="h-full w-full object-cover object-center"
             />
-            {/* Subtle overlay for label readability */}
             <div className="absolute inset-0 bg-black/20" aria-hidden="true" />
             <div className="absolute inset-0 flex items-center justify-center">
               <span
@@ -74,7 +107,7 @@ export default function HeroGalleryScroll() {
             className="relative origin-bottom-left overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=900&h=900&fit=crop"
+              src="/images/men-01.jpeg"
               alt="Men's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -99,7 +132,7 @@ export default function HeroGalleryScroll() {
             className="relative origin-bottom-right overflow-hidden shadow-xl"
           >
             <img
-              src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=900&h=900&fit=crop"
+              src="/images/women-01.jpeg"
               alt="Women's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -119,10 +152,17 @@ export default function HeroGalleryScroll() {
           </motion.div>
         </div>
 
-        {/* CENTER TEXT — appears as images move apart */}
+        {/* Mobile-only dark veil */}
+        <motion.div
+          style={{ opacity: textOpacity }}
+          className="absolute inset-0 z-10 bg-black/50 sm:hidden"
+          aria-hidden="true"
+        />
+
+        {/* CENTER TEXT */}
         <motion.div
           style={{ opacity: textOpacity, scale: textScale, y: textY }}
-          className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center"
+          className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center sm:inset-x-0 sm:bottom-0 sm:top-[6%]"
         >
           <h2
             className="text-4xl text-white sm:text-5xl md:text-6xl"

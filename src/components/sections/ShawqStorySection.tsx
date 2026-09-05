@@ -1,4 +1,4 @@
-// components/sections/ShawqScrollExperience.tsx
+// components/sections/BrandManifesto.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
