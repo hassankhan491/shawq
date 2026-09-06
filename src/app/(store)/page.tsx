@@ -30,7 +30,8 @@ export default function HomePage() {
       {/* 4. Signature Collection SECTION */}
       <SignatureCollectionSection />
 
-      
+      {/* 5. EMPOWERING SECTION */}
+      <EmpoweringSection />
 
       {/* 6. MANIFESTO SECTION */}
       <ShawqManifesto />
@@ -41,8 +42,7 @@ export default function HomePage() {
       {/* 8. Best Sellers Section */}
        <BestSellersSections />
 
-      {/* 5. EMPOWERING SECTION */}
-      <EmpoweringSection />
+      
 
       {/* NEWS LETTER */}
       <NewsletterSection />
