@@ -15,12 +15,12 @@ export default function Footer() {
       const x = e.clientX - svgRect.left;
       const y = e.clientY - svgRect.top;
 
-      // Convert to SVG coordinates
+      // Convert to SVG coordinates matching viewBox (1600 x 480)
       const svgWidth = svgRect.width;
       const svgHeight = svgRect.height;
 
-      const svgX = (x / svgWidth) * 800;
-      const svgY = (y / svgHeight) * 320;
+      const svgX = (x / svgWidth) * 1600;
+      const svgY = (y / svgHeight) * 480;
 
       // Update gradient position
       const gradient = svgElement.querySelector("#mouseGradient");
@@ -97,26 +97,23 @@ export default function Footer() {
 
   return (
     <footer
-      className="relative w-full bg-[#0a0a0a] overflow-hidden"
+      className="relative w-full bg-[#0a0a0a] overflow-hidden pt-8"
       style={{ fontFamily: "var(--font-body)" }}
     >
-
-
-      {/* ✅ SHAWQ Text - Responsive */}
-      <div className="relative w-full h-[30vh] sm:h-[70vh] lg:h-[80vh] overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 sm:mt-10 lg:mt-20 ">
+      {/* SHAWQ Text Section */}
+      <div className="relative w-full overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 my-4 sm:my-8">
         <svg
-          viewBox="0 0 1600 600"
-          className="w-full h-full"
+          viewBox="0 0 1600 480"
+          className="w-full h-auto block"
           preserveAspectRatio="xMinYMid meet"
         >
           <defs>
-            {/* Ambient radial glow following the mouse interaction */}
             <radialGradient
-              id="premiumGlow"
-              cx="30%"
-              cy="40%"
-              r="35%"
-              gradientUnits="objectBoundingBox"
+              id="mouseGradient"
+              cx="0"
+              cy="0"
+              r="400"
+              gradientUnits="userSpaceOnUse"
             >
               <stop offset="0%" stopColor="#fbf4d5" />
               <stop offset="50%" stopColor="#c9a962" />
@@ -124,82 +121,77 @@ export default function Footer() {
             </radialGradient>
           </defs>
 
-          {/* Group container shifted up slightly to make room for bottom links */}
-          <g transform="translate(0, 70)">
-            
-            {/* 1. SHAWQ - Solid filled text layer with added letter-spacing */}
-            <text
-              ref={svgTextRef}
-              x="10"
-              y="220"
-              textAnchor="start"
-              fontSize="290"
-              fontFamily="var(--font-decorative)"
-              fontWeight="400"
-              fill="white"
-              letterSpacing="15"
-            >
-              SHAWQ
-            </text>
+          {/* 1. SHAWQ - Solid filled text layer */}
+          <text
+            ref={svgTextRef}
+            x="10"
+            y="230"
+            textAnchor="start"
+            fontSize="270"
+            fontFamily="var(--font-decorative)"
+            fontWeight="400"
+            fill="white"
+            letterSpacing="15"
+          >
+            SHAWQ
+          </text>
 
-            {/* 2. SHAWQ INTERACTIVE GLOW */}
-            <text
-              x="10"
-              y="220"
-              textAnchor="start"
-              fontSize="290"
-              fontFamily="var(--font-decorative)"
-              fontWeight="400"
-              fill="none"
-              stroke="url(#premiumGlow)"
-              strokeWidth="2"
-              opacity="0.7"
-              letterSpacing="15"
-              className="pointer-events-none mix-blend-color-dodge"
-            >
-              SHAWQ
-            </text>
+          {/* 2. SHAWQ INTERACTIVE GLOW */}
+          <text
+            x="10"
+            y="230"
+            textAnchor="start"
+            fontSize="270"
+            fontFamily="var(--font-decorative)"
+            fontWeight="400"
+            fill="none"
+            stroke="url(#mouseGradient)"
+            strokeWidth="3"
+            opacity="0.9"
+            letterSpacing="15"
+            className="pointer-events-none mix-blend-color-dodge"
+          >
+            SHAWQ
+          </text>
 
-            {/* 3. FRAGRANCES WIREFRAME - Outlined with matching letter-spacing */}
-            <text
-              x="10"
-              y="450"
-              textAnchor="start"
-              fontSize="200"
-              fontFamily="var(--font-decorative)"
-              fontWeight="300"
-              fill="none"
-              stroke="rgba(255, 255, 255, 0.25)"
-              strokeWidth="1.2"
-              letterSpacing="30"
-            >
-              FRAGRANCES
-            </text>
+          {/* 3. FRAGRANCES WIREFRAME */}
+          <text
+            x="10"
+            y="430"
+            textAnchor="start"
+            fontSize="200"
+            fontFamily="var(--font-decorative)"
+            fontWeight="300"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.25)"
+            strokeWidth="1.2"
+            letterSpacing="30"
+          >
+            FRAGRANCES
+          </text>
 
-            {/* 4. FRAGRANCES INTERACTIVE GLOW OVERLAY */}
-            <text
-              x="10"
-              y="450"
-              textAnchor="start"
-              fontSize="200"
-              fontFamily="var(--font-decorative)"
-              fontWeight="300"
-              fill="none"
-              stroke="url(#premiumGlow)"
-              strokeWidth="1.5"
-              opacity="0.85"
-              letterSpacing="30" 
-            >
-              FRAGRANCES
-            </text>
-            
-          </g>
+          {/* 4. FRAGRANCES INTERACTIVE GLOW OVERLAY */}
+          <text
+            x="10"
+            y="430"
+            textAnchor="start"
+            fontSize="200"
+            fontFamily="var(--font-decorative)"
+            fontWeight="300"
+            fill="none"
+            stroke="url(#mouseGradient)"
+            strokeWidth="2"
+            opacity="0.9"
+            letterSpacing="30"
+            className="pointer-events-none mix-blend-color-dodge"
+          >
+            FRAGRANCES
+          </text>
         </svg>
-
       </div>
 
       {/* Main Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-10 lg:py-20">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-0 pb-12 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Brand Column */}
           <div className="space-y-6">
@@ -309,11 +301,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      
-
-
-
 
       {/* Copyright Bar */}
       <div className="relative z-10 border-t border-white/5">
