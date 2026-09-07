@@ -103,10 +103,17 @@ export default function Preloader() {
       <div className="ld-gold absolute inset-0 bg-[#FCA311]" />
 
       {/* Image curtain (front, holds content) */}
-      <div
-        className="ld-image absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/red.jpg')" }}
-      >
+      <div className="ld-image absolute inset-0 overflow-hidden">
+  <picture className="absolute inset-0 h-full w-full">
+    <source media="(max-width: 767px)" srcSet="/images/loader-mob.jpg" />
+    <img
+      src="/images/loader-01.jpeg"
+      alt="Loader background"
+      className="h-full w-full object-cover object-center"
+    />
+  </picture>
+        
+    
         {/* Dark overlay for better text contrast */}
         <div className="absolute inset-0 bg-black/40" />
 
