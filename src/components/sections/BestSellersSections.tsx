@@ -6,24 +6,24 @@ import gsap from "gsap";
 const collectionProducts = [
   {
     id: 1,
-    category: "STUDIO COLLECTION",
-    name: "MINIMALIST TRENCH COAT",
+    category: "FLORAL EDITIONS",
+    name: "MIDNIGHT JASMINE SPRAY",
     price: "$299.00",
     image:
       "/images/NB-13.png",
   },
   {
     id: 2,
-    category: "TAILORED STUDIO",
-    name: "MINIMALIST SILK DRESS",
+    category: "ESSENTIALS",
+    name: "AMBER NOIR EXTRACT",
     price: "$279.00",
     image:
       "/images/NB-12.png",
   },
   {
     id: 3,
-    category: "ESSENTIALS",
-    name: "OVERSIZED CASHMERE KNIT",
+    category: "LIMITED EDITION",
+    name: "GOLDEN MUSK ESSENCE",
     price: "$199.00",
     image:
       "/images/NB-14.png",

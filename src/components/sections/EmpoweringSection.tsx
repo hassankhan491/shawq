@@ -7,14 +7,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const users = [
-  { id: 1, src: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=300&h=300&fit=crop", alt: "Perfume 1" },
-  { id: 2, src: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300&h=300&fit=crop", alt: "Perfume 2" },
-  { id: 3, src: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=300&h=300&fit=crop", alt: "Perfume 3" },
-  { id: 4, src: "https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=300&h=300&fit=crop", alt: "Perfume 4" },
-  { id: 5, src: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=300&h=300&fit=crop", alt: "Perfume 5" },
-  { id: 6, src: "https://images.unsplash.com/photo-1547887538-047f814bfb64?w=300&h=300&fit=crop", alt: "Perfume 6" },
-  { id: 7, src: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=300&h=300&fit=crop", alt: "Perfume 7" },
-  { id: 8, src: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=300&h=300&fit=crop", alt: "Perfume 8" },
+  { id: 1, src: "/images/NB-09.jpg", alt: "Perfume 1" },
+  { id: 2, src: "/images/NB-10.jpg", alt: "Perfume 2" },
+  { id: 3, src: "/images/NB-11.jpg", alt: "Perfume 3" },
+  { id: 4, src: "/images/NB-12.jpg", alt: "Perfume 4" },
+  { id: 5, src: "/images/NB-13.jpg", alt: "Perfume 5" },
+  { id: 6, src: "/images/NB-08.jpg", alt: "Perfume 6" },
+  { id: 7, src: "/images/NB-07.jpg", alt: "Perfume 7" },
+  { id: 8, src: "/images/NB-05.jpg", alt: "Perfume 8" },
 ];
 
 export default function EmpoweringSection() {

@@ -82,7 +82,7 @@ export default function HeroGalleryScroll() {
             className="relative col-span-2 origin-top overflow-hidden shadow-xl"
           >
             <img
-              src="/images/unisex-01.jpeg"
+              src="/images/unisex3.jpeg"
               alt="Unisex fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -107,7 +107,7 @@ export default function HeroGalleryScroll() {
             className="relative origin-bottom-left overflow-hidden shadow-xl"
           >
             <img
-              src="/images/men-01.jpeg"
+              src="/images/men-2.jpeg"
               alt="Men's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
@@ -132,7 +132,7 @@ export default function HeroGalleryScroll() {
             className="relative origin-bottom-right overflow-hidden shadow-xl"
           >
             <img
-              src="/images/women-01.jpeg"
+              src="/images/women-2.jpeg"
               alt="Women's fragrance collection"
               className="h-full w-full object-cover object-center"
             />
