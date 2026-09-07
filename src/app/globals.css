@@ -134,7 +134,7 @@
 
 /* ─── Custom Scrollbar (Gold Accent) ─── */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -142,7 +142,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FCA311; /* Gold */
+  background: #A48950; /* Gold */
   border-radius: 4px;
 }
 
