@@ -12,7 +12,7 @@ const products = [
     name: "Oud Royale",
     description:
       "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
-    image: "/images/products-01.jpeg",
+    image: "/images/image (11).png",
 
   },
   {
