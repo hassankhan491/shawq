@@ -138,24 +138,20 @@ export default function ShawqManifesto() {
       className="relative h-screen overflow-hidden bg-black"
       aria-label="SHAWQ manifesto"
     >
-      
-    <picture className="absolute inset-0 h-full w-full">
-  {/* Mobile */}
-  <source
-    media="(max-width: 767px)"
-    srcSet="/images/manifesto-bg2.jpg"
-  />
+      <picture className="absolute inset-0 h-full w-full">
+        {/* Mobile */}
+        <source media="(max-width: 767px)" srcSet="/images/manifesto-bg2.jpg" />
 
-  {/* Desktop */}
-  <img
-    ref={imgRef}
-    src="/images/manifesto-desktop.jpeg"
-    alt=""
-    aria-hidden="true"
-    className="h-full w-full object-cover object-top"
-    draggable={false}
-  />
-</picture>
+        {/* Desktop */}
+        <img
+          ref={imgRef}
+          src="/images/manifesto-desktop.jpeg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-top"
+          draggable={false}
+        />
+      </picture>
       <div ref={shadeRef} className="absolute inset-0 bg-black" />
 
       {/* huge statement — word-mask reveal */}
@@ -164,17 +160,16 @@ export default function ShawqManifesto() {
         className="absolute inset-0 flex items-center justify-center px-4"
       >
         <h2
-          className="max-w-6xl text-center text-[9vw] font-black uppercase leading-[0.95] tracking-tight md:text-[6.5vw]"
+          className="max-w-6xl text-center text-[9vw] font-black uppercase leading-[0.95] tracking-wide md:text-[6.5vw]"
           style={{ fontFamily: "var(--font-serif)", color: C.cream }}
         >
-          <Mask className="mr-[0.25em]">SHAWQ</Mask>
-          
-          <Mask className="mr-[0.25em]">IS</Mask>
-          <Mask className="mr-[0.25em]">AN</Mask>
-          <Mask className="mr-[0.25em]">INDEPENDENT,</Mask>
-          <Mask className="mr-[0.25em]">ARTIST-FOUNDED</Mask>
-          <Mask className="mr-[0.25em]">FRAGRANCE</Mask>
-          <Mask>HOUSE</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">SHAWQ</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">IS</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">AN</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">INDEPENDENT,</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">ARTIST-FOUNDED</Mask>
+          <Mask className="mr-[0.25em] px-[0.08em]">FRAGRANCE</Mask>
+          <Mask className="px-[0.08em]">HOUSE</Mask>
         </h2>
       </div>
 

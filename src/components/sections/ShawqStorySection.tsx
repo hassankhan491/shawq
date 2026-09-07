@@ -366,7 +366,7 @@ export default function ShawqScrollExperience() {
         </div>
         <div ref={bottleRef} className="will-change-transform" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
           <img
-            src="/images/shawq-bottle.png"
+            src="/images/shawq-bottle2.png"
             alt="SHAWQ extrait de parfum bottle"
             className="block h-auto w-[52vw] max-w-[340px] select-none md:w-[30vw] md:max-w-[480px]"
             draggable={false}
