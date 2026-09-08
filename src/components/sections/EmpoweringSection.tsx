@@ -227,12 +227,13 @@ export default function EmpoweringSection() {
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
-            className="absolute top-1/2 left-1/2 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl will-change-transform z-20"
+            className="absolute top-1/2 left-1/2 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border border-[#d4b978]/30 z-20 group cursor-pointer"
           >
+            {/* Inner IMG: Safe for CSS Hover scale */}
             <img
               src={user.src}
               alt={user.alt}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-115"
               loading="lazy"
             />
           </div>
