@@ -12,9 +12,7 @@ import ShawqManifesto from "@/components/sections/home/ShawqManifesto";
 
 export default function HomePage() {
   return (
-    <>
-      {/* ✅ Smooth scrolling */}
-      <SmoothScroll />
+    <SmoothScroll>
 
       {/* 1. HERO SECTION (Video Expansion Banner) */}
       <HeroSection />
@@ -46,11 +44,6 @@ export default function HomePage() {
 
       {/* NEWS LETTER */}
       <NewsletterSection />
-      
-
-
-     
-
-    </>
+    </SmoothScroll>
   );
 }

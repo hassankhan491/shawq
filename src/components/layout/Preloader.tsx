@@ -1,16 +1,23 @@
 "use client";
 
+
 import React, { useLayoutEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export default function Preloader() {
+    const pathname = usePathname();
+  const shouldShow = useRef(pathname === "/");
+
   const [done, setDone] = useState(false);
   const countRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (done) return;
-
+ useLayoutEffect(() => {
+  if (done || !shouldShow.current) {
+    setDone(true);
+    return;
+  }
     // 1. Respect user's reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);

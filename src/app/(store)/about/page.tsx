@@ -1,13 +1,13 @@
 import { Metadata } from "next";
 import SmoothScroll from "@/components/SmoothScroll";
-
-// About Page Sections
-import EditorialHero from "@/components/sections/about/EditorialHero";
-import PressRecognition from "@/components/sections/about/PressRecognition";
-import ImpactStats from "@/components/sections/about/ImpactStats";
-import FounderStory from "@/components/sections/about/FounderStory";
-import CraftsmanshipGrid from "@/components/sections/about/CraftsmanshipGrid";
-import CollectionCTA from "@/components/sections/about/CollectionCTA";
+import AboutHero from "@/components/sections/about/AboutHero";
+import HouseIntro from "@/components/sections/about/HouseIntro";
+import StoryChapters from "@/components/sections/about/StoryChapters";
+import HouseNumbers from "@/components/sections/about/HouseNumbers";
+import BukhoorRitual from "@/components/sections/about/BukhoorRitual";
+import CollectionSegments from "@/components/sections/about/CollectionSegments";
+import MeetTheMakers from "@/components/sections/about/MeetTheMakers";
+import CursorGlow from "@/components/sections/about/CursorGlow";
 
 export const metadata: Metadata = {
   title: "Our Story | SHAWQ Fragrances - The Art of Scent",
@@ -24,15 +24,17 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <SmoothScroll>
-      <main className="bg-[#0d0c0a]">
-        {/* Editorial Magazine-Style Layout */}
-        <EditorialHero />
-      <PressRecognition />
-      <FounderStory />
-      <CraftsmanshipGrid />
-      <ImpactStats />
-      <CollectionCTA />
-    </main>
+      <CursorGlow />
+
+      <main className="bg-[#F5F0E8]">
+        <AboutHero />
+        <HouseIntro />
+        <StoryChapters />
+        <HouseNumbers />
+        <BukhoorRitual />
+        <CollectionSegments />
+        <MeetTheMakers />
+      </main>
     </SmoothScroll>
   );
 }
