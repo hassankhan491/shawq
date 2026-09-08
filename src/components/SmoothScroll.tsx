@@ -1,13 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SmoothScroll() {
+// 1. Define the props interface to accept children
+interface SmoothScrollProps {
+  children: ReactNode;
+}
+
+// 2. Destructure 'children' from props
+export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -30,5 +36,6 @@ export default function SmoothScroll() {
     };
   }, []);
 
-  return null;
+  // 3. Return the children instead of null
+  return <>{children}</>;
 }

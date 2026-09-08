@@ -1,14 +1,14 @@
 // src/app/(store)/page.tsx
 import SmoothScroll from '@/components/SmoothScroll';
-import HeroSection from '@/components/sections/HeroSection';
-import CategorySection from "@/components/sections/CategorySection";
-import EmpoweringSection from '@/components/sections/EmpoweringSection';
-import SignatureCollectionSection from '@/components/sections/SignatureCollectionSection';
-import ProductShowcase from '@/components/sections/ProductShowcase';
-import BestSellersSections from "@/components/sections/BestSellersSections";
-import NewsletterSection from "@/components/sections/NewsletterSection";
-import ShawqStorySection  from "@/components/sections/ShawqStorySection";
-import ShawqManifesto from "@/components/sections/ShawqManifesto";
+import HeroSection from '@/components/sections/home/HeroSection';
+import CategorySection from "@/components/sections/home/CategorySection";
+import EmpoweringSection from '@/components/sections/home/EmpoweringSection';
+import SignatureCollectionSection from '@/components/sections/home/SignatureCollectionSection';
+import ProductShowcase from '@/components/sections/home/ProductShowcase';
+import BestSellersSections from "@/components/sections/home/BestSellersSections";
+import NewsletterSection from "@/components/sections/home/NewsletterSection";
+import ShawqStorySection  from "@/components/sections/home/ShawqStorySection";
+import ShawqManifesto from "@/components/sections/home/ShawqManifesto";
 
 export default function HomePage() {
   return (
