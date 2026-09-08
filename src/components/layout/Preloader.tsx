@@ -1,23 +1,36 @@
 "use client";
 
-
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export default function Preloader() {
-    const pathname = usePathname();
-  const shouldShow = useRef(pathname === "/");
+  const pathname = usePathname();
+  
+  // Check if we are on the home page AND if it hasn't already played this session
+  const [done, setDone] = useState(() => {
+    if (typeof window === "undefined") return true;
+    
+    // If not on home page, skip preloader immediately
+    if (pathname !== "/") return true;
 
-  const [done, setDone] = useState(false);
+    // Check if preloader has already run during this browser session
+    const hasPlayed = sessionStorage.getItem("shawq_preloaded");
+    return hasPlayed === "true";
+  });
+
   const countRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
- useLayoutEffect(() => {
-  if (done || !shouldShow.current) {
-    setDone(true);
-    return;
-  }
+  useLayoutEffect(() => {
+    if (done || pathname !== "/") {
+      setDone(true);
+      return;
+    }
+
+    // Mark as played in session storage so it won't run again on refresh/navigation
+    sessionStorage.setItem("shawq_preloaded", "true");
+
     // 1. Respect user's reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);
@@ -89,20 +102,16 @@ export default function Preloader() {
     const imgSrc = window.innerWidth < 768 ? "/images/loader-mob.jpg" : "/images/loader.webp";
     const img = new Image();
     img.src = imgSrc;
-    img.decoding = "async"; // Decode off the main thread
-    img.fetchPriority = "high"; // Tell browser this is critical
+    img.decoding = "async"; 
+    img.fetchPriority = "high"; 
 
     const initPreloader = async () => {
       try {
-        // Wait for the image to be fully decoded to prevent painting jank
         await img.decode();
       } catch (e) {
-        // Fallback if decode fails (e.g., corrupted image)
         console.warn("Image decode failed, starting anyway", e);
       }
       
-      // 4. Optional but recommended: Wait for critical fonts to load to prevent FOUT jank
-      // If your fonts are loaded via next/font, they are usually ready, but this is a safe guard.
       if (document.fonts.status === "loading") {
         await document.fonts.ready;
       }
@@ -114,10 +123,9 @@ export default function Preloader() {
       initPreloader();
     } else {
       img.onload = initPreloader;
-      img.onerror = initPreloader; // Don't block the site if the image fails
+      img.onerror = initPreloader; 
     }
 
-    // Extended safety timeout to 1500ms to ensure decode has time to finish
     safetyTimeout = setTimeout(initPreloader, 1500);
 
     return () => {
@@ -127,7 +135,7 @@ export default function Preloader() {
       document.body.style.overflow = "";
       lenis?.start();
     };
-  }, [done]);
+  }, [done, pathname]);
 
   if (done) return null;
 
@@ -137,7 +145,6 @@ export default function Preloader() {
       className="fixed inset-0 z-[100] overflow-hidden bg-[#0d0c0a] pointer-events-auto"
       aria-hidden="true"
     >
-      {/* 5. Removed will-change-transform from here. GSAP handles it better. */}
       <div
         className="ld-gold absolute inset-0"
         style={{ background: "linear-gradient(135deg,#0d0c0a,#171410 45%,#0c0b09)" }}
@@ -149,7 +156,6 @@ export default function Preloader() {
           <img
             src="/images/loader.webp"
             alt=""
-            // 6. Critical performance attributes for the img tag
             decoding="async"
             fetchPriority="high"
             className="h-full w-full object-cover object-center"
