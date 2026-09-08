@@ -1,30 +1,49 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Footer() {
   const svgTextRef = useRef<SVGTextElement | null>(null);
+  const [dubaiTime, setDubaiTime] = useState<string>("");
 
+  // Live Dubai Time Ticker
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Dubai",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        });
+        setDubaiTime(formatter.format(new Date()));
+      } catch (e) {
+        // Fallback
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Mouse-tracking gradient with smooth coordinate mapping
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const svgElement = svgTextRef.current?.closest("svg");
       if (!svgElement) return;
 
       const svgRect = svgElement.getBoundingClientRect();
-
       const x = e.clientX - svgRect.left;
       const y = e.clientY - svgRect.top;
 
-      // Convert to SVG coordinates matching viewBox (1600 x 480)
       const svgWidth = svgRect.width;
       const svgHeight = svgRect.height;
 
       const svgX = (x / svgWidth) * 1600;
-      const svgY = (y / svgHeight) * 480;
+      const svgY = (y / svgHeight) * 540;
 
-      // Update gradient position
       const gradient = svgElement.querySelector("#mouseGradient");
-
       if (gradient) {
         gradient.setAttribute("cx", String(svgX));
         gradient.setAttribute("cy", String(svgY));
@@ -32,7 +51,6 @@ export default function Footer() {
     };
 
     const svgElement = svgTextRef.current?.closest("svg");
-
     if (svgElement) {
       svgElement.addEventListener("mousemove", handleMouseMove);
     }
@@ -43,6 +61,10 @@ export default function Footer() {
       }
     };
   }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const socialLinks = [
     {
@@ -97,129 +119,142 @@ export default function Footer() {
 
   return (
     <footer
-      className="relative w-full bg-[#0a0a0a] overflow-hidden pt-8"
+      className="relative w-full bg-[#0a0a0a] overflow-hidden pt-20 border-t border-[#C9A962]/20"
       style={{ fontFamily: "var(--font-body)" }}
     >
-      {/* SHAWQ Text Section */}
-      <div className="relative w-full overflow-hidden bg-neutral-950 flex items-center justify-start px-6 sm:px-12 lg:px-40 my-4 sm:my-8">
-        <svg
-          viewBox="0 0 1600 480"
-          className="w-full h-auto block"
-          preserveAspectRatio="xMinYMid meet"
-        >
-          <defs>
-            <radialGradient
-              id="mouseGradient"
-              cx="0"
-              cy="0"
-              r="400"
-              gradientUnits="userSpaceOnUse"
+      {/* Ambient background glow elements */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#C9A962]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#C9A962]/5 rounded-full blur-[120px] pointer-events-none" />
+
+      {/* SHAWQ Interactive Typography Section wrapped in the exact same max-width and padding container */}
+      <div className="relative w-full overflow-hidden bg-neutral-950/80 backdrop-blur-sm border-y border-white/5 my-4">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-6">
+          <svg
+            viewBox="0 0 1600 540"
+            className="w-full h-auto block cursor-crosshair overflow-visible"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            <defs>
+              <radialGradient
+                id="mouseGradient"
+                cx="800"
+                cy="270"
+                r="350"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" stopColor="#fbf4d5" />
+                <stop offset="40%" stopColor="#c9a962" />
+                <stop offset="100%" stopColor="#c9a962" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* 1. SHAWQ - Solid filled text layer (x set to 0 to align cleanly with container padding grid) */}
+            <text
+              ref={svgTextRef}
+              x="0"
+              y="210"
+              textAnchor="start"
+              fontSize="240"
+              fontFamily="var(--font-decorative)"
+              fontWeight="400"
+              fill="white"
+              letterSpacing="15"
             >
-              <stop offset="0%" stopColor="#fbf4d5" />
-              <stop offset="50%" stopColor="#c9a962" />
-              <stop offset="100%" stopColor="#c9a962" stopOpacity="0" />
-            </radialGradient>
-          </defs>
+              SHAWQ
+            </text>
 
-          {/* 1. SHAWQ - Solid filled text layer */}
-          <text
-            ref={svgTextRef}
-            x="10"
-            y="230"
-            textAnchor="start"
-            fontSize="270"
-            fontFamily="var(--font-decorative)"
-            fontWeight="400"
-            fill="white"
-            letterSpacing="15"
-          >
-            SHAWQ
-          </text>
+            {/* 2. SHAWQ INTERACTIVE GLOW */}
+            <text
+              x="0"
+              y="210"
+              textAnchor="start"
+              fontSize="240"
+              fontFamily="var(--font-decorative)"
+              fontWeight="400"
+              fill="none"
+              stroke="url(#mouseGradient)"
+              strokeWidth="3.5"
+              opacity="0.95"
+              letterSpacing="15"
+              className="pointer-events-none mix-blend-color-dodge transition-all duration-75"
+            >
+              SHAWQ
+            </text>
 
-          {/* 2. SHAWQ INTERACTIVE GLOW */}
-          <text
-            x="10"
-            y="230"
-            textAnchor="start"
-            fontSize="270"
-            fontFamily="var(--font-decorative)"
-            fontWeight="400"
-            fill="none"
-            stroke="url(#mouseGradient)"
-            strokeWidth="3"
-            opacity="0.9"
-            letterSpacing="15"
-            className="pointer-events-none mix-blend-color-dodge"
-          >
-            SHAWQ
-          </text>
+            {/* 3. FRAGRANCES WIREFRAME */}
+            <text
+              x="0"
+              y="430"
+              textAnchor="start"
+              fontSize="180"
+              fontFamily="var(--font-decorative)"
+              fontWeight="300"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.2)"
+              strokeWidth="1.2"
+              letterSpacing="25"
+            >
+              FRAGRANCES
+            </text>
 
-          {/* 3. FRAGRANCES WIREFRAME */}
-          <text
-            x="10"
-            y="430"
-            textAnchor="start"
-            fontSize="200"
-            fontFamily="var(--font-decorative)"
-            fontWeight="300"
-            fill="none"
-            stroke="rgba(255, 255, 255, 0.25)"
-            strokeWidth="1.2"
-            letterSpacing="30"
-          >
-            FRAGRANCES
-          </text>
-
-          {/* 4. FRAGRANCES INTERACTIVE GLOW OVERLAY */}
-          <text
-            x="10"
-            y="430"
-            textAnchor="start"
-            fontSize="200"
-            fontFamily="var(--font-decorative)"
-            fontWeight="300"
-            fill="none"
-            stroke="url(#mouseGradient)"
-            strokeWidth="2"
-            opacity="0.9"
-            letterSpacing="30"
-            className="pointer-events-none mix-blend-color-dodge"
-          >
-            FRAGRANCES
-          </text>
-        </svg>
+            {/* 4. FRAGRANCES INTERACTIVE GLOW OVERLAY */}
+            <text
+              x="0"
+              y="430"
+              textAnchor="start"
+              fontSize="180"
+              fontFamily="var(--font-decorative)"
+              fontWeight="300"
+              fill="none"
+              stroke="url(#mouseGradient)"
+              strokeWidth="2.5"
+              opacity="0.95"
+              letterSpacing="25"
+              className="pointer-events-none mix-blend-color-dodge transition-all duration-75"
+            >
+              FRAGRANCES
+            </text>
+          </svg>
+        </div>
       </div>
 
-      {/* Main Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-0 pb-12 lg:pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+      {/* Main Footer Content Grid */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 pt-8 pb-16 lg:pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-12">
+          
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <h3
-                className="text-2xl font-display text-white"
+                className="text-2xl font-display text-white tracking-widest"
                 style={{ fontFamily: "var(--font-decorative)" }}
               >
                 SHAWQ
               </h3>
             </div>
 
-            <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
-              Crafting luxurious fragrances that speak your language. From royal
-              oud to soft amber, each scent tells a story.
+            <p className="text-xs text-gray-400 leading-relaxed max-w-xs tracking-wider uppercase">
+              Crafting luxurious fragrances that speak your language. From royal oud to soft amber.
             </p>
 
+            {/* Live Local Time Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-none border border-[#C9A962]/30 bg-[#0F0A08]/80 text-[10px] tracking-[0.25em] text-[#C9A962] uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C9A962] animate-pulse" />
+              <span>Dubai {dubaiTime || "12:00:00 AM"}</span>
+            </div>
+
             {/* Social Icons */}
-            <div className="flex gap-4 pt-2">
+            <div className="flex gap-3 pt-2">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href="#"
-                  className="group relative w-10 h-10 flex items-center justify-center rounded-full border border-white/10 hover:border-[#c9a962]/50 transition-all duration-300"
+                  className="group relative w-10 h-10 flex items-center justify-center rounded-none border border-white/10 bg-[#0F0A08] hover:border-[#C9A962] transition-all duration-500 overflow-hidden"
                   aria-label={social.name}
                 >
+                  <div className="absolute inset-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 z-0" />
                   <svg
-                    className="w-4 h-4 text-gray-400 group-hover:text-[#c9a962] transition-colors duration-300"
+                    className="w-4 h-4 text-gray-300 group-hover:text-[#0F0A08] transition-colors duration-500 relative z-10"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -232,16 +267,15 @@ export default function Footer() {
 
           {/* About Us Column */}
           <div className="space-y-5">
-            <h4 className="text-sm font-medium text-white uppercase tracking-widest">
+            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.3em]">
               About Us
             </h4>
-
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {footerLinks.about.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#c9a962] transition-colors duration-300 inline-block"
+                    className="text-xs text-gray-400 hover:text-[#C9A962] transition-colors duration-300 inline-block tracking-widest uppercase hover:translate-x-1 transform transition-transform"
                   >
                     {link.name}
                   </a>
@@ -252,16 +286,15 @@ export default function Footer() {
 
           {/* Helpful Links Column */}
           <div className="space-y-5">
-            <h4 className="text-sm font-medium text-white uppercase tracking-widest">
+            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.3em]">
               Helpful Links
             </h4>
-
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {footerLinks.help.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm text-gray-400 hover:text-[#c9a962] transition-colors duration-300 inline-block"
+                    className="text-xs text-gray-400 hover:text-[#C9A962] transition-colors duration-300 inline-block tracking-widest uppercase hover:translate-x-1 transform transition-transform"
                   >
                     {link.name}
                   </a>
@@ -272,28 +305,28 @@ export default function Footer() {
 
           {/* Contact Us Column */}
           <div className="space-y-5">
-            <h4 className="text-sm font-medium text-white uppercase tracking-widest">
+            <h4 className="text-xs font-semibold text-white uppercase tracking-[0.3em]">
               Contact Us
             </h4>
-
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {footerLinks.contact.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="flex items-center gap-2 text-sm text-gray-400 hover:text-[#c9a962] transition-colors duration-300 group"
+                    className="flex items-center gap-3 text-xs text-gray-400 hover:text-[#C9A962] transition-colors duration-300 group"
                   >
                     {link.icon && (
-                      <svg
-                        className="w-4 h-4 opacity-60 group-hover:opacity-100 transition-opacity"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d={link.icon} />
-                      </svg>
+                      <span className="w-7 h-7 flex items-center justify-center border border-white/10 bg-white/[0.02] group-hover:border-[#C9A962]/50 transition-colors shrink-0">
+                        <svg
+                          className="w-3.5 h-3.5 text-[#C9A962]"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d={link.icon} />
+                        </svg>
+                      </span>
                     )}
-
-                    {link.name}
+                    <span className="tracking-widest break-all">{link.name}</span>
                   </a>
                 </li>
               ))}
@@ -302,26 +335,41 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Copyright Bar */}
-      <div className="relative z-10 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
-              <a
-                href="/privacy"
-                className="text-xs text-gray-500 hover:text-[#c9a962] transition-colors"
-              >
-                Privacy Policy
-              </a>
-
-              <a
-                href="/terms"
-                className="text-xs text-gray-500 hover:text-[#c9a962] transition-colors"
-              >
-                Terms of Service
-              </a>
-            </div>
+      {/* Copyright Bar & Back to Top */}
+      <div className="relative z-10 border-t border-white/10 bg-black/40">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-6">
+            <a
+              href="/privacy"
+              className="text-[11px] text-gray-500 hover:text-[#C9A962] tracking-[0.2em] uppercase transition-colors"
+            >
+              Privacy Policy
+            </a>
+            <span className="text-gray-700">/</span>
+            <a
+              href="/terms"
+              className="text-[11px] text-gray-500 hover:text-[#C9A962] tracking-[0.2em] uppercase transition-colors"
+            >
+              Terms of Service
+            </a>
           </div>
+
+          <p className="text-[11px] text-gray-600 tracking-[0.2em] uppercase text-center">
+            © {new Date().getFullYear()} Shawq Fragrances. All Rights Reserved.
+          </p>
+
+          {/* Luxury Back to Top Trigger */}
+          <button
+            onClick={scrollToTop}
+            className="group flex items-center gap-2 text-[11px] text-gray-400 hover:text-[#C9A962] tracking-[0.25em] uppercase transition-colors py-1 cursor-pointer"
+          >
+            <span>Back To Top</span>
+            <span className="w-7 h-7 border border-white/10 group-hover:border-[#C9A962] flex items-center justify-center transition-colors">
+              <svg className="w-3 h-3 transform -rotate-90 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
     </footer>

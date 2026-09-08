@@ -37,18 +37,56 @@ export default function HeroSection() {
             scrub: 1,
             pin: true,
             anticipatePin: 1,
-            onEnter: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
-            onLeave: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
-            onEnterBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
-            onLeaveBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
+            onEnter: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: true } }),
+              ),
+            onLeave: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: false } }),
+              ),
+            onEnterBack: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: true } }),
+              ),
+            onLeaveBack: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: false } }),
+              ),
           },
         });
 
-        tl.to(fadeRef.current, { opacity: 0, y: -40, duration: 0.5, ease: "power1.out" }, 0.35)
-          .to(line1Ref.current, { x: "-45vw", opacity: 0, duration: 1, ease: "power2.inOut" }, 0)
-          .to(line2Ref.current, { x: "45vw", opacity: 0, duration: 1, ease: "power2.inOut" }, 0)
-          .to(videoWrapRef.current, { width: Math.round(vw * 0.9), height: Math.round(vh * 0.88), borderRadius: 16, duration: 1.6, ease: "power2.inOut" }, 0.1)
-          .to(bgRef.current, { opacity: 0.25, scale: 1.08, duration: 1.6, ease: "power2.inOut" }, 0.1);
+        tl.to(
+          fadeRef.current,
+          { opacity: 0, y: -40, duration: 0.5, ease: "power1.out" },
+          0.35,
+        )
+          .to(
+            line1Ref.current,
+            { x: "-45vw", opacity: 0, duration: 1, ease: "power2.inOut" },
+            0,
+          )
+          .to(
+            line2Ref.current,
+            { x: "45vw", opacity: 0, duration: 1, ease: "power2.inOut" },
+            0,
+          )
+          .to(
+            videoWrapRef.current,
+            {
+              width: Math.round(vw * 0.9),
+              height: Math.round(vh * 0.88),
+              borderRadius: 16,
+              duration: 1.6,
+              ease: "power2.inOut",
+            },
+            0.1,
+          )
+          .to(
+            bgRef.current,
+            { opacity: 0.25, scale: 1.08, duration: 1.6, ease: "power2.inOut" },
+            0.1,
+          );
       });
 
       // MOBILE
@@ -64,18 +102,61 @@ export default function HeroSection() {
             scrub: 0.8,
             pin: true,
             anticipatePin: 1,
-            onEnter: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
-            onLeave: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
-            onEnterBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
-            onLeaveBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
+            onEnter: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: true } }),
+              ),
+            onLeave: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: false } }),
+              ),
+            onEnterBack: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: true } }),
+              ),
+            onLeaveBack: () =>
+              window.dispatchEvent(
+                new CustomEvent("hero-state", { detail: { active: false } }),
+              ),
           },
         });
 
-        tl.to(fadeRef.current, { opacity: 0, y: -30, duration: 0.45, ease: "power1.out" }, 0.3)
-          .to(line1Ref.current, { x: "-110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" }, 0)
-          .to(line2Ref.current, { x: "110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" }, 0)
-          .to(videoWrapRef.current, { width: Math.round(vw * 0.88), height: Math.round(vh * 0.62), borderRadius: 14, duration: 1.45, ease: "power2.inOut" }, 0.1)
-          .to(bgRef.current, { opacity: 0.25, scale: 1.06, duration: 1.45, ease: "power2.inOut" }, 0.1);
+        tl.to(
+          fadeRef.current,
+          { opacity: 0, y: -30, duration: 0.45, ease: "power1.out" },
+          0.3,
+        )
+          .to(
+            line1Ref.current,
+            { x: "-110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" },
+            0,
+          )
+          .to(
+            line2Ref.current,
+            { x: "110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" },
+            0,
+          )
+          .to(
+            videoWrapRef.current,
+            {
+              width: Math.round(vw * 0.88),
+              height: Math.round(vh * 0.62),
+              borderRadius: 14,
+              duration: 1.45,
+              ease: "power2.inOut",
+            },
+            0.1,
+          )
+          .to(
+            bgRef.current,
+            {
+              opacity: 0.25,
+              scale: 1.06,
+              duration: 1.45,
+              ease: "power2.inOut",
+            },
+            0.1,
+          );
       });
 
       return () => mm.revert();
@@ -171,7 +252,10 @@ export default function HeroSection() {
 
         {/* Bottom CTA / Intro */}
         <div className="absolute inset-x-0 bottom-[5vh] z-20 flex justify-center">
-          <div ref={fadeRef} className="flex flex-col items-center gap-4 text-center px-6">
+          <div
+            ref={fadeRef}
+            className="flex flex-col items-center gap-4 text-center px-6"
+          >
             <div className="flex items-center gap-3">
               <div className="w-10 sm:w-12 h-px bg-[#c9a962]" />
               <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium">
@@ -187,15 +271,19 @@ export default function HeroSection() {
                 letterSpacing: "0.03em",
               }}
             >
-              Distinctive compositions of oud, amber and rare botanicals — made to linger beyond the moment.
+              Distinctive compositions of oud, amber and rare botanicals — made
+              to linger beyond the moment.
             </p>
 
             <Link
-              href="/products"
-              className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-[#c9a962] text-[#f5f0eb] sm:text-[#c9a962] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase bg-[#c9a962]/10 sm:bg-transparent hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
-            >
-              Explore Collection
-            </Link>
+  href="/products"
+  className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-[#C9A962] bg-[#0D0907]/60 text-[#C9A962] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase rounded-none relative group overflow-hidden backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
+>
+  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
+    Explore the Signature
+  </span>
+  <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
+</Link>
 
             <div className="flex items-center gap-2 text-[#e8e0d5]/80 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-medium">
               <span>Scroll to Discover</span>

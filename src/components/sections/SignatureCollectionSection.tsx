@@ -220,13 +220,16 @@ export default function ShowcaseSection() {
         </p>
 
         <Link
-          ref={shopRef}
-          href="/shop"
-          className="mt-7 inline-block rounded-full border border-[#0F0A08] bg-[#0F0A08] px-9 py-4 text-xs font-medium uppercase tracking-[0.3em] text-[#FAF8F3] transition-all duration-500 hover:border-[#C73234] hover:bg-[#C73234] hover:shadow-[0_10px_25px_rgba(199,50,52,0.25)] sm:px-12 sm:py-4 sm:text-xs"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          Explore {info.name}
-        </Link>
+  ref={shopRef}
+  href="/shop"
+  className="mt-7 pointer-events-auto relative group overflow-hidden inline-flex items-center justify-center rounded-none border border-[#C9A962] bg-[#0F0A08] px-9 py-4 text-xs font-medium uppercase tracking-[0.3em] text-[#FAF8F3] transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_10px_25px_rgba(201,169,98,0.25)] sm:px-12 sm:py-4 sm:text-xs leading-none"
+  style={{ fontFamily: "var(--font-body)" }}
+>
+  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0F0A08]">
+    Explore {info.name}
+  </span>
+  <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
+</Link>
 
         {/* Interactive Segmented Progress Bar */}
         <div

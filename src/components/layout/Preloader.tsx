@@ -11,6 +11,7 @@ export default function Preloader() {
   useLayoutEffect(() => {
     if (done) return;
 
+    // 1. Respect user's reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);
       return;
@@ -20,117 +21,102 @@ export default function Preloader() {
     lenis?.stop();
     document.body.style.overflow = "hidden";
 
-    // 1. Preload image to avoid main-thread lock while decoding
-    const img = new Image();
-    img.src = window.innerWidth < 768 ? "/images/loader-mob.jpg" : "/images/loader-01.jpeg";
+    let isTimelineStarted = false;
+    let ctx: gsap.Context;
+    let rafId: number;
+    let safetyTimeout: NodeJS.Timeout;
 
-    const ctx = gsap.context(() => {
-      const counter = { v: 0 };
+    const startPreloader = () => {
+      if (isTimelineStarted) return;
+      isTimelineStarted = true;
+      clearTimeout(safetyTimeout);
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          document.body.style.overflow = "";
-          lenis?.start();
-          setDone(true);
-        },
-      });
+      // Defer GSAP setup to prevent mount-phase layout jank
+      rafId = requestAnimationFrame(() => {
+        ctx = gsap.context(() => {
+          const counter = { v: 0 };
 
-      // Set initial optimized states
-      gsap.set(".ld-title span", {
-        yPercent: 115,
-        opacity: 0,
-        force3D: true,
-      });
-
-      gsap.set(".ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", {
-        opacity: 0,
-        force3D: true,
-      });
-
-      gsap.set(".ld-line, .ld-line-glow", {
-        scaleX: 0,
-        transformOrigin: "left center",
-        force3D: true,
-      });
-
-      // Grouped sequence to minimize compositor pipeline steps
-      tl.to(".ld-image img", {
-        scale: 1.04,
-        duration: 1.3,
-        ease: "power2.out",
-      })
-        .to(
-          ".ld-eyebrow",
-          { opacity: 1, duration: 0.6, ease: "power2.out" },
-          0.2
-        )
-        .to(
-          ".ld-title span",
-          {
-            yPercent: 0,
-            opacity: 1,
-            duration: 1.0,
-            ease: "power3.out",
-            stagger: 0.05,
-          },
-          0.3
-        )
-        .to(
-          ".ld-subtitle span",
-          { yPercent: 0, opacity: 1, duration: 0.8, ease: "power3.out" },
-          0.4
-        )
-        .to(
-          ".ld-corner, .ld-meta",
-          { opacity: 1, duration: 0.6, stagger: 0.05 },
-          0.6
-        )
-        .to(
-          [".ld-line", ".ld-line-glow"],
-          { scaleX: 1, duration: 0.8, ease: "power2.inOut" },
-          0.5
-        )
-        .to(
-          counter,
-          {
-            v: 100,
-            duration: 0.8,
-            ease: "power2.inOut",
-            onUpdate: () => {
-              if (countRef.current) {
-                countRef.current.textContent = String(
-                  Math.round(counter.v)
-                ).padStart(3, "0");
-              }
+          const tl = gsap.timeline({
+            onComplete: () => {
+              document.body.style.overflow = "";
+              lenis?.start();
+              setDone(true);
             },
-          },
-          0.5
-        )
-        /* Pause at 100% */
-        .to({}, { duration: 0.8 })
+          });
 
-        /* Fast Exit Sequence */
-        .to(".ld-title span, .ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", {
-          opacity: 0,
-          y: -10,
-          duration: 0.2,
-          ease: "power2.in",
-        })
-        .to(".ld-image", {
-          yPercent: -100,
-          duration: 0.4,
-          ease: "power4.inOut",
-        }, "-=0.1")
-        .to(".ld-gold", {
-          yPercent: -100,
-          duration: 0.35,
-          ease: "power4.inOut",
-        }, "-=0.3");
+          // 2. Let GSAP handle will-change automatically via force3D
+          gsap.set(".ld-title span", { yPercent: 115, opacity: 0, force3D: true });
+          gsap.set(".ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", { opacity: 0, force3D: true });
+          gsap.set(".ld-line", { scaleX: 0, transformOrigin: "left center", force3D: true });
 
-    }, containerRef);
+          tl.to(".ld-image img", { scale: 1.04, duration: 1.2, ease: "power2.out" })
+            .to(".ld-eyebrow", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.1)
+            .to(".ld-title span", { yPercent: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.04 }, 0.2)
+            .to(".ld-subtitle span", { yPercent: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.3)
+            .to(".ld-corner, .ld-meta", { opacity: 1, duration: 0.5, stagger: 0.04 }, 0.4)
+            .to(".ld-line", { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 0.4)
+            .to(counter, {
+              v: 100,
+              duration: 0.7,
+              ease: "power2.inOut",
+              onUpdate: () => {
+                if (countRef.current) {
+                  countRef.current.textContent = String(Math.round(counter.v)).padStart(3, "0");
+                }
+              },
+            }, 0.4)
+            .to({}, { duration: 0.4 })
+            .to(".ld-title span, .ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", {
+              opacity: 0,
+              y: -8,
+              duration: 0.2,
+              ease: "power2.in",
+            })
+            .to(".ld-image", { yPercent: -100, duration: 0.4, ease: "power4.inOut" }, "-=0.1")
+            .to(".ld-gold", { yPercent: -100, duration: 0.35, ease: "power4.inOut" }, "-=0.3");
+        }, containerRef);
+      });
+    };
+
+    // 3. Robust Image Preloading with Async Decoding
+    const imgSrc = window.innerWidth < 768 ? "/images/loader-mob.jpg" : "/images/loader.webp";
+    const img = new Image();
+    img.src = imgSrc;
+    img.decoding = "async"; // Decode off the main thread
+    img.fetchPriority = "high"; // Tell browser this is critical
+
+    const initPreloader = async () => {
+      try {
+        // Wait for the image to be fully decoded to prevent painting jank
+        await img.decode();
+      } catch (e) {
+        // Fallback if decode fails (e.g., corrupted image)
+        console.warn("Image decode failed, starting anyway", e);
+      }
+      
+      // 4. Optional but recommended: Wait for critical fonts to load to prevent FOUT jank
+      // If your fonts are loaded via next/font, they are usually ready, but this is a safe guard.
+      if (document.fonts.status === "loading") {
+        await document.fonts.ready;
+      }
+
+      startPreloader();
+    };
+
+    if (img.complete) {
+      initPreloader();
+    } else {
+      img.onload = initPreloader;
+      img.onerror = initPreloader; // Don't block the site if the image fails
+    }
+
+    // Extended safety timeout to 1500ms to ensure decode has time to finish
+    safetyTimeout = setTimeout(initPreloader, 1500);
 
     return () => {
-      ctx.revert();
+      clearTimeout(safetyTimeout);
+      cancelAnimationFrame(rafId);
+      ctx?.revert();
       document.body.style.overflow = "";
       lenis?.start();
     };
@@ -141,35 +127,33 @@ export default function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] overflow-hidden bg-[#0d0c0a]"
+      className="fixed inset-0 z-[100] overflow-hidden bg-[#0d0c0a] pointer-events-auto"
       aria-hidden="true"
     >
+      {/* 5. Removed will-change-transform from here. GSAP handles it better. */}
       <div
-        className="ld-gold absolute inset-0 will-change-transform"
-        style={{
-          background: "linear-gradient(135deg,#0d0c0a,#171410 45%,#0c0b09)",
-        }}
+        className="ld-gold absolute inset-0"
+        style={{ background: "linear-gradient(135deg,#0d0c0a,#171410 45%,#0c0b09)" }}
       />
 
-      <div className="ld-image absolute inset-0 overflow-hidden will-change-transform">
+      <div className="ld-image absolute inset-0 overflow-hidden">
         <picture className="absolute inset-0 h-full w-full">
-          <source
-            media="(max-width: 767px)"
-            srcSet="/images/loader-mob.jpg"
-          />
+          <source media="(max-width: 767px)" srcSet="/images/loader-mob.jpg" />
           <img
-            src="/images/loader-01.jpeg"
+            src="/images/loader.webp"
             alt=""
-            className="h-full w-full object-cover object-center will-change-transform"
+            // 6. Critical performance attributes for the img tag
+            decoding="async"
+            fetchPriority="high"
+            className="h-full w-full object-cover object-center"
             draggable={false}
           />
         </picture>
 
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            background:
-              "linear-gradient(to bottom,rgba(0,0,0,.48),rgba(0,0,0,.12) 40%,rgba(0,0,0,.25) 65%,rgba(0,0,0,.82))",
+            background: "linear-gradient(to bottom,rgba(0,0,0,.48),rgba(0,0,0,.12) 40%,rgba(0,0,0,.25) 65%,rgba(0,0,0,.82))",
           }}
         />
 
@@ -189,10 +173,7 @@ export default function Preloader() {
             <div className="overflow-hidden py-5">
               <span
                 className="block px-5 py-5 text-[19vw] font-light uppercase leading-[.9] tracking-[.08em] text-[#F5F0E8] sm:text-[14vw] lg:text-[9.5vw]"
-                style={{
-                  fontFamily: "var(--font-decorative)",
-                  textShadow: "0 15px 50px rgba(0,0,0,.55)",
-                }}
+                style={{ fontFamily: "var(--font-decorative)" }}
               >
                 SHAWQ
               </span>
@@ -237,18 +218,8 @@ export default function Preloader() {
 
           <div className="relative h-px w-full overflow-hidden bg-white/15">
             <div
-              className="ld-line absolute inset-y-0 left-0 w-full"
-              style={{
-                background:
-                  "linear-gradient(90deg,#9F8057,#E4C995,#9F8057)",
-              }}
-            />
-            <div
-              className="ld-line-glow absolute -top-[2px] left-0 h-[5px] w-full blur-[5px]"
-              style={{
-                background: "#D8B77A",
-                opacity: 0.55,
-              }}
+              className="ld-line absolute inset-y-0 left-0 w-full h-full shadow-[0_0_10px_#E4C995]"
+              style={{ background: "linear-gradient(90deg,#9F8057,#E4C995,#9F8057)" }}
             />
           </div>
 

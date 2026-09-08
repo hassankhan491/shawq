@@ -50,22 +50,14 @@ export default function HeroGalleryScroll() {
   const progress = prefersReducedMotion ? scrollYProgress : smoothProgress;
 
   /* CATEGORY CARD SCALES */
-  const topScale = useTransform(
-    progress,
-    [0, 0.85],
-    [1, isMobile ? 1 : 0.8]
-  );
+  const topScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.8]);
 
-  const leftScale = useTransform(
-    progress,
-    [0, 0.85],
-    [1, isMobile ? 1 : 0.72]
-  );
+  const leftScale = useTransform(progress, [0, 0.85], [1, isMobile ? 1 : 0.72]);
 
   const rightScale = useTransform(
     progress,
     [0, 0.85],
-    [1, isMobile ? 1 : 0.72]
+    [1, isMobile ? 1 : 0.72],
   );
 
   /* CENTER CONTENT */
@@ -88,7 +80,6 @@ export default function HeroGalleryScroll() {
 
       {/* Sticky stage */}
       <div className="sticky top-0 flex h-screen h-svh w-full flex-col overflow-hidden px-0 pt-20 sm:px-4 sm:pt-3">
-
         {/* Mobile heading */}
         <h2
           className="shrink-0 py-[30px] text-center text-4xl text-white sm:hidden"
@@ -99,7 +90,6 @@ export default function HeroGalleryScroll() {
 
         {/* CATEGORY GRID */}
         <div className="grid min-h-0 w-full flex-1 grid-cols-2 grid-rows-2 gap-0 sm:grid-rows-[1fr_1.25fr] sm:gap-1">
-
           {/* ================= UNISEX ================= */}
           <motion.div
             style={{ scale: topScale, willChange: "transform" }}
@@ -259,25 +249,29 @@ export default function HeroGalleryScroll() {
               lineHeight: 1.6,
             }}
           >
-            Discover distinctive compositions crafted with oud, amber and
-            rare botanicals — made to become part of your story.
+            Discover distinctive compositions crafted with oud, amber and rare
+            botanicals — made to become part of your story.
           </p>
 
           <div className="pointer-events-auto mt-8 flex flex-col items-center gap-4 sm:flex-row">
             <Link
               href="/products"
-              className="min-h-[48px] bg-white px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-black transition-all duration-300 hover:bg-white/90"
+              className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] bg-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0F0A08] rounded-none leading-none transition-all duration-500 ease-out hover:bg-[#DFC27B] hover:shadow-lg"
               style={{ fontFamily: "var(--font-body)" }}
             >
               Explore Collection
             </Link>
 
+            {/* Secondary Button (Keeps the Slide-Up Animation) */}
             <Link
               href="/our-story"
-              className="flex min-h-[48px] items-center border border-white/30 px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-white transition-all duration-300 hover:bg-white/10"
+              className="pointer-events-auto relative group overflow-hidden flex min-h-[48px] items-center justify-center border border-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] rounded-none bg-transparent leading-none transition-all duration-500 ease-out hover:border-[#C9A962]"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Our Story
+              <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0F0A08]">
+                Our Story
+              </span>
+              <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
             </Link>
           </div>
         </motion.div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,7 +14,6 @@ const products = [
     description:
       "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
     image: "/images/image (11).png",
-
   },
   {
     id: 2,
@@ -175,10 +175,7 @@ export default function ProductShowcase() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full bg-[var(--color-bg)]"
-    >
+    <section ref={sectionRef} className="relative w-full bg-[var(--color-bg)]">
       {products.map((product, index) => {
         const isReversed = index % 2 !== 0;
 
@@ -209,7 +206,6 @@ export default function ProductShowcase() {
                 lg:flex-row
                 ${isReversed ? "lg:flex-row-reverse" : ""}
               `}
-              
             >
               {/* =========================================
                   IMAGE
@@ -352,7 +348,7 @@ export default function ProductShowcase() {
                       xl:text-6xl
                     "
                     style={{
-                      fontFamily: 'var(--font-serif)',
+                      fontFamily: "var(--font-serif)",
                       opacity: 0,
                     }}
                   >
@@ -383,33 +379,42 @@ export default function ProductShowcase() {
                   </p>
 
                   {/* BUTTON */}
-                  <button
+                  <Link
+                    href="/products"
                     className="
-                      product-button
-                      w-full
-                      
-                      bg-[var(--color-gold))]
-                      px-8
-                      py-3.5
-                      text-xs
-                      font-medium
-                      uppercase
-                      tracking-[0.2em]
-                      text-[var(--font-color-4)]
-                      transition-all
-                      duration-300
-                      hover:bg-[var(--color-navy)]
-
-                      sm:py-4
-                      sm:text-sm
-                    "
+                    product-button
+                    w-full
+                    pointer-events-auto
+                    inline-flex
+                    items-center
+                    justify-center
+                    rounded-none
+                    border
+                    border-[var(--color-gold)]
+                    bg-[var(--color-gold)]
+                    px-8
+                    py-3.5
+                    text-xs
+                    font-medium
+                    uppercase
+                    tracking-[0.2em]
+                    text-[var(--font-color-4)]
+                    transition-all
+                    duration-300
+                    hover:bg-[#DFC27B]
+                    hover:shadow-lg
+                    sm:py-4
+                    sm:text-sm
+                    leading-none
+                    text-center
+                  "
                     style={{
-                     fontFamily: "var(--font-body)",
-                      opacity: 0,
+                      fontFamily: "var(--font-body)",
+                      opacity: 1,
                     }}
                   >
                     Quick View
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

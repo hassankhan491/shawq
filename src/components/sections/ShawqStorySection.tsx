@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -339,29 +340,34 @@ export default function ShawqStorySection() {
 
       {/* 04 — THE FEELING WE WANT YOU TO REMEMBER */}
       <div
-        ref={block4Ref}
-        className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
-      >
-        <span className="text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase mb-2">
-          04 — The Impression
-        </span>
-        <h3
-          className="text-3xl leading-tight md:text-6xl font-light"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          A Scent That Remains
-        </h3>
-        <p className="mt-2 max-w-sm text-xs font-light tracking-[0.2em] text-white/70 uppercase md:text-sm">
-          Long after you leave the room.
-        </p>
+  ref={block4Ref}
+  className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
+>
+  <span className="mb-2 text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase">
+    04 — The Impression
+  </span>
 
-        <button className="pointer-events-auto mt-8 relative group overflow-hidden rounded-full border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]">
-          <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
-            Explore The Signature
-          </span>
-          <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
-        </button>
-      </div>
+  <h3
+    className="text-3xl font-light leading-tight md:text-6xl"
+    style={{ fontFamily: "var(--font-serif)" }}
+  >
+    A Scent That Remains
+  </h3>
+
+  <p className="mt-2 max-w-sm text-xs font-light tracking-[0.2em] text-white/70 uppercase md:text-sm">
+    Long after you leave the room.
+  </p>
+
+ <Link
+  href="/products"
+  className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
+>
+  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
+    Explore The Signature
+  </span>
+  <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
+</Link>
+</div>
 
       {/* Stage Rig & Bottle Assembly */}
       <div
