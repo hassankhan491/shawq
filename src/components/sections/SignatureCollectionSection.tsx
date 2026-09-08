@@ -17,43 +17,42 @@ interface ShowcaseProduct {
   image: string;
 }
 
-/* Same 4 products as the Blade file — put images in /public/assets/images/NB_1/ */
 const PRODUCTS: ShowcaseProduct[] = [
   {
     name: "Noir",
     family: "A dark smoky amber",
-    notes: "Star Anise, Coffee, Cassis",
+    notes: "Star Anise · Coffee · Cassis",
     image: "/images/NB-06.png",
   },
   {
     name: "Rouge",
     family: "A blaze of saffron and rose",
-    notes: "Saffron, Damask Rose, Oud",
+    notes: "Saffron · Damask Rose · Oud",
     image: "/images/NB-07.png",
   },
   {
     name: "Élan",
     family: "A bright aromatic wood",
-    notes: "Bergamot, Iris, White Musk",
+    notes: "Bergamot · Iris · White Musk",
     image: "/images/NB-08.png",
   },
   {
     name: "Ambre",
-    family: "A sweet sultry amber",
-    notes: "Golden Amber, Vanilla, Sandalwood",
+    family: "A warm, enveloping amber",
+    notes: "Golden Amber · Vanilla · Sandalwood",
     image: "/images/NB-09.png",
   },
 ];
 
-const RED = "#c41e3a";
-const LUX_EASE = "cubic-bezier(0.22, 1, 0.36, 1)"; /* ≈ --ease-lux */
+const RED = "#C73234";
+const LUX_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 export default function ShowcaseSection() {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const [info, setInfo] = useState<ShowcaseProduct>(PRODUCTS[0]);
+  const swiperRef = useRef<SwiperClass | null>(null);
 
-  const nameRef = useRef<HTMLHeadingElement>(null);
   const familyRef = useRef<HTMLParagraphElement>(null);
   const notesRef = useRef<HTMLParagraphElement>(null);
   const shopRef = useRef<HTMLAnchorElement>(null);
@@ -61,17 +60,12 @@ export default function ShowcaseSection() {
 
   useEffect(
     () => () => {
-      gsap.killTweensOf([
-        nameRef.current,
-        familyRef.current,
-        notesRef.current,
-        shopRef.current,
-      ]);
+      gsap.killTweensOf([familyRef.current, notesRef.current, shopRef.current]);
     },
-    [],
+    []
   );
 
-  /* GSAP crossfade — identical to showcase.js setInfo() */
+  /* Cinematic crossfade transition for product info */
   const changeInfo = (p: ShowcaseProduct) => {
     if (p.name === shownName.current) return;
     shownName.current = p.name;
@@ -79,26 +73,24 @@ export default function ShowcaseSection() {
       setInfo(p);
       return;
     }
-    const targets = [
-      nameRef.current,
-      familyRef.current,
-      notesRef.current,
-      shopRef.current,
-    ].filter(Boolean) as Element[];
+    const targets = [familyRef.current, notesRef.current, shopRef.current].filter(
+      Boolean
+    ) as Element[];
+
     gsap.to(targets, {
       autoAlpha: 0,
-      y: -12,
-      duration: 0.28,
+      y: -10,
+      duration: 0.22,
       ease: "power2.in",
-      stagger: 0.03,
+      stagger: 0.02,
       onComplete() {
         setInfo(p);
         gsap.to(targets, {
           autoAlpha: 1,
           y: 0,
-          duration: 0.5,
+          duration: 0.45,
           ease: "power3.out",
-          stagger: 0.05,
+          stagger: 0.04,
         });
       },
     });
@@ -112,99 +104,116 @@ export default function ShowcaseSection() {
 
   return (
     <section
-      aria-label="Featured fragrances"
-      className="relative overflow-hidden bg-[#edeae3] pt-[70px] pb-10 sm:pt-20 sm:pb-12 md:pt-[clamp(60px,10vh,110px)] md:pb-[50px] lg:pt-[clamp(70px,11vh,130px)] lg:pb-[60px] xl:pt-[clamp(80px,12vh,150px)] xl:pb-[70px] 2xl:pt-[clamp(90px,14vh,180px)] 2xl:pb-20"
+      aria-label="SHAWQ Signature Collection"
+      className="relative overflow-hidden bg-[#EAE6DF] pt-20 pb-16 md:pt-28 md:pb-20 lg:pt-36 lg:pb-24 select-none"
     >
-      {/* ===== TOP: label + product name ===== */}
-      <div className="mb-0.5 px-6 text-center sm:mb-1 md:mb-[clamp(4px,1vh,12px)] xl:mb-[clamp(6px,1.2vh,16px)] 2xl:mb-[clamp(8px,1.5vh,20px)]">
+      {/* Dynamic Luxury Ambient Glow */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-1000"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.6) 0%, rgba(234,230,223,0) 70%)",
+        }}
+      />
+
+      {/* ===== TOP: Header Section ===== */}
+      <div className="relative z-10 mb-8 px-6 text-center md:mb-12">
         <span
-          className="text-[9px] uppercase tracking-[0.22em] sm:text-[10px] sm:tracking-[0.26em] xl:text-[11px] xl:tracking-[0.3em]"
+          className="block text-xs font-semibold uppercase tracking-[0.45em] sm:text-sm md:text-base lg:text-lg mb-2"
           style={{ fontFamily: "var(--font-body)", color: RED }}
         >
-          Extrait de Parfum — 50 ml
+          Signature Collection
         </span>
+
         <h2
-          ref={nameRef}
-          className="mt-[2px] text-[1.2rem] uppercase tracking-[0.22em] text-black sm:mt-[4px] sm:text-[1.35rem] sm:tracking-[0.28em] md:text-[clamp(1.4rem,2.6vw,2rem)] md:tracking-[0.3em] lg:text-[clamp(1.5rem,2.8vw,2.4rem)] xl:text-[clamp(1.6rem,3vw,2.6rem)] xl:tracking-[0.35em] 2xl:text-[clamp(1.8rem,2.8vw,3rem)]"
-          style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
+          className="text-3xl font-light uppercase tracking-[0.2em] text-[#0F0A08] sm:text-5xl md:text-6xl lg:text-7xl"
+          style={{ fontFamily: "var(--font-serif)" }}
         >
-          {info.name}
+          Four Expressions
         </h2>
+
+        <p
+          className="mt-3 text-[10px] uppercase tracking-[0.35em] text-black/50 sm:text-xs md:text-sm"
+          style={{ fontFamily: "var(--font-body)" }}
+        >
+          One Identity
+        </p>
       </div>
 
-      {/* ===== STAGE: centered carousel, blurred ghosts ===== */}
-      <div className="relative">
+      {/* ===== STAGE: Centered Carousel ===== */}
+      <div className="relative z-10">
         <Swiper
           modules={[Autoplay, Keyboard]}
           slidesPerView={1.35}
           centeredSlides
           loop
           grabCursor
-          speed={900}
-          spaceBetween={20}
+          speed={950}
+          spaceBetween={24}
+          onSwiper={(s) => (swiperRef.current = s)}
           keyboard={{ enabled: true, onlyInViewport: true }}
           autoplay={
             reduced
               ? false
               : {
-                  delay: 3500,
+                  delay: 4000,
                   disableOnInteraction: false,
                   pauseOnMouseEnter: true,
                 }
           }
           breakpoints={{
-            576: { slidesPerView: 1.8, spaceBetween: 28 },
-            992: { slidesPerView: 2.4, spaceBetween: 36 },
-            1280: { slidesPerView: 3, spaceBetween: 48 },
-            1600: { slidesPerView: 3.4, spaceBetween: 60 },
+            576: { slidesPerView: 1.8, spaceBetween: 32 },
+            992: { slidesPerView: 2.4, spaceBetween: 40 },
+            1280: { slidesPerView: 3, spaceBetween: 52 },
+            1600: { slidesPerView: 3.4, spaceBetween: 64 },
           }}
           onSlideChange={onSlideChange}
-          style={{
-            overflow: "visible",
-          }} /* = .swiper { overflow: visible !important } */
+          style={{ overflow: "visible" }}
         >
-          {/* Doubled slides → real ghosts on both sides in loop mode (same as showcase.js) */}
           {[...PRODUCTS, ...PRODUCTS].map((p, i) => (
             <SwiperSlide key={`${p.name}-${i}`} className="flex justify-center">
-              <img
-                src={p.image}
-                alt={`${p.name} — Extrait de Parfum`}
-                loading="lazy"
-                className={`
-                  w-[78vw] h-[58vw] object-contain
-                  sm:w-[min(100%,340px)] sm:h-[40vh]
-                  md:w-[min(100%,380px)] md:h-[42vh]
-                  lg:w-[min(100%,420px)] lg:h-[clamp(260px,44vh,440px)]
-                  xl:w-[min(100%,480px)] xl:h-[clamp(260px,46vh,480px)]
-                  2xl:w-[min(100%,520px)] 2xl:h-[clamp(300px,50vh,520px)]
-                  blur-[10px] sm:blur-[16px] opacity-45 sm:opacity-40 scale-90
-                  transition-[filter,opacity,transform] duration-[800ms]
-                  will-change-[filter,opacity,transform]
-                  [.swiper-slide-active_&]:blur-none [.swiper-slide-active_&]:opacity-100 [.swiper-slide-active_&]:scale-100
-                `}
-                style={{ transitionTimingFunction: LUX_EASE }}
-              />
+              <div className="relative flex flex-col items-center justify-center">
+                <img
+                  src={p.image}
+                  alt={`${p.name} — Extrait de Parfum`}
+                  loading="lazy"
+                  className={`
+                    w-[78vw] h-[58vw] object-contain
+                    sm:w-[min(100%,340px)] sm:h-[40vh]
+                    md:w-[min(100%,380px)] md:h-[42vh]
+                    lg:w-[min(100%,420px)] lg:h-[clamp(260px,44vh,440px)]
+                    xl:w-[min(100%,480px)] xl:h-[clamp(260px,46vh,480px)]
+                    2xl:w-[min(100%,520px)] 2xl:h-[clamp(300px,50vh,520px)]
+                    blur-[12px] opacity-35 scale-90
+                    transition-all duration-[900ms]
+                    will-change-[filter,opacity,transform]
+                    [.swiper-slide-active_&]:blur-none [.swiper-slide-active_&]:opacity-100 [.swiper-slide-active_&]:scale-100
+                    [.swiper-slide-active_&]:drop-shadow-[0_25px_35px_rgba(0,0,0,0.18)]
+                  `}
+                  style={{ transitionTimingFunction: LUX_EASE }}
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* ===== BOTTOM: family + notes + CTA + progress ===== */}
-      <div className="mt-6 px-6 text-center sm:mt-[34px] md:mt-[clamp(24px,5vh,60px)] xl:mt-[clamp(28px,6vh,70px)] 2xl:mt-[clamp(36px,7vh,90px)]">
+      {/* ===== BOTTOM: Interactive Details ===== */}
+      <div className="relative z-10 mt-8 px-6 text-center md:mt-12">
         <p
           ref={familyRef}
-          className="text-[9px] uppercase tracking-[0.22em] text-black sm:text-[10px] sm:tracking-[0.26em] xl:text-[11px] xl:tracking-[0.3em] 2xl:text-[12px]"
+          className="text-xs uppercase tracking-[0.3em] font-medium text-[#0F0A08] sm:text-sm md:text-base"
           style={{ fontFamily: "var(--font-body)" }}
         >
           {info.family}
         </p>
+
         <p
           ref={notesRef}
-          className="mt-1.5 text-[12px] text-black/50 sm:text-[13px] xl:text-[14px] 2xl:text-[15px]"
+          className="mt-2 text-xs font-light text-black/60 sm:text-sm md:text-base"
           style={{
             fontFamily: "var(--font-body)",
-            letterSpacing: "0.03em",
-            lineHeight: 1.6,
+            letterSpacing: "0.05em",
           }}
         >
           {info.notes}
@@ -213,27 +222,33 @@ export default function ShowcaseSection() {
         <Link
           ref={shopRef}
           href="/shop"
-          className="mt-5 inline-block border border-black bg-black px-7 py-3 text-[10px] uppercase tracking-[0.22em] text-white transition-colors duration-300 hover:border-[#c41e3a] hover:bg-[#c41e3a] sm:mt-[26px] sm:px-11 sm:py-4 sm:text-[11px] sm:tracking-[0.3em] 2xl:px-[52px] 2xl:py-[18px] 2xl:text-[12px]"
+          className="mt-7 inline-block rounded-full border border-[#0F0A08] bg-[#0F0A08] px-9 py-4 text-xs font-medium uppercase tracking-[0.3em] text-[#FAF8F3] transition-all duration-500 hover:border-[#C73234] hover:bg-[#C73234] hover:shadow-[0_10px_25px_rgba(199,50,52,0.25)] sm:px-12 sm:py-4 sm:text-xs"
           style={{ fontFamily: "var(--font-body)" }}
         >
-          Shop {info.name}
+          Explore {info.name}
         </Link>
 
-        {/* Segmented progress */}
+        {/* Interactive Segmented Progress Bar */}
         <div
-          className="mt-7 flex justify-center gap-1 sm:mt-[34px] sm:gap-1.5 xl:mt-11 2xl:mt-[52px]"
-          aria-hidden="true"
+          className="mt-10 flex justify-center items-center gap-2 sm:gap-3"
+          aria-label="Carousel Navigation"
         >
           {PRODUCTS.map((p, i) => (
-            <span
+            <button
               key={p.name}
-              className="relative block h-0.5 w-8 overflow-hidden bg-[rgba(17,17,17,0.15)] sm:w-10 md:w-11 lg:w-[50px] xl:w-14 2xl:w-16"
+              onClick={() => swiperRef.current?.slideToLoop(i)}
+              className="group relative py-2"
+              aria-label={`Go to slide ${i + 1}`}
             >
-              <span
-                className={`absolute inset-0 origin-left bg-[#c41e3a] transition-transform duration-500 ${i === active ? "scale-x-100" : "scale-x-0"}`}
-                style={{ transitionTimingFunction: LUX_EASE }}
-              />
-            </span>
+              <span className="relative block h-[3px] w-8 overflow-hidden rounded-full bg-black/15 transition-all duration-300 group-hover:bg-black/30 sm:w-12 md:w-16">
+                <span
+                  className={`absolute inset-0 origin-left bg-[#C73234] transition-transform duration-500 ${
+                    i === active ? "scale-x-100" : "scale-x-0"
+                  }`}
+                  style={{ transitionTimingFunction: LUX_EASE }}
+                />
+              </span>
+            </button>
           ))}
         </div>
       </div>
