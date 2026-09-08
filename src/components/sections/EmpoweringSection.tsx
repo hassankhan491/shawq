@@ -142,7 +142,7 @@ export default function EmpoweringSection() {
     <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-[#0f0a08]">
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/woman2.jpeg')" }}
+        style={{ backgroundImage: "url('/images/empower-bg.jpeg')" }}
       />
 
       <div className="absolute inset-0 z-0 bg-[#0f0a08]/50" />
