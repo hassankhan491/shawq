@@ -21,115 +21,76 @@ export default function HeroSection() {
     const section = sectionRef.current;
     if (!section) return;
 
-    let tl: gsap.core.Timeline | null = null;
-
     const ctx = gsap.context(() => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const isMobile = vw < 640;
+      const mm = gsap.matchMedia();
 
-      tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: isMobile ? "+=1200" : "+=1800",
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
+      // DESKTOP
+      mm.add("(min-width: 640px)", () => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
 
-          onEnter: () => {
-            window.dispatchEvent(
-              new CustomEvent("hero-state", { detail: { active: true } }),
-            );
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=1450",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            onEnter: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
+            onLeave: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
+            onEnterBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
+            onLeaveBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
           },
-          onLeave: () => {
-            window.dispatchEvent(
-              new CustomEvent("hero-state", { detail: { active: false } }),
-            );
-          },
-          onEnterBack: () => {
-            window.dispatchEvent(
-              new CustomEvent("hero-state", { detail: { active: true } }),
-            );
-          },
-          onLeaveBack: () => {
-            window.dispatchEvent(
-              new CustomEvent("hero-state", { detail: { active: false } }),
-            );
-          },
-        },
+        });
+
+        tl.to(fadeRef.current, { opacity: 0, y: -40, duration: 0.5, ease: "power1.out" }, 0.35)
+          .to(line1Ref.current, { x: "-45vw", opacity: 0, duration: 1, ease: "power2.inOut" }, 0)
+          .to(line2Ref.current, { x: "45vw", opacity: 0, duration: 1, ease: "power2.inOut" }, 0)
+          .to(videoWrapRef.current, { width: Math.round(vw * 0.9), height: Math.round(vh * 0.88), borderRadius: 16, duration: 1.6, ease: "power2.inOut" }, 0.1)
+          .to(bgRef.current, { opacity: 0.25, scale: 1.08, duration: 1.6, ease: "power2.inOut" }, 0.1);
       });
 
-      // 1) Caption/CTA pehle fade out
-      tl.to(
-        fadeRef.current,
-        { opacity: 0, y: -40, duration: 0.4, ease: "power1.out" },
-        0,
-      );
+      // MOBILE
+      mm.add("(max-width: 639px)", () => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
 
-      // 2) Text lines sides par split - mobile par poori bahar
-      tl.to(
-        line1Ref.current,
-        {
-          x: isMobile ? "-110vw" : "-45vw",
-          opacity: 0,
-          duration: 1,
-          ease: "power2.inOut",
-        },
-        0,
-      );
-      tl.to(
-        line2Ref.current,
-        {
-          x: isMobile ? "110vw" : "45vw",
-          opacity: 0,
-          duration: 1,
-          ease: "power2.inOut",
-        },
-        0,
-      );
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=900",
+            scrub: 0.8,
+            pin: true,
+            anticipatePin: 1,
+            onEnter: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
+            onLeave: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
+            onEnterBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: true } })),
+            onLeaveBack: () => window.dispatchEvent(new CustomEvent("hero-state", { detail: { active: false } })),
+          },
+        });
 
-      // 3) PX-based video expansion - mobile par controlled
-      tl.to(
-        videoWrapRef.current,
-        {
-          width: Math.round(vw * (isMobile ? 0.92 : 0.9)),
-          height: Math.round(vh * (isMobile ? 0.7 : 0.88)),
-          borderRadius: 16,
-          duration: 1.6,
-          ease: "power2.inOut",
-        },
-        0.1,
-      );
+        tl.to(fadeRef.current, { opacity: 0, y: -30, duration: 0.45, ease: "power1.out" }, 0.3)
+          .to(line1Ref.current, { x: "-110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" }, 0)
+          .to(line2Ref.current, { x: "110vw", opacity: 0, duration: 0.95, ease: "power2.inOut" }, 0)
+          .to(videoWrapRef.current, { width: Math.round(vw * 0.88), height: Math.round(vh * 0.62), borderRadius: 14, duration: 1.45, ease: "power2.inOut" }, 0.1)
+          .to(bgRef.current, { opacity: 0.25, scale: 1.06, duration: 1.45, ease: "power2.inOut" }, 0.1);
+      });
 
-      // 4) Background dark taake video star lage
-      tl.to(
-        bgRef.current,
-        { opacity: 0.25, scale: 1.08, duration: 1.6, ease: "power2.inOut" },
-        0.1,
-      );
+      return () => mm.revert();
     }, section);
 
-    return () => {
-      try {
-        if (tl) {
-          tl.scrollTrigger?.kill();
-          tl.kill();
-        }
-        ctx.revert();
-      } catch (err) {
-        // cleanup error ignore - dev HMR safe
-      }
-    };
+    return () => ctx.revert();
   }, []);
 
-  // ✅ Mobile par background crop fix (bottle wali side dikhe)
+  // Responsive background positioning
   useEffect(() => {
     const setBg = () => {
-      if (bgRef.current) {
-        bgRef.current.style.backgroundPosition =
-          window.innerWidth < 640 ? "75% center" : "center 30%";
-      }
+      if (!bgRef.current) return;
+      const width = window.innerWidth;
+      bgRef.current.style.backgroundPosition =
+        width < 640 ? "75% center" : width < 1024 ? "60% 30%" : "center 30%";
     };
     setBg();
     window.addEventListener("resize", setBg);
@@ -143,29 +104,29 @@ export default function HeroSection() {
       className="relative h-screen overflow-hidden bg-[#0f0a08]"
       style={{
         marginTop: `-${HEADER_HEIGHT}px`,
-        height: `calc(100vh + ${HEADER_HEIGHT}px)`,
+        height: `calc(100svh + ${HEADER_HEIGHT}px)`,
       }}
     >
       {/* Background Image */}
       <div
         ref={bgRef}
-        className="absolute inset-0 bg-[url('/images/new.png')] bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-[url('/images/new.png')] bg-cover bg-no-repeat will-change-transform"
         style={{ backgroundPosition: "center 30%" }}
       />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0f0a08]/80 via-[#0f0a08]/30 to-[#0f0a08]/80" />
 
-      {/* ✅ Content area - shifted upward to center everything */}
+      {/* Content Container */}
       <div
         className="absolute left-0 right-0 flex flex-col items-center justify-center"
-        style={{ 
+        style={{
           top: `${HEADER_HEIGHT}px`,
           bottom: 0,
-          transform: 'translateY(-8%)', // ✅ Moves ALL content up together
+          transform: "translateY(-8%)",
         }}
       >
-        {/* ✅ Video Card - ORIGINAL dimensions restored */}
+        {/* Video Card */}
         <div
           ref={videoWrapRef}
           className="absolute inset-0 m-auto z-10 w-[260px] h-[360px] sm:w-[300px] sm:h-[420px] md:w-[380px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
@@ -176,65 +137,70 @@ export default function HeroSection() {
             muted
             loop
             playsInline
+            preload="metadata"
             className="w-full h-full object-cover"
           />
         </div>
 
-        {/* ✅ Heading - centered with video */}
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
-          <div
-            ref={line1Ref}
-            className="font-serif text-5xl md:text-7xl font-light text-[#f5f0eb] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
-          >
-            Discover Your
+        {/* Main Hero Headings & Branding */}
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none text-center">
+          <div className="absolute top-[12%] flex flex-col items-center gap-1 uppercase">
+            <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.4em] font-medium">
+              SHAWQ
+            </span>
+            <span className="text-[#e8e0d5]/80 text-[8px] sm:text-[9px] tracking-[0.35em]">
+              FRAGRANCE HOUSE
+            </span>
           </div>
-          <div
-            ref={line2Ref}
-            className="font-serif text-5xl md:text-7xl font-light italic text-[#c9a962] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]"
-          >
-            Signature Scent
+
+          <div className="flex flex-col items-center leading-[0.95] px-5">
+            <div
+              ref={line1Ref}
+              className="font-serif font-light text-[clamp(2.7rem,8vw,7rem)] text-[#f5f0eb] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] whitespace-nowrap"
+            >
+              Find the Scent
+            </div>
+            <div
+              ref={line2Ref}
+              className="font-serif font-light italic text-[clamp(2.7rem,8vw,7rem)] text-[#c9a962] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] whitespace-nowrap"
+            >
+              That Becomes You
+            </div>
           </div>
         </div>
 
-        {/* ✅ Bottom Caption + CTA */}
+        {/* Bottom CTA / Intro */}
         <div className="absolute inset-x-0 bottom-[5vh] z-20 flex justify-center">
-          <div
-            ref={fadeRef}
-            className="flex flex-col items-center gap-4 text-center px-6"
-          >
+          <div ref={fadeRef} className="flex flex-col items-center gap-4 text-center px-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-px bg-[#c9a962]" />
-              <span className="text-[#c9a962] text-xs tracking-[0.3em] uppercase font-medium">
+              <div className="w-10 sm:w-12 h-px bg-[#c9a962]" />
+              <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium">
                 Shawq Fragrance
               </span>
-              <div className="w-12 h-px bg-[#c9a962]" />
+              <div className="w-10 sm:w-12 h-px bg-[#c9a962]" />
             </div>
 
-            {/* ✅ Brighter text on mobile */}
             <p
-  className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium"
-  style={{
-    fontFamily: "var(--font-body)",
-    fontSize: "16px",
-    letterSpacing: "0.03em",
-  }}
->
-  Experience the essence of craftsmanship through our exclusive
-  collection of oud, amber, and rare botanicals.
-</p>
+              className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium"
+              style={{
+                fontFamily: "var(--font-body)",
+                letterSpacing: "0.03em",
+              }}
+            >
+              Distinctive compositions of oud, amber and rare botanicals — made to linger beyond the moment.
+            </p>
 
-            {/* ✅ More prominent button on mobile */}
             <Link
               href="/products"
-              className="inline-block px-8 sm:px-10 py-3.5 border-2 border-[#c9a962] text-white sm:text-[#c9a962] font-medium text-sm tracking-[0.2em] uppercase bg-[#c9a962]/10 sm:bg-transparent hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
+              className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-[#c9a962] text-[#f5f0eb] sm:text-[#c9a962] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase bg-[#c9a962]/10 sm:bg-transparent hover:bg-[#c9a962] hover:text-[#0f0a08] transition-all duration-300"
             >
               Explore Collection
             </Link>
 
-            {/* ✅ Brighter scroll text on mobile */}
-            <span className="text-[#e8e0d5] sm:text-[#a89f95]/80 text-[11px] sm:text-[10px] tracking-[0.3em] uppercase animate-pulse font-medium">
-              Scroll to Explore
-            </span>
+            <div className="flex items-center gap-2 text-[#e8e0d5]/80 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-medium">
+              <span>Scroll to Discover</span>
+              <span className="text-[#c9a962] animate-bounce text-sm">↓</span>
+            </div>
           </div>
         </div>
       </div>

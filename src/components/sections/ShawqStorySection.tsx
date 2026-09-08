@@ -1,4 +1,3 @@
-// components/sections/BrandManifesto.tsx
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -7,201 +6,203 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* SHAWQ palette */
 const C = {
   red: "#C73234",
-  black: "#111111",
-  cream: "#F4EFE7",
-  white: "#FAF8F3",
-  brown: "#3A2722",
-  burgundy: "#5E1A22",
-  deepRed: "#6B1E2A",
-  dark: "#160F0D",
+  black: "#0D0907",
+  burgundy: "#2E0E12",
+  deepRed: "#4A131B",
+  gold: "#C9A962",
+  goldGlow: "rgba(201, 169, 98, 0.15)",
 };
 
-export default function ShawqScrollExperience() {
+export default function ShawqStorySection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
+  const bgMeshRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
 
-  const firstRef = useRef<HTMLDivElement>(null);
-  const statementRef = useRef<HTMLDivElement>(null);
+  // Content Blocks
+  const block1Ref = useRef<HTMLDivElement>(null);
+  const block2Ref = useRef<HTMLDivElement>(null);
+  const block4Ref = useRef<HTMLDivElement>(null);
+
+  // Block 3 Elements
+  const noteHeaderRef = useRef<HTMLDivElement>(null);
   const noteTopRef = useRef<HTMLDivElement>(null);
   const noteHeartRef = useRef<HTMLDivElement>(null);
   const noteBaseRef = useRef<HTMLDivElement>(null);
-  const finalTitleRef = useRef<HTMLHeadingElement>(null);
-  const finalTagRef = useRef<HTMLParagraphElement>(null);
-  const finalMetaRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLButtonElement>(null);
 
+  // Rig & 3D Lighting Elements
   const rigRef = useRef<HTMLDivElement>(null);
-  const bottleRef = useRef<HTMLDivElement>(null);
+  const bottleContainerRef = useRef<HTMLDivElement>(null);
+  const bottleImgRef = useRef<HTMLImageElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
-
-  const decorARef = useRef<HTMLDivElement>(null);
-  const decorBRef = useRef<HTMLDivElement>(null);
-  const decorCRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduceMq.matches) {
-      section.dataset.reduced = "true";
-      return;
-    }
+    if (reduceMq.matches) return;
 
     const mm = gsap.matchMedia();
 
-    const build = (desktop: boolean) => {
-      const rig = rigRef.current!;
-      const bottle = bottleRef.current!;
-      const shadow = shadowRef.current!;
+    // Subtle continuous luxury floating physics for the bottle
+    const floatTween = gsap.to(bottleImgRef.current, {
+      y: "-=12",
+      rotationZ: "+=1.5",
+      duration: 3.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
 
-      /* ---------- initial states ---------- */
-      gsap.set(rig, {
-        xPercent: -50,
-        yPercent: -50,
-        x: 0,
-        y: desktop ? "34vh" : "28vh",
-      });
-      gsap.set(bottle, { scale: 0.72, rotationZ: 0 });
-      gsap.set(shadow, { opacity: 0, scaleX: 0.5 });
-      gsap.set(firstRef.current, {
-        opacity: 0,
-        y: "8vh",
-        clipPath: "inset(0 0 100% 0)",
-      });
-      gsap.set(statementRef.current, { opacity: 0, y: "12vh", scale: 1.15 });
-      gsap.set([noteTopRef.current, noteHeartRef.current, noteBaseRef.current], {
-        opacity: 0,
-        x: desktop ? "6vw" : 0,
-        y: desktop ? 0 : "6vh",
-      });
-      gsap.set(finalTitleRef.current, { clipPath: "inset(0 0 100% 0)" });
-      gsap.set([finalTagRef.current, finalMetaRef.current], {
-        y: "3vh",
-        opacity: 0,
-      });
-      gsap.set(ctaRef.current, { y: "4vh", opacity: 0 });
+    mm.add(
+      {
+        isDesktop: "(min-width: 768px)",
+        isMobile: "(max-width: 767px)",
+      },
+      (context) => {
+        const { isDesktop } = context.conditions as { isDesktop: boolean };
 
-      /* ---------- master timeline ---------- */
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.inOut" },
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: `+=${desktop ? 5200 : 3200}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const i = Math.min(4, Math.floor(self.progress * 4) + 1);
-            if (counterRef.current)
-              counterRef.current.textContent = `0${i} / 04`;
+        const rig = rigRef.current!;
+        const bottleContainer = bottleContainerRef.current!;
+        const shadow = shadowRef.current!;
+        const bgMesh = bgMeshRef.current!;
+
+        /* ---------- Initial States (Clean Offsets) ---------- */
+        gsap.set(rig, {
+          xPercent: -50,
+          yPercent: -50,
+          x: 0,
+          y: isDesktop ? "-10vh" : "-12vh",
+        });
+        gsap.set(bottleContainer, { scale: isDesktop ? 0.9 : 0.8, rotationZ: 0 });
+        gsap.set(shadow, { opacity: 0.35, scaleX: 0.6, scaleY: 0.6 });
+
+        gsap.set([block1Ref.current, block2Ref.current, block4Ref.current], {
+          opacity: 0,
+          y: "30px",
+          rotateX: -10,
+        });
+
+        gsap.set(
+          [noteHeaderRef.current, noteTopRef.current, noteHeartRef.current, noteBaseRef.current],
+          {
+            opacity: 0,
+            x: isDesktop ? "40px" : 0,
+            y: isDesktop ? 0 : "30px",
+          }
+        );
+
+        /* ---------- Master Cinematic Timeline ---------- */
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.inOut" },
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: `+=${isDesktop ? 4800 : 3600}`,
+            scrub: 1.2, // Smoother inertia scroll
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const step = Math.min(4, Math.floor(self.progress * 4) + 1);
+              if (counterRef.current) {
+                counterRef.current.textContent = `0${step} / 04`;
+              }
+            },
           },
-        },
-      });
+        });
 
-      /* ============================================================
-         01 — REVEAL: bottle rises as the line speaks
-         ============================================================ */
-      tl.to(rig, { y: 0, duration: 1.2, ease: "power2.out" }, 0)
-        .to(bottle, { scale: 1, duration: 1.2 }, 0)
-        .to(shadow, { opacity: 0.55, scaleX: 1, duration: 0.9 }, 0.2)
-        .to(bgRef.current, { backgroundColor: C.burgundy, duration: 1.4, ease: "none" }, 0)
-        .to(rig, { y: desktop ? "-18vh" : "-16vh", duration: 0.6 }, 1.0)
-        .to(
-          firstRef.current,
-          { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", duration: 1.0, ease: "power3.out" },
-          1.2
+        /* ============================================================
+           01 — UNVEILING: SHAWQ IS THE SCENT
+           ============================================================ */
+        tl.to(
+          bgMesh,
+          {
+            background: `radial-gradient(circle at 50% 30%, ${C.burgundy} 0%, ${C.black} 75%)`,
+            duration: 1,
+          },
+          0
         )
-        .to(firstRef.current, { opacity: 0, y: "-8vh", duration: 0.5 }, 2.0)
-        .to(rig, { y: 0, duration: 0.5 }, 2.2)
-        .to(bgRef.current, { backgroundColor: C.cream, duration: 1, ease: "none" }, 2.2)
+          .to(rig, { y: isDesktop ? "-8vh" : "-10vh", duration: 1 }, 0)
+          .to(bottleContainer, { scale: isDesktop ? 1 : 0.85, duration: 1 }, 0)
+          .to(block1Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 0.2)
+          .to(block1Ref.current, { opacity: 0, y: "20px", duration: 0.5 }, 1.2);
 
-      /* ============================================================
-         02 — STATEMENT above the bottle + subtle tilt
-         ============================================================ */
-        .to(bottle, { scale: 1.06, rotationZ: -5, duration: 0.6 }, 2.6)
-        .to(rig, { y: "-2vh", duration: 0.8 }, 2.6)
-        .to(
-          statementRef.current,
-          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" },
-          2.6
+        /* ============================================================
+           02 — PHILOSOPHY: FRAGRANCE IS IDENTITY
+           ============================================================ */
+        tl.to(
+          bgMesh,
+          {
+            background: `radial-gradient(circle at 50% 60%, #1c080a 0%, ${C.black} 80%)`,
+            duration: 1,
+          },
+          1.5
         )
-        .to(bottle, { rotationZ: 0, duration: 0.8 }, 3.4)
-        .to(statementRef.current, { opacity: 0, y: "-10vh", duration: 0.6 }, 4.0)
+          .to(rig, { y: isDesktop ? "10vh" : "8vh", duration: 1 }, 1.5)
+          .to(
+            bottleContainer,
+            { scale: isDesktop ? 1.08 : 0.95, rotationZ: -2, duration: 1 },
+            1.5
+          )
+          .to(shadow, { opacity: 0.6, scaleX: 1.15, duration: 1 }, 1.5)
+          .to(block2Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 1.7)
+          .to(block2Ref.current, { opacity: 0, y: "-20px", duration: 0.5 }, 2.7)
+          .to(bottleContainer, { rotationZ: 0, duration: 0.5 }, 2.7);
 
-      /* ============================================================
-         03 — NOTES: bottle left, numbered rows right
-         ============================================================ */
-        .to(rig, { x: desktop ? "-20vw" : 0, y: desktop ? "2vh" : "-18vh", duration: 0.8 }, 4.2)
-        .to(bottle, { scale: desktop ? 0.9 : 0.75, duration: 0.8 }, 4.2)
-        .to(bgRef.current, { backgroundColor: C.deepRed, duration: 1.2, ease: "none" }, 4.2)
-        .to(
-          noteTopRef.current,
-          { opacity: 1, x: 0, y: 0, duration: 0.9, ease: "power3.out" },
-          4.4
+        /* ============================================================
+           03 — OLFACTORY CRAFT: STAGGERED NOTES REVEAL
+           ============================================================ */
+        tl.to(
+          bgMesh,
+          {
+            background: `radial-gradient(circle at 30% 50%, ${C.deepRed} 0%, ${C.black} 80%)`,
+            duration: 1,
+          },
+          3.0
         )
-        .to(
-          noteHeartRef.current,
-          { opacity: 1, x: 0, y: 0, duration: 0.9, ease: "power3.out" },
+          .to(rig, { x: isDesktop ? "-22vw" : 0, y: isDesktop ? "0" : "-16vh", duration: 1 }, 3.0)
+          .to(bottleContainer, { scale: isDesktop ? 0.85 : 0.7, duration: 1 }, 3.0)
+          // Staggered Note Rows
+          .to(noteHeaderRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.1)
+          .to(noteTopRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.3)
+          .to(noteHeartRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.5)
+          .to(noteBaseRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.7)
+          // Clean Exit
+          .to(
+            [noteHeaderRef.current, noteTopRef.current, noteHeartRef.current, noteBaseRef.current],
+            {
+              opacity: 0,
+              x: isDesktop ? "-20px" : 0,
+              duration: 0.5,
+              stagger: 0.08,
+            },
+            4.5
+          );
+
+        /* ============================================================
+           04 — IMPRESSION: A SCENT THAT REMAINS
+           ============================================================ */
+        tl.to(
+          bgMesh,
+          {
+            background: `radial-gradient(circle at 50% 40%, ${C.burgundy} 0%, ${C.black} 85%)`,
+            duration: 1,
+          },
           4.8
         )
-        .to(
-          noteBaseRef.current,
-          { opacity: 1, x: 0, y: 0, duration: 0.9, ease: "power3.out" },
-          5.2
-        )
-        .to([noteTopRef.current, noteHeartRef.current, noteBaseRef.current], {
-          opacity: 0,
-          x: desktop ? "-4vw" : 0,
-          duration: 0.5,
-        }, 5.6)
-
-      /* ============================================================
-         04 — FINAL: bottle high, full stack below
-         ============================================================ */
-        .to(rig, { x: 0, y: desktop ? "-18vh" : "-22vh", duration: 0.8 }, 5.8)
-        .to(bottle, { scale: desktop ? 0.85 : 0.75, duration: 0.8 }, 5.8)
-        .to(shadow, { scaleX: 1.05, opacity: 0.5, duration: 0.8 }, 5.8)
-        .to(bgRef.current, { backgroundColor: C.black, duration: 1.2, ease: "none" }, 5.8)
-        .to(
-          finalTitleRef.current,
-          { clipPath: "inset(0 0 0% 0)", duration: 1.2, ease: "power3.out" },
-          6.2
-        )
-        .to(finalTagRef.current, { y: 0, opacity: 1, duration: 1.0, ease: "power3.out" }, 6.5)
-        .to(finalMetaRef.current, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 6.8)
-        .to(ctaRef.current, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 7.0)
-        .set({}, {}, 7.6);
-
-      /* parallax decor */
-      tl.to(decorARef.current, { y: "-6vh", duration: 7.6, ease: "none" }, 0)
-        .to(decorBRef.current, { y: "8vh", duration: 7.6, ease: "none" }, 0)
-        .to(decorCRef.current, { y: "-12vh", duration: 7.6, ease: "none" }, 0);
-
-      return () => {
-        tl.kill();
-      };
-    };
-
-    mm.add("(min-width: 768px)", () => build(true));
-    mm.add("(max-width: 767px)", () => build(false));
-
-    const onReduce = (e: MediaQueryListEvent) => {
-      if (e.matches) {
-        mm.revert();
-        section.dataset.reduced = "true";
+          .to(rig, { x: 0, y: isDesktop ? "-14vh" : "-16vh", duration: 1 }, 4.8)
+          .to(bottleContainer, { scale: isDesktop ? 0.85 : 0.72, duration: 1 }, 4.8)
+          .to(shadow, { opacity: 0.4, scaleX: 0.9, duration: 1 }, 4.8)
+          .to(block4Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 5.0)
+          .set({}, {}, 5.8);
       }
-    };
-    reduceMq.addEventListener("change", onReduce);
+    );
 
     return () => {
-      reduceMq.removeEventListener("change", onReduce);
+      floatTween.kill();
       mm.revert();
     };
   }, []);
@@ -209,191 +210,204 @@ export default function ShawqScrollExperience() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen overflow-hidden"
-      style={{ backgroundColor: C.cream }}
-      aria-label="SHAWQ fragrance story"
+      className="relative h-screen overflow-hidden text-[#FAF8F3] select-none"
+      style={{ backgroundColor: C.black }}
+      aria-label="Shawq Fragrance Story"
     >
-      <div ref={bgRef} className="absolute inset-0" style={{ backgroundColor: C.cream }} />
+      {/* Dynamic Lighting & Atmospheric Radial Canvas */}
+      <div
+        ref={bgMeshRef}
+        className="absolute inset-0 transition-all duration-700 ease-out will-change-[background]"
+        style={{
+          background: `radial-gradient(circle at 50% 30%, ${C.burgundy} 0%, ${C.black} 75%)`,
+        }}
+      />
 
-      {/* editorial decor */}
-      <div ref={decorARef} className="absolute left-6 top-24 z-40 mix-blend-difference md:left-10 md:top-28">
-        <span ref={counterRef} className="block text-xs tracking-[0.35em] text-white/60">01 / 04</span>
-        <span className="mt-2 block text-[10px] tracking-[0.35em] text-white/40">SHAWQ FRAGRANCES</span>
-      </div>
-      <div ref={decorBRef} className="absolute right-6 top-1/2 z-40 hidden -translate-y-1/2 rotate-90 md:block mix-blend-difference">
-        <span className="text-[10px] tracking-[0.5em] text-white/40">EXTRAIT DE PARFUM</span>
-      </div>
-      <div ref={decorCRef} aria-hidden="true" className="absolute inset-0 z-[5] mix-blend-difference">
-        <div className="absolute right-16 top-16 h-24 w-px bg-white/20" />
-        <div className="absolute bottom-16 left-16 h-px w-24 bg-white/20" />
-        <div className="absolute right-24 bottom-24 h-3 w-3 rounded-full border border-white/30" />
-      </div>
-
-      {/* 02 — STATEMENT above the bottle */}
-      <div ref={statementRef} className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center px-4">
-        <p
-          className="text-center text-[11vw] leading-[0.95] md:text-[8vw]"
-          style={{
-            fontFamily: "var(--font-serif)",
-            color: C.black,
-            textShadow: "0 2px 30px rgba(244,239,231,0.55)",
-          }}
+      {/* Persistent Corner Details */}
+      <div className="absolute left-6 top-8 z-40 mix-blend-difference md:left-12 md:top-10">
+        <span
+          ref={counterRef}
+          className="block font-mono text-xs font-medium tracking-[0.35em] text-[#C9A962]"
         >
-          NOT JUST A FRAGRANCE.
-        </p>
-        <p
-          className="mt-2 text-center text-[11vw] leading-[0.95] md:text-[8vw]"
-          style={{
-            fontFamily: "var(--font-serif)",
-            color: C.red,
-            textShadow: "0 2px 30px rgba(244,239,231,0.55)",
-          }}
-        >
-          AN IDENTITY.
-        </p>
+          01 / 04
+        </span>
+        <span className="mt-1 block text-[9px] font-light tracking-[0.4em] text-white/50 uppercase">
+          Shawq Fragrances
+        </span>
       </div>
 
-      {/* 01 — REVEAL line */}
-      <div ref={firstRef} className="pointer-events-none absolute inset-0 z-20 flex items-end justify-center px-4 pb-[8vh]">
-        <p
-          className="text-center text-4xl md:text-6xl"
-          style={{
-            fontFamily: "var(--font-serif)",
-            color: C.cream,
-            textShadow: "0 2px 20px rgba(0,0,0,0.4)",
-          }}
-        >
-          THE FIRST IMPRESSION
-        </p>
+      <div className="absolute right-6 top-8 z-40 mix-blend-difference md:right-12 md:top-10 text-right">
+        <span className="block text-[9px] font-light tracking-[0.4em] text-white/50 uppercase">
+          Extrait De Parfum
+        </span>
+        <span className="mt-1 block font-mono text-[9px] tracking-[0.2em] text-[#C9A962]/80">
+          50ML / 1.7 FL. OZ.
+        </span>
       </div>
 
-      {/* 03 — NOTES numbered rows */}
-      <div className="pointer-events-none absolute inset-x-6 bottom-[10vh] z-20 space-y-6 md:inset-x-auto md:bottom-auto md:right-[7vw] md:top-1/2 md:-translate-y-1/2 md:space-y-10">
-        <div ref={noteTopRef} className="flex items-end gap-4 md:justify-end">
-          <span
-            className="text-4xl font-black leading-none md:text-6xl"
-            style={{ fontFamily: "var(--font-body)", color: "transparent", WebkitTextStroke: `1.5px ${C.red}` }}
-          >
-            01
-          </span>
-          <div>
-            <p className="mb-1 text-[10px] tracking-[0.4em] text-white/50">TOP NOTES</p>
-            <p className="text-xl md:text-2xl" style={{ fontFamily: "var(--font-serif)", color: C.cream }}>
-              BERGAMOT · SAFFRON
-            </p>
-          </div>
-        </div>
-        <div ref={noteHeartRef} className="flex items-end gap-4 md:mr-12 md:justify-end">
-          <span
-            className="text-4xl font-black leading-none md:text-6xl"
-            style={{ fontFamily: "var(--font-body)", color: "transparent", WebkitTextStroke: `1.5px ${C.red}` }}
-          >
-            02
-          </span>
-          <div>
-            <p className="mb-1 text-[10px] tracking-[0.4em] text-white/50">HEART</p>
-            <p className="text-xl md:text-2xl" style={{ fontFamily: "var(--font-serif)", color: C.cream }}>
-              ROSE · IRIS
-            </p>
-          </div>
-        </div>
-        <div ref={noteBaseRef} className="flex items-end gap-4 md:mr-4 md:justify-end">
-          <span
-            className="text-4xl font-black leading-none md:text-6xl"
-            style={{ fontFamily: "var(--font-body)", color: "transparent", WebkitTextStroke: `1.5px ${C.red}` }}
-          >
-            03
-          </span>
-          <div>
-            <p className="mb-1 text-[10px] tracking-[0.4em] text-white/50">BASE</p>
-            <p className="text-xl md:text-2xl" style={{ fontFamily: "var(--font-serif)", color: C.cream }}>
-              OUD · AMBER · MUSK
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* 04 — FINAL stack below the raised bottle */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-[5vh] z-30 flex flex-col items-center px-4 text-center">
+      {/* 01 — THIS IS SHAWQ */}
+      <div
+        ref={block1Ref}
+        className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
+      >
+        <span className="text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase mb-2">
+          01 — Unveiling
+        </span>
         <h2
-          ref={finalTitleRef}
-          className="text-[13vw] leading-[0.9] md:text-[6.5vw]"
-          style={{ fontFamily: "var(--font-serif)", color: C.red }}
+          className="text-4xl font-light tracking-wide md:text-7xl"
+          style={{ fontFamily: "var(--font-serif)" }}
         >
-          SHAWQ
+          SHAWQ IS THE SCENT
         </h2>
+        <p className="mt-3 max-w-md text-xs font-light tracking-[0.22em] text-[#F4EFE7]/70 uppercase md:text-sm">
+          An invisible statement of identity, tailored for those who leave an undeniable mark.
+        </p>
+      </div>
+
+      {/* 02 — FRAGRANCE IS IDENTITY */}
+      <div
+        ref={block2Ref}
+        className="pointer-events-none absolute inset-x-0 top-[10vh] z-30 flex flex-col items-center px-4 text-center md:top-[12vh] [perspective:1000px]"
+      >
+        <span className="text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase mb-2">
+          02 — Philosophy
+        </span>
         <p
-          ref={finalTagRef}
-          className="mt-3 text-2xl md:text-3xl"
-          style={{
-            fontFamily: "var(--font-serif)",
-            color: C.cream,
-            textShadow: "0 2px 18px rgba(17,17,17,0.55)",
-          }}
+          className="text-[9vw] leading-[0.92] tracking-tight md:text-[6.5vw]"
+          style={{ fontFamily: "var(--font-serif)" }}
         >
-          THE SCENT THAT STAYS.
+          FRAGRANCE IS
         </p>
         <p
-          ref={finalMetaRef}
-          className="mt-3 text-[11px] tracking-[0.45em] text-white/70"
-          style={{ textShadow: "0 1px 12px rgba(17,17,17,0.6)" }}
+          className="text-[9vw] leading-[0.92] text-[#C73234] italic md:text-[6.5vw]"
+          style={{ fontFamily: "var(--font-serif)" }}
         >
-          EXTRAIT DE PARFUM 50 ML
+          IDENTITY.
         </p>
-        <button
-          ref={ctaRef}
-          className="group pointer-events-auto mt-6 border border-white/40 bg-black/40 px-10 py-4 text-[11px] tracking-[0.35em] text-white backdrop-blur-sm transition-colors duration-300 hover:border-[#C73234] hover:bg-[#C73234]"
+      </div>
+
+      {/* 03 — HOW SHAWQ CREATES THAT IDENTITY */}
+      <div className="pointer-events-none absolute inset-x-6 bottom-[8vh] z-30 space-y-6 md:inset-x-auto md:bottom-auto md:right-[8vw] md:top-1/2 md:-translate-y-1/2 md:space-y-8">
+        <div ref={noteHeaderRef} className="mb-2 md:text-right">
+          <span className="text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase">
+            03 — The Olfactory Craft
+          </span>
+        </div>
+
+        <div
+          ref={noteTopRef}
+          className="group flex items-center gap-5 border-b border-white/10 pb-3 md:justify-end md:border-b-0 md:pb-0"
         >
-          DISCOVER THE FRAGRANCE
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">01</span>
+          <div className="md:text-right">
+            <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
+              Top Accent
+            </p>
+            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+              Bergamot · Pink Pepper
+            </p>
+          </div>
+        </div>
+
+        <div
+          ref={noteHeartRef}
+          className="group flex items-center gap-5 border-b border-white/10 pb-3 md:justify-end md:border-b-0 md:pb-0"
+        >
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">02</span>
+          <div className="md:text-right">
+            <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
+              Heart Core
+            </p>
+            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+              Damask Rose · Saffron
+            </p>
+          </div>
+        </div>
+
+        <div ref={noteBaseRef} className="group flex items-center gap-5 md:justify-end">
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">03</span>
+          <div className="md:text-right">
+            <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
+              Base Trail
+            </p>
+            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+              Aged Oud · Amber · Vanilla
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 04 — THE FEELING WE WANT YOU TO REMEMBER */}
+      <div
+        ref={block4Ref}
+        className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
+      >
+        <span className="text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase mb-2">
+          04 — The Impression
+        </span>
+        <h3
+          className="text-3xl leading-tight md:text-6xl font-light"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          A Scent That Remains
+        </h3>
+        <p className="mt-2 max-w-sm text-xs font-light tracking-[0.2em] text-white/70 uppercase md:text-sm">
+          Long after you leave the room.
+        </p>
+
+        <button className="pointer-events-auto mt-8 relative group overflow-hidden rounded-full border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]">
+          <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
+            Explore The Signature
+          </span>
+          <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
         </button>
       </div>
 
-      {/* BOTTLE RIG */}
+      {/* Stage Rig & Bottle Assembly */}
       <div
         ref={rigRef}
         className="absolute left-1/2 top-1/2 z-20 will-change-transform"
         style={{ transform: "translate(-50%, -50%)" }}
       >
-        <div className="absolute left-1/2 top-full -translate-x-1/2">
+        {/* Dynamic Floor Projection Shadow */}
+        <div className="absolute left-1/2 top-[92%] -translate-x-1/2 pointer-events-none">
           <div
             ref={shadowRef}
-            className="h-10 w-[70vw] max-w-[420px] rounded-[100%] md:h-12"
+            className="h-10 w-[55vw] max-w-[340px] rounded-[100%] md:h-12"
             style={{
-              background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, transparent 70%)",
-              filter: "blur(18px)",
+              background:
+                "radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 75%)",
+              filter: "blur(12px)",
             }}
           />
         </div>
-        <div ref={bottleRef} className="will-change-transform" style={{ perspective: "1200px", transformStyle: "preserve-3d" }}>
+
+        {/* Scalable Container for GSAP Scroll Scaling */}
+        <div ref={bottleContainerRef} className="will-change-transform">
+          {/* Floating Element targeted by GSAP idle Physics */}
           <img
+            ref={bottleImgRef}
             src="/images/shawq-bottle2.png"
-            alt="SHAWQ extrait de parfum bottle"
-            className="block h-auto w-[52vw] max-w-[340px] select-none md:w-[30vw] md:max-w-[480px]"
+            alt="Shawq Extrait de Parfum Bottle"
+            className="block h-auto w-[48vw] max-w-[300px] select-none drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)] md:w-[26vw] md:max-w-[420px]"
             draggable={false}
           />
         </div>
       </div>
 
-      <p className="absolute bottom-5 left-1/2 z-40 -translate-x-1/2 text-[10px] tracking-[0.5em] text-white/40 mix-blend-difference">
-        SCROLL
-      </p>
-
-      {/* film grain */}
+      {/* Tactical Film Grain & Vignette Overlay */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-50 opacity-[0.04] mix-blend-overlay"
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
         }}
       />
-
-      {/* ♿ reduced-motion */}
-      <style>{`
-        [data-reduced="true"] { height: auto !important; overflow: visible !important; }
-        [data-reduced="true"] > * { position: relative !important; inset: auto !important; transform: none !important; opacity: 1 !important; clip-path: none !important; }
-        [data-reduced="true"] .pointer-events-none { pointer-events: auto !important; }
-      `}</style>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-40 bg-[radial-gradient(circle_at_center,transparent_60%,rgba(0,0,0,0.4)_100%)]"
+      />
     </section>
   );
 }
