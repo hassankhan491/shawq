@@ -276,14 +276,14 @@ export default function HeroSection() {
             </p>
 
             <Link
-  href="/products"
-  className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-[#C9A962] bg-[#0D0907]/60 text-[#C9A962] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase rounded-none relative group overflow-hidden backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
->
-  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
-    Explore the Signature
-  </span>
-  <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
-</Link>
+              href="/products"
+              className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-[#C9A962] bg-[#0D0907]/60 text-[#C9A962] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase rounded-none relative group overflow-hidden backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
+            >
+              <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
+                Explore the Signature
+              </span>
+              <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
+            </Link>
 
             <div className="flex items-center gap-2 text-[#e8e0d5]/80 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-medium">
               <span>Scroll to Discover</span>

@@ -264,7 +264,7 @@ export default function HeroGalleryScroll() {
 
             {/* Secondary Button (Keeps the Slide-Up Animation) */}
             <Link
-              href="/our-story"
+              href="/about"
               className="pointer-events-auto relative group overflow-hidden flex min-h-[48px] items-center justify-center border border-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] rounded-none bg-transparent leading-none transition-all duration-500 ease-out hover:border-[#C9A962]"
               style={{ fontFamily: "var(--font-body)" }}
             >
