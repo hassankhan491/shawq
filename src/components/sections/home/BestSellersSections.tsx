@@ -9,24 +9,21 @@ const collectionProducts = [
     category: "FLORAL EDITIONS",
     name: "MIDNIGHT JASMINE SPRAY",
     price: "$299.00",
-    image:
-      "/images/NB-13.png",
+    image: "/images/NB-13.png",
   },
   {
     id: 2,
     category: "ESSENTIALS",
     name: "AMBER NOIR EXTRACT",
     price: "$279.00",
-    image:
-      "/images/NB-12.png",
+    image: "/images/NB-12.png",
   },
   {
     id: 3,
     category: "LIMITED EDITION",
     name: "GOLDEN MUSK ESSENCE",
     price: "$199.00",
-    image:
-      "/images/NB-14.png",
+    image: "/images/NB-14.png",
   },
 ];
 
@@ -239,40 +236,46 @@ export default function ProductGrid() {
                 />
 
                 {/* VIEW DETAILS */}
-                <button
+                <a
+                  href={`/products/${product.id}`}
                   ref={(el) => {
-                    buttonRefs.current[index] = el;
+                    buttonRefs.current[index] =
+                      el as unknown as HTMLButtonElement;
                   }}
                   className="
-                    absolute
-                    bottom-6
-                    left-1/2
-                    z-10
-                    -translate-x-1/2
-                    whitespace-nowrap
-                    rounded-full
-                    border
-                    border-black/10
-                    bg-white
-                    px-6
-                    py-3
-                    text-[9px]
-                    uppercase
-                    tracking-[0.16em]
-                    text-[#171311]
-                    shadow-[0_4px_20px_rgba(0,0,0,0.12)]
+                      absolute
+                      bottom-6
+                      left-1/2
+                      z-10
+                      -translate-x-1/2
+                      whitespace-nowrap
+                      rounded-full
+                      border
+                      border-black/10
+                      bg-white
+                      px-6
+                      py-3
+                      text-[9px]
+                      uppercase
+                      tracking-[0.16em]
+                      text-[#171311]
+                      shadow-[0_4px_20px_rgba(0,0,0,0.12)]
+                      transition-all
+                      duration-300
+                      hover:bg-[#F5F0E8]
+                      hover:shadow-[0_6px_25px_rgba(0,0,0,0.18)]
 
-                    sm:bottom-7
-                    sm:px-8
-                    sm:py-3.5
-                    sm:text-[10px]
-                  "
+                      sm:bottom-7
+                      sm:px-8
+                      sm:py-3.5
+                      sm:text-[10px]
+                    "
                   style={{
-                    fontFamily: 'var(--font-body)',
+                    fontFamily: "var(--font-body)",
                   }}
                 >
                   VIEW DETAILS
-                </button>
+                </a>
               </div>
 
               {/* PRODUCT INFO */}

@@ -1,50 +1,29 @@
-"use client";
-
-import { useEffect } from "react";
-import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+// app/layout.tsx
+import type { Metadata } from "next";
 import "./globals.css";
-import Preloader from "@/components/layout/Preloader";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SmoothScroll from "@/components/SmoothScroll"; // Import the new component
 
-gsap.registerPlugin(ScrollTrigger);
+export const metadata: Metadata = {
+  title: "SHAWQ Fragrance House",
+  description: "Find the scent that becomes you",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    });
-
-    // ✅ Official Lenis ↔ GSAP ScrollTrigger sync
-    lenis.on("scroll", () => ScrollTrigger.update());
-
-    const tick = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(tick);
-      lenis.destroy();
-    };
-  }, []);
-
   return (
     <html lang="en">
-      <body
-        className="antialiased bg-white text-black"
-        suppressHydrationWarning
-      >
-        <Preloader />
-        <Header />
-        <main>{children}</main>
-        <Footer />
+      {/* suppressHydrationWarning prevents errors if Lenis adds attributes before React hydrates */}
+      <body className="antialiased bg-black text-white" suppressHydrationWarning>
+        <SmoothScroll>
+          <Header />
+          <main key="main-content" className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

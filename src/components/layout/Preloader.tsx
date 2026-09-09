@@ -1,37 +1,44 @@
+// components/layout/Preloader.tsx
 "use client";
 
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
 export default function Preloader() {
   const pathname = usePathname();
   
-  // Check if we are on the home page AND if it hasn't already played this session
-  const [done, setDone] = useState(() => {
-    if (typeof window === "undefined") return true;
-    
-    // If not on home page, skip preloader immediately
-    if (pathname !== "/") return true;
-
-    // Check if preloader has already run during this browser session
-    const hasPlayed = sessionStorage.getItem("shawq_preloaded");
-    return hasPlayed === "true";
-  });
+  // ✅ FIX 1: Start as 'true' to perfectly match Server-Side Rendering
+  const [done, setDone] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const countRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (done || pathname !== "/") {
+  // ✅ FIX 2: Handle mount and pathname changes safely after hydration
+  useEffect(() => {
+    setMounted(true);
+
+    // If not on home page, keep it done
+    if (pathname !== "/") {
       setDone(true);
       return;
     }
 
-    // Mark as played in session storage so it won't run again on refresh/navigation
+    const hasPlayed = sessionStorage.getItem("shawq_preloaded");
+    if (hasPlayed === "true") {
+      setDone(true);
+    } else {
+      setDone(false); // Trigger preloader ONLY on first visit to home
+    }
+  }, [pathname]);
+
+  useLayoutEffect(() => {
+    // Only run animation logic if mounted, not done, and on home page
+    if (!mounted || done || pathname !== "/") return;
+
     sessionStorage.setItem("shawq_preloaded", "true");
 
-    // 1. Respect user's reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);
       return;
@@ -42,7 +49,7 @@ export default function Preloader() {
     document.body.style.overflow = "hidden";
 
     let isTimelineStarted = false;
-    let ctx: gsap.Context;
+    let ctx: gsap.Context | null = null;
     let rafId: number;
     let safetyTimeout: NodeJS.Timeout;
 
@@ -51,7 +58,6 @@ export default function Preloader() {
       isTimelineStarted = true;
       clearTimeout(safetyTimeout);
 
-      // Defer GSAP setup to prevent mount-phase layout jank
       rafId = requestAnimationFrame(() => {
         ctx = gsap.context(() => {
           const counter = { v: 0 };
@@ -64,7 +70,6 @@ export default function Preloader() {
             },
           });
 
-          // 2. Let GSAP handle will-change automatically via force3D
           gsap.set(".ld-title span", { yPercent: 115, opacity: 0, force3D: true });
           gsap.set(".ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", { opacity: 0, force3D: true });
           gsap.set(".ld-line", { scaleX: 0, transformOrigin: "left center", force3D: true });
@@ -98,7 +103,6 @@ export default function Preloader() {
       });
     };
 
-    // 3. Robust Image Preloading with Async Decoding
     const imgSrc = window.innerWidth < 768 ? "/images/loader-mob.jpg" : "/images/loader.webp";
     const img = new Image();
     img.src = imgSrc;
@@ -112,7 +116,7 @@ export default function Preloader() {
         console.warn("Image decode failed, starting anyway", e);
       }
       
-      if (document.fonts.status === "loading") {
+      if (document.fonts && document.fonts.status === "loading") {
         await document.fonts.ready;
       }
 
@@ -128,16 +132,20 @@ export default function Preloader() {
 
     safetyTimeout = setTimeout(initPreloader, 1500);
 
+    // ✅ FIX 3: Robust cleanup to prevent removeChild errors on navigation
     return () => {
       clearTimeout(safetyTimeout);
       cancelAnimationFrame(rafId);
-      ctx?.revert();
+      if (ctx) {
+        ctx.revert(); // Safely kills all GSAP animations in this context
+      }
       document.body.style.overflow = "";
       lenis?.start();
     };
-  }, [done, pathname]);
+  }, [done, pathname, mounted]);
 
-  if (done) return null;
+  // ✅ FIX 4: Render nothing on server, and on client until we confirm we need it
+  if (!mounted || done) return null;
 
   return (
     <div

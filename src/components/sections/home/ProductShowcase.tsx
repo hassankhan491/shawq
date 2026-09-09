@@ -379,7 +379,7 @@ export default function ProductShowcase() {
                   </p>
 
                   {/* BUTTON */}
-                  <Link
+                  <a
                     href="/products"
                     className="
                     product-button
@@ -414,7 +414,7 @@ export default function ProductShowcase() {
                     }}
                   >
                     Quick View
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

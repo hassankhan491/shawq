@@ -254,16 +254,16 @@ export default function HeroGalleryScroll() {
           </p>
 
           <div className="pointer-events-auto mt-8 flex flex-col items-center gap-4 sm:flex-row">
-            <Link
+            <a
               href="/products"
               className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] bg-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0F0A08] rounded-none leading-none transition-all duration-500 ease-out hover:bg-[#DFC27B] hover:shadow-lg"
               style={{ fontFamily: "var(--font-body)" }}
             >
               Explore Collection
-            </Link>
+            </a>
 
             {/* Secondary Button (Keeps the Slide-Up Animation) */}
-            <Link
+            <a
               href="/about"
               className="pointer-events-auto relative group overflow-hidden flex min-h-[48px] items-center justify-center border border-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] rounded-none bg-transparent leading-none transition-all duration-500 ease-out hover:border-[#C9A962]"
               style={{ fontFamily: "var(--font-body)" }}
@@ -272,7 +272,7 @@ export default function HeroGalleryScroll() {
                 Our Story
               </span>
               <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
-            </Link>
+            </a>
           </div>
         </motion.div>
       </div>

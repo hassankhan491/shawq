@@ -77,7 +77,10 @@ export default function ShawqStorySection() {
           x: 0,
           y: isDesktop ? "-10vh" : "-12vh",
         });
-        gsap.set(bottleContainer, { scale: isDesktop ? 0.9 : 0.8, rotationZ: 0 });
+        gsap.set(bottleContainer, {
+          scale: isDesktop ? 0.9 : 0.8,
+          rotationZ: 0,
+        });
         gsap.set(shadow, { opacity: 0.35, scaleX: 0.6, scaleY: 0.6 });
 
         gsap.set([block1Ref.current, block2Ref.current, block4Ref.current], {
@@ -87,12 +90,17 @@ export default function ShawqStorySection() {
         });
 
         gsap.set(
-          [noteHeaderRef.current, noteTopRef.current, noteHeartRef.current, noteBaseRef.current],
+          [
+            noteHeaderRef.current,
+            noteTopRef.current,
+            noteHeartRef.current,
+            noteBaseRef.current,
+          ],
           {
             opacity: 0,
             x: isDesktop ? "40px" : 0,
             y: isDesktop ? 0 : "30px",
-          }
+          },
         );
 
         /* ---------- Master Cinematic Timeline ---------- */
@@ -124,11 +132,15 @@ export default function ShawqStorySection() {
             background: `radial-gradient(circle at 50% 30%, ${C.burgundy} 0%, ${C.black} 75%)`,
             duration: 1,
           },
-          0
+          0,
         )
           .to(rig, { y: isDesktop ? "-8vh" : "-10vh", duration: 1 }, 0)
           .to(bottleContainer, { scale: isDesktop ? 1 : 0.85, duration: 1 }, 0)
-          .to(block1Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 0.2)
+          .to(
+            block1Ref.current,
+            { opacity: 1, y: 0, rotateX: 0, duration: 0.8 },
+            0.2,
+          )
           .to(block1Ref.current, { opacity: 0, y: "20px", duration: 0.5 }, 1.2);
 
         /* ============================================================
@@ -140,16 +152,20 @@ export default function ShawqStorySection() {
             background: `radial-gradient(circle at 50% 60%, #1c080a 0%, ${C.black} 80%)`,
             duration: 1,
           },
-          1.5
+          1.5,
         )
           .to(rig, { y: isDesktop ? "10vh" : "8vh", duration: 1 }, 1.5)
           .to(
             bottleContainer,
             { scale: isDesktop ? 1.08 : 0.95, rotationZ: -2, duration: 1 },
-            1.5
+            1.5,
           )
           .to(shadow, { opacity: 0.6, scaleX: 1.15, duration: 1 }, 1.5)
-          .to(block2Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 1.7)
+          .to(
+            block2Ref.current,
+            { opacity: 1, y: 0, rotateX: 0, duration: 0.8 },
+            1.7,
+          )
           .to(block2Ref.current, { opacity: 0, y: "-20px", duration: 0.5 }, 2.7)
           .to(bottleContainer, { rotationZ: 0, duration: 0.5 }, 2.7);
 
@@ -162,25 +178,58 @@ export default function ShawqStorySection() {
             background: `radial-gradient(circle at 30% 50%, ${C.deepRed} 0%, ${C.black} 80%)`,
             duration: 1,
           },
-          3.0
+          3.0,
         )
-          .to(rig, { x: isDesktop ? "-22vw" : 0, y: isDesktop ? "0" : "-16vh", duration: 1 }, 3.0)
-          .to(bottleContainer, { scale: isDesktop ? 0.85 : 0.7, duration: 1 }, 3.0)
+          .to(
+            rig,
+            {
+              x: isDesktop ? "-22vw" : 0,
+              y: isDesktop ? "0" : "-16vh",
+              duration: 1,
+            },
+            3.0,
+          )
+          .to(
+            bottleContainer,
+            { scale: isDesktop ? 0.85 : 0.7, duration: 1 },
+            3.0,
+          )
           // Staggered Note Rows
-          .to(noteHeaderRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.1)
-          .to(noteTopRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.3)
-          .to(noteHeartRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.5)
-          .to(noteBaseRef.current, { opacity: 1, x: 0, y: 0, duration: 0.5 }, 3.7)
+          .to(
+            noteHeaderRef.current,
+            { opacity: 1, x: 0, y: 0, duration: 0.5 },
+            3.1,
+          )
+          .to(
+            noteTopRef.current,
+            { opacity: 1, x: 0, y: 0, duration: 0.5 },
+            3.3,
+          )
+          .to(
+            noteHeartRef.current,
+            { opacity: 1, x: 0, y: 0, duration: 0.5 },
+            3.5,
+          )
+          .to(
+            noteBaseRef.current,
+            { opacity: 1, x: 0, y: 0, duration: 0.5 },
+            3.7,
+          )
           // Clean Exit
           .to(
-            [noteHeaderRef.current, noteTopRef.current, noteHeartRef.current, noteBaseRef.current],
+            [
+              noteHeaderRef.current,
+              noteTopRef.current,
+              noteHeartRef.current,
+              noteBaseRef.current,
+            ],
             {
               opacity: 0,
               x: isDesktop ? "-20px" : 0,
               duration: 0.5,
               stagger: 0.08,
             },
-            4.5
+            4.5,
           );
 
         /* ============================================================
@@ -192,14 +241,22 @@ export default function ShawqStorySection() {
             background: `radial-gradient(circle at 50% 40%, ${C.burgundy} 0%, ${C.black} 85%)`,
             duration: 1,
           },
-          4.8
+          4.8,
         )
           .to(rig, { x: 0, y: isDesktop ? "-14vh" : "-16vh", duration: 1 }, 4.8)
-          .to(bottleContainer, { scale: isDesktop ? 0.85 : 0.72, duration: 1 }, 4.8)
+          .to(
+            bottleContainer,
+            { scale: isDesktop ? 0.85 : 0.72, duration: 1 },
+            4.8,
+          )
           .to(shadow, { opacity: 0.4, scaleX: 0.9, duration: 1 }, 4.8)
-          .to(block4Ref.current, { opacity: 1, y: 0, rotateX: 0, duration: 0.8 }, 5.0)
+          .to(
+            block4Ref.current,
+            { opacity: 1, y: 0, rotateX: 0, duration: 0.8 },
+            5.0,
+          )
           .set({}, {}, 5.8);
-      }
+      },
     );
 
     return () => {
@@ -261,7 +318,8 @@ export default function ShawqStorySection() {
           SHAWQ IS THE SCENT
         </h2>
         <p className="mt-3 max-w-md text-xs font-light tracking-[0.22em] text-[#F4EFE7]/70 uppercase md:text-sm">
-          An invisible statement of identity, tailored for those who leave an undeniable mark.
+          An invisible statement of identity, tailored for those who leave an
+          undeniable mark.
         </p>
       </div>
 
@@ -299,12 +357,17 @@ export default function ShawqStorySection() {
           ref={noteTopRef}
           className="group flex items-center gap-5 border-b border-white/10 pb-3 md:justify-end md:border-b-0 md:pb-0"
         >
-          <span className="font-mono text-xl text-[#C73234] md:text-2xl">01</span>
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">
+            01
+          </span>
           <div className="md:text-right">
             <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
               Top Accent
             </p>
-            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+            <p
+              className="text-lg md:text-2xl font-light"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
               Bergamot · Pink Pepper
             </p>
           </div>
@@ -314,24 +377,37 @@ export default function ShawqStorySection() {
           ref={noteHeartRef}
           className="group flex items-center gap-5 border-b border-white/10 pb-3 md:justify-end md:border-b-0 md:pb-0"
         >
-          <span className="font-mono text-xl text-[#C73234] md:text-2xl">02</span>
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">
+            02
+          </span>
           <div className="md:text-right">
             <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
               Heart Core
             </p>
-            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+            <p
+              className="text-lg md:text-2xl font-light"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
               Damask Rose · Saffron
             </p>
           </div>
         </div>
 
-        <div ref={noteBaseRef} className="group flex items-center gap-5 md:justify-end">
-          <span className="font-mono text-xl text-[#C73234] md:text-2xl">03</span>
+        <div
+          ref={noteBaseRef}
+          className="group flex items-center gap-5 md:justify-end"
+        >
+          <span className="font-mono text-xl text-[#C73234] md:text-2xl">
+            03
+          </span>
           <div className="md:text-right">
             <p className="text-[9px] font-medium tracking-[0.35em] text-white/40 uppercase">
               Base Trail
             </p>
-            <p className="text-lg md:text-2xl font-light" style={{ fontFamily: "var(--font-serif)" }}>
+            <p
+              className="text-lg md:text-2xl font-light"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
               Aged Oud · Amber · Vanilla
             </p>
           </div>
@@ -340,34 +416,34 @@ export default function ShawqStorySection() {
 
       {/* 04 — THE FEELING WE WANT YOU TO REMEMBER */}
       <div
-  ref={block4Ref}
-  className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
->
-  <span className="mb-2 text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase">
-    04 — The Impression
-  </span>
+        ref={block4Ref}
+        className="pointer-events-none absolute inset-x-0 bottom-[8vh] z-30 flex flex-col items-center px-6 text-center md:bottom-[10vh] [perspective:1000px]"
+      >
+        <span className="mb-2 text-xs font-medium tracking-[0.45em] text-[#C9A962] uppercase">
+          04 — The Impression
+        </span>
 
-  <h3
-    className="text-3xl font-light leading-tight md:text-6xl"
-    style={{ fontFamily: "var(--font-serif)" }}
-  >
-    A Scent That Remains
-  </h3>
+        <h3
+          className="text-3xl font-light leading-tight md:text-6xl"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          A Scent That Remains
+        </h3>
 
-  <p className="mt-2 max-w-sm text-xs font-light tracking-[0.2em] text-white/70 uppercase md:text-sm">
-    Long after you leave the room.
-  </p>
+        <p className="mt-2 max-w-sm text-xs font-light tracking-[0.2em] text-white/70 uppercase md:text-sm">
+          Long after you leave the room.
+        </p>
 
- <Link
-  href="/products"
-  className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
->
-  <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
-    Explore The Signature
-  </span>
-  <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
-</Link>
-</div>
+        <a
+          href="/products"
+          className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
+        >
+          <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
+            Explore The Signature
+          </span>
+          <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
+        </a>
+      </div>
 
       {/* Stage Rig & Bottle Assembly */}
       <div

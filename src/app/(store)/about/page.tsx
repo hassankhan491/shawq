@@ -1,3 +1,4 @@
+
 import { Metadata } from "next";
 import SmoothScroll from "@/components/SmoothScroll";
 import AboutHero from "@/components/sections/about/AboutHero";
@@ -26,7 +27,7 @@ export default function AboutPage() {
     <SmoothScroll>
       <CursorGlow />
 
-      <main className="bg-[#F5F0E8]">
+      <main className="bg-[#0d0c0a] text-[#F5F0E8]">
         <AboutHero />
         <HouseIntro />
         <StoryChapters />
