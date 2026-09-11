@@ -1,6 +1,20 @@
 "use client";
-
+import { motion, Variants } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
+
+// Fix: Explicitly type variants and cast ease as tuple
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      delay: 0.4 + i * 0.1,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  }),
+};
 
 export default function HouseIntro() {
   return (
