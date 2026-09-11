@@ -74,8 +74,8 @@ export default function HeroSection() {
           .to(
             videoWrapRef.current,
             {
-              width: Math.round(vw * 0.9),
-              height: Math.round(vh * 0.88),
+              width: Math.round(vw * 0.75),
+              height: Math.round(vh * 0.72),
               borderRadius: 16,
               duration: 1.6,
               ease: "power2.inOut",
@@ -139,8 +139,8 @@ export default function HeroSection() {
           .to(
             videoWrapRef.current,
             {
-              width: Math.round(vw * 0.88),
-              height: Math.round(vh * 0.62),
+              width: Math.round(vw * 0.85),
+              height: Math.round(vh * 0.55),
               borderRadius: 14,
               duration: 1.45,
               ease: "power2.inOut",
@@ -204,13 +204,13 @@ export default function HeroSection() {
         style={{
           top: `${HEADER_HEIGHT}px`,
           bottom: 0,
-          transform: "translateY(-8%)",
+          transform: "translateY(-4%)",
         }}
       >
-        {/* Video Card */}
+        {/* Video Card - Reduced size and anchored higher to leave room for bottom text */}
         <div
           ref={videoWrapRef}
-          className="absolute inset-0 m-auto z-10 w-[260px] h-[360px] sm:w-[300px] sm:h-[420px] md:w-[380px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
+          className="absolute left-1/2 top-[10%] -translate-x-1/2 z-10 w-[220px] h-[320px] sm:w-[260px] sm:h-[360px] md:w-[320px] md:h-[440px] rounded-2xl overflow-hidden shadow-2xl shadow-black/60 will-change-transform"
         >
           <video
             src="/videos/main-hero-video.mp4"
@@ -226,46 +226,39 @@ export default function HeroSection() {
         {/* Main Hero Headings & Branding */}
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none text-center">
           <div className="absolute top-[12%] flex flex-col items-center gap-1 uppercase">
-            <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.4em] font-medium">
+            <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.4em] font-medium mix-blend-difference">
               SHAWQ
             </span>
-            <span className="text-[#e8e0d5]/80 text-[8px] sm:text-[9px] tracking-[0.35em]">
+            <span className="text-[#e8e0d5]/90 text-[8px] sm:text-[9px] tracking-[0.35em] mix-blend-difference">
               FRAGRANCE HOUSE
             </span>
           </div>
 
           <div className="flex flex-col items-center leading-[0.95] px-5">
+            {/* Added mix-blend-difference for dynamic contrast over the video */}
             <div
               ref={line1Ref}
-              className="font-serif font-light text-[clamp(2.7rem,8vw,7rem)] text-[#f5f0eb] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] whitespace-nowrap"
+              className="font-serif font-light text-[clamp(2.4rem,6.5vw,5.5rem)] text-[#f5f0eb] whitespace-nowrap mix-blend-difference"
             >
               Find the Scent
             </div>
             <div
               ref={line2Ref}
-              className="font-serif font-light italic text-[clamp(2.7rem,8vw,7rem)] text-[#c9a962] drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] whitespace-nowrap"
+              className="font-serif font-light italic text-[clamp(2.4rem,6.5vw,5.5rem)] text-[#C73234] whitespace-nowrap mix-blend-difference"
             >
               That Becomes You
             </div>
           </div>
         </div>
 
-        {/* Bottom CTA / Intro */}
-        <div className="absolute inset-x-0 bottom-[5vh] z-20 flex justify-center">
+        {/* Bottom CTA / Intro - Adjusted to sit clearly below the smaller video */}
+        <div className="absolute inset-x-0 bottom-[6vh] z-20 flex justify-center">
           <div
             ref={fadeRef}
-            className="flex flex-col items-center gap-4 text-center px-6"
+            className="flex flex-col items-center gap-5 text-center px-6 max-w-lg"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-10 sm:w-12 h-px bg-[#c9a962]" />
-              <span className="text-[#c9a962] text-[10px] sm:text-xs tracking-[0.3em] uppercase font-medium">
-                Shawq Fragrance
-              </span>
-              <div className="w-10 sm:w-12 h-px bg-[#c9a962]" />
-            </div>
-
             <p
-              className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base max-w-md leading-relaxed drop-shadow-md font-medium"
+              className="text-[#f5f0eb] sm:text-[#cfc6bc] text-sm md:text-base leading-relaxed font-medium"
               style={{
                 fontFamily: "var(--font-body)",
                 letterSpacing: "0.03em",
