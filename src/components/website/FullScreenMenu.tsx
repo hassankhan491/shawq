@@ -1,15 +1,14 @@
-// src/components/layout/FullScreenMenu.tsx
 'use client';
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface FullScreenMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// Menu Sections Data
 const menuSections = [
   {
     title: 'Shop',
@@ -49,7 +48,6 @@ const menuSections = [
   },
 ];
 
-// Right side images (Abel style)
 const menuImages = [
   {
     src: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&h=900&fit=crop',
@@ -75,20 +73,41 @@ const SearchIcon = () => (
 );
 
 export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps) {
-  // ✅ Body scroll lock when menu open
+  const router = useRouter();
+
+  // ✅ FIX 1: Delay scroll unlock to prevent layout shift during navigation
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
+    if (isOpen) {
+      // Lock scroll and compensate for scrollbar width to prevent horizontal jump
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      // Wait for the 700ms slide-up animation to finish before re-enabling scroll
+      const timer = setTimeout(() => {
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      }, 700); 
+      
+      return () => clearTimeout(timer);
+    }
   }, [isOpen]);
 
-  // ✅ Escape key se close
+  // ✅ Escape key to close
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
+
+  // ✅ FIX 2: Clean navigation handler
+  const handleNavigate = (href: string) => {
+    onClose(); // Start closing animation immediately
+    // Let Next.js <Link> handle the actual navigation, 
+    // but we ensure the menu state is updated first to prevent UI blocking
+  };
 
   return (
     <div
@@ -99,7 +118,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
     >
       <div className="h-full flex flex-col bg-[#0f0a08] overflow-y-auto">
         
-        {/* ✅ Top Bar - Abel style: CLOSE left | Logo center | Search+Cart right */}
+        {/* Top Bar */}
         <div className="relative flex items-center justify-between px-6 lg:px-12 py-6 shrink-0">
           <button
             onClick={onClose}
@@ -113,7 +132,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
             href="/"
             onClick={onClose}
             style={{ fontFamily: 'var(--font-decorative)' }}
-            className="absolute left-1/2 -translate-x-1/2 text-3xl text-[#f5f0eb]"
+            className="absolute left-1/2 -translate-x-1/2 text-3xl text-[#f5f0eb] hover:opacity-80 transition-opacity"
           >
             SHAWQ
           </Link>
@@ -132,10 +151,10 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
           </div>
         </div>
 
-        {/* ✅ Content - Links left, Images right */}
+        {/* Content */}
         <div className="flex-1 px-6 lg:px-12 pb-12 pt-8 grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20">
           
-          {/* Link Columns - staggered reveal */}
+          {/* Link Columns */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-16 max-w-3xl content-start">
             {menuSections.map((section, sIndex) => (
               <div key={section.title}>
@@ -158,8 +177,8 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
                     >
                       <Link
                         href={link.href}
-                        onClick={onClose}
-                        className="text-xs tracking-[0.2em] uppercase text-[#c9a962]/80 hover:text-[#f5f0eb] transition-colors"
+                        onClick={() => handleNavigate(link.href)}
+                        className="text-xs tracking-[0.2em] uppercase text-[#c9a962]/80 hover:text-[#f5f0eb] transition-colors inline-block"
                       >
                         {link.name}
                       </Link>
@@ -170,7 +189,7 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
             ))}
           </div>
 
-          {/* Right Images - Abel style */}
+          {/* Right Images */}
           <div className="hidden lg:flex gap-5">
             {menuImages.map((img, i) => (
               <div
@@ -183,10 +202,11 @@ export default function FullScreenMenu({ isOpen, onClose }: FullScreenMenuProps)
                 <p className="text-[10px] tracking-[0.25em] uppercase text-[#f5f0eb]/70 mb-3">
                   {img.caption}
                 </p>
-                <div className="h-[420px] xl:h-[480px] overflow-hidden">
+                <div className="h-[420px] xl:h-[480px] overflow-hidden bg-[#1a1512]">
                   <img
                     src={img.src}
                     alt={img.caption}
+                    loading="lazy"
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                   />
                 </div>
