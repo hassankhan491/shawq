@@ -243,7 +243,7 @@ export default function HeroSection() {
             </div>
             <div
               ref={line2Ref}
-              className="font-serif font-light italic text-[clamp(2.7rem,8vw,7rem)] text-[#ffffff] whitespace-nowrap"
+              className="font-serif font-light italic text-[clamp(2.7rem,8vw,7rem)] text-[#c73234] whitespace-nowrap"
             >
               That Becomes You
             </div>
@@ -251,7 +251,7 @@ export default function HeroSection() {
         </div>
 
         {/* Bottom CTA / Intro */}
-        <div className="absolute inset-x-0 bottom-[5vh] z-20 flex justify-center">
+        <div className="absolute inset-x-0 bottom-[8vh] z-20 flex justify-center">
           <div
             ref={fadeRef}
             className="flex flex-col items-center gap-4 text-center px-6"
@@ -263,7 +263,7 @@ export default function HeroSection() {
                 letterSpacing: "0.03em",
               }}
             >
-              Distinctive compositions of oud, amber and rare botanicals — made
+              Distinctive compositions of oud, amber and rare botanicals made
               to linger beyond the moment.
             </p>
 
