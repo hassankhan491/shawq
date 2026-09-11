@@ -1,128 +1,95 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, Variants } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import FadeIn from "@/components/ui/FadeIn";
 
-const slides = [
-  "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1615634260167-c8cdede054de?q=80&w=1400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=1400&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?q=80&w=1400&auto=format&fit=crop",
+const ritualTabs = [
+  {
+    title: "the gathering",
+    desc: "Where creators and collectors meet to share ideas over slow-burning aromatic resins.",
+    image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1400&auto=format&fit=crop",
+  },
+  {
+    title: "the smoke study",
+    desc: "Testing wood density and resin retention for optimal aromatic dispersion.",
+    image: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?q=80&w=1400&auto=format&fit=crop",
+  },
+  {
+    title: "the quiet hours",
+    desc: "Unwinding in the atelier after a full day of compounding raw extraits.",
+    image: "https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=1400&auto=format&fit=crop",
+  },
 ];
 
-// Fix: Cast ease array to a strict tuple type
-const cubicBezier: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
-const slideVariants: Variants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 1000 : -1000,
-    opacity: 0,
-    scale: 0.95,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: cubicBezier,
-    },
-  },
-  exit: (direction: number) => ({
-    x: direction < 0 ? 1000 : -1000,
-    opacity: 0,
-    scale: 0.95,
-    transition: {
-      duration: 0.7,
-      ease: cubicBezier,
-    },
-  }),
-};
-
 export default function BukhoorRitual() {
-  const [[index, direction], setIndex] = useState([0, 0]);
-
-  const prev = () => setIndex(([i]) => [(i - 1 + slides.length) % slides.length, -1]);
-  const next = () => setIndex(([i]) => [(i + 1) % slides.length, 1]);
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section className="bg-[#F5F0E8] px-6 py-28 sm:px-12 lg:px-24">
-      <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
-        {/* Text Column */}
-        <div>
-          <FadeIn>
-            <h2 className="font-serif text-5xl text-[#161310] sm:text-6xl">
-              bukhoor time
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <p className="mt-8 text-sm leading-[1.9] text-[#161310]/65">
-              At SHAWQ, perfume is not only about form and fragrance — it&apos;s also
-              about human connection. The bukhoor ritual is the quiet force behind
-              our creative culture: a space where ideas are exchanged, perspectives
-              are broadened, and relationships are nurtured.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="mt-6 text-sm leading-[1.9] text-[#161310]/65">
-              In a world that often moves too fast, bukhoor reminds us of the value
-              of time, presence and shared purpose — qualities reflected in every
-              bottle the house brings to life.
-            </p>
-          </FadeIn>
-        </div>
+    <section className="bg-[#11100F] px-6 py-32 text-[#F5F0E8] sm:px-12 lg:px-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-16 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-5">
+            <FadeIn>
+              <span className="text-[10px] uppercase tracking-[0.5em] text-[#C5A880]">
+                culture & tradition
+              </span>
+              <h2 className="mt-4 font-serif text-4xl sm:text-5xl">
+                the bukhoor <span className="italic text-[#C5A880]">ritual</span>
+              </h2>
+              <p className="mt-6 text-sm leading-[2] text-[#E8DED0]/70">
+                Beyond formulations, the daily bukhoor session is the heartbeat of our house. 
+                It grounds our team, clears the palate, and invites slow, meaningful dialogue.
+              </p>
+            </FadeIn>
 
-        {/* Image Slider Column */}
-        <FadeIn delay={0.15}>
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.div
-                key={index}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="absolute inset-0"
-              >
-                <Image
-                  src={slides[index]}
-                  alt={`The bukhoor ritual — frame ${index + 1}`}
-                  fill
-                  sizes="(max-width: 1024px) 92vw, 46vw"
-                  className="object-cover"
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Controls */}
-          <div className="mt-6 flex items-center justify-between">
-            <span className="text-[10px] tracking-[0.4em] text-[#161310]/50">
-              {String(index + 1).padStart(2, "0")} /{" "}
-              {String(slides.length).padStart(2, "0")}
-            </span>
-            <div className="flex gap-3">
-              <button
-                onClick={prev}
-                aria-label="Previous image"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#161310]/20 text-[#161310] transition-colors hover:bg-[#161310] hover:text-[#F5F0E8]"
-              >
-                ←
-              </button>
-              <button
-                onClick={next}
-                aria-label="Next image"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#161310]/20 text-[#161310] transition-colors hover:bg-[#161310] hover:text-[#F5F0E8]"
-              >
-                →
-              </button>
+            <div className="mt-10 flex flex-col gap-4">
+              {ritualTabs.map((tab, idx) => (
+                <button
+                  key={tab.title}
+                  onClick={() => setActiveTab(idx)}
+                  className={`flex items-center justify-between border-b pb-4 text-left transition-all ${
+                    activeTab === idx
+                      ? "border-[#C5A880] text-[#C5A880]"
+                      : "border-[#C5A880]/15 text-[#E8DED0]/40 hover:text-[#E8DED0]"
+                  }`}
+                >
+                  <span className="font-serif text-xl">{tab.title}</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em]">0{idx + 1}</span>
+                </button>
+              ))}
             </div>
           </div>
-        </FadeIn>
+
+          <div className="relative lg:col-span-7">
+            <div className="relative aspect-[16/11] w-full overflow-hidden rounded-sm bg-[#161412]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, scale: 1.03 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0"
+                >
+                  <Image
+                    src={ritualTabs[activeTab].image}
+                    alt={ritualTabs[activeTab].title}
+                    fill
+                    sizes="(max-width: 1024px) 92vw, 55vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#11100F]/70 via-transparent to-transparent" />
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <p className="text-sm text-[#E8DED0]/90">{ritualTabs[activeTab].desc}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
-} 
+}

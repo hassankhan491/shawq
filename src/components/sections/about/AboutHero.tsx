@@ -3,124 +3,85 @@
 import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutHero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const imgWrapRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
-  const scrollHintRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.8,
-        },
-      });
-
-      // Title floats up and fades
-      tl.to(
-        titleRef.current,
-        { yPercent: -80, opacity: 0, ease: "none" },
-        0
+      gsap.fromTo(
+        textRef.current,
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.4, ease: "power3.out", delay: 0.2 }
       );
-
-      // Subtitle fades faster
-      tl.to(
-        subtitleRef.current,
-        { yPercent: -40, opacity: 0, ease: "none" },
-        0
-      );
-
-      // Image scales up dramatically
-      tl.to(
+      gsap.fromTo(
         imgRef.current,
-        {
-          scale: 1.15,
-          ease: "none",
-        },
-        0
+        { scale: 1.08, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.6, ease: "power3.out", delay: 0.4 }
       );
-
-      // Image wrapper clip-path reveal (circle expands then fades)
-      tl.fromTo(
-        imgWrapRef.current,
-        { clipPath: "inset(8% round 2px)" },
-        { clipPath: "inset(0% round 0px)", ease: "none" },
-        0
-      );
-
-      // Scroll hint fades out immediately
-      tl.to(
-        scrollHintRef.current,
-        { opacity: 0, y: -20, ease: "none" },
-        0
-      );
-    }, sectionRef);
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
     <section
-      ref={sectionRef}
-      className="relative h-[250vh] bg-[#F5F0E8]"
-      aria-label="About SHAWQ Fragrances"
+      ref={containerRef}
+      className="relative min-h-screen bg-[#11100F] px-6 pt-32 pb-20 text-[#F5F0E8] sm:px-12 lg:px-24 lg:pt-40"
     >
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden px-6">
-        {/* Subtitle */}
-        <p
-          ref={subtitleRef}
-          className="text-[10px] uppercase tracking-[0.5em] text-[#9F8057] will-change-transform sm:text-[11px]"
-        >
-          shawq fragrances · est. mmxxvi
-        </p>
+      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-12">
+        {/* Left Editorial Text */}
+        <div ref={textRef} className="lg:col-span-6">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-12 bg-[#C5A880]" />
+            <span className="text-[10px] uppercase tracking-[0.5em] text-[#C5A880]">
+              est. mmxxvi · karachi
+            </span>
+          </div>
 
-        {/* Main title */}
-        <div ref={titleRef} className="mt-6 text-center will-change-transform">
-          <h1 className="font-serif text-[15vw] leading-[0.88] text-[#161310] sm:text-[11vw] lg:text-[8vw]">
-            beyond
-            <br />
-            the bottle
+          <h1 className="mt-8 font-serif text-5xl leading-[1.08] sm:text-6xl lg:text-7xl">
+            the anatomy of <span className="italic text-[#C5A880]">scent</span>
           </h1>
-        </div>
 
-        {/* Hero image with clip-path reveal */}
-        <div
-          ref={imgWrapRef}
-          className="relative mt-10 h-[38vh] w-[82vw] max-w-[620px] overflow-hidden will-change-[clip-path] sm:mt-14 sm:h-[42vh]"
-          style={{ clipPath: "inset(8% round 2px)" }}
-        >
-          <div ref={imgRef} className="absolute inset-0 will-change-transform">
-            <Image
-              src="/images/about-1.jpeg"
-              alt="SHAWQ extrait de parfum — hero"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+          <p className="mt-8 max-w-xl text-base leading-[2] text-[#E8DED0]/70">
+            SHAWQ is born from a uncompromising dedication to liquid poetry. 
+            We bypass ordinary perfumery constraints, curating private extraits 
+            that capture the depth of the East with modernist architectural precision.
+          </p>
+
+          <div className="mt-12 flex items-center gap-8">
+            <div>
+              <span className="block font-serif text-3xl text-[#C5A880]">100%</span>
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[#E8DED0]/40">independent house</span>
+            </div>
+            <div className="h-10 w-px bg-[#C5A880]/20" />
+            <div>
+              <span className="block font-serif text-3xl text-[#C5A880]">Private</span>
+              <span className="text-[10px] uppercase tracking-[0.3em] text-[#E8DED0]/40">oil reserves</span>
+            </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div
-          ref={scrollHintRef}
-          className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
-        >
-          <span className="text-[9px] uppercase tracking-[0.5em] text-[#161310]/40">
-            scroll
-          </span>
-          <div className="h-10 w-px bg-[#161310]/15">
-            <div className="h-full w-full origin-top animate-[scaleY_2s_ease-in-out_infinite] bg-[#9F8057]/60" />
+        {/* Right Floating Image Composition */}
+        <div ref={imgRef} className="relative lg:col-span-6">
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-[#1A1816] shadow-2xl">
+            <Image
+              src="/images/about-1.jpeg"
+              alt="SHAWQ luxury extrait flacon"
+              fill
+              priority
+              sizes="(max-width: 1024px) 92vw, 50vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#11100F]/60 via-transparent to-transparent" />
+          </div>
+
+          {/* Floating secondary badge box */}
+          <div className="absolute -bottom-6 -left-6 hidden rounded-sm border border-[#C5A880]/20 bg-[#161412]/90 p-6 backdrop-blur-md sm:block">
+            <p className="font-serif text-lg text-[#C5A880]">Handcrafted flacons</p>
+            <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-[#E8DED0]/50">Karachi atelier</p>
           </div>
         </div>
       </div>

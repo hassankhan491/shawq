@@ -1,53 +1,65 @@
 "use client";
-import { motion, Variants } from "framer-motion";
-import FadeIn from "@/components/ui/FadeIn";
 
-// Fix: Explicitly type variants and cast ease as tuple
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      delay: 0.4 + i * 0.1,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  }),
-};
+import { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function HouseIntro() {
+gsap.registerPlugin(ScrollTrigger);
+
+const stats = [
+  { value: 12, suffix: "", label: "signature extraits in library" },
+  { value: 50, suffix: "k+", label: "bottles hand-poured globally" },
+  { value: 3, suffix: "", label: "international flagship ateliers" },
+];
+
+export default function HouseNumbers() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const refs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      stats.forEach((s, i) => {
+        const el = refs.current[i];
+        if (!el) return;
+        const obj = { v: 0 };
+        gsap.to(obj, {
+          v: s.value,
+          duration: 2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 75%",
+            once: true,
+          },
+          onUpdate: () => {
+            el.textContent = String(Math.round(obj.v)).padStart(2, "0") + s.suffix;
+          },
+        });
+      });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="bg-[#F5F0E8] px-6 py-28 sm:px-12 lg:px-24">
-      <div className="grid gap-12 lg:grid-cols-12">
-        <FadeIn className="lg:col-span-5">
-          <h2 className="font-serif text-5xl leading-[1.05] text-[#161310] sm:text-6xl">
-            distilled
-            <br />
-            in karachi
-          </h2>
-          <div className="mt-8 h-px w-24 bg-[#9F8057]" />
-        </FadeIn>
-
-        <div className="space-y-6 text-sm leading-[1.9] text-[#161310]/65 lg:col-span-6 lg:col-start-7">
-          <FadeIn delay={0.1}>
-            <p>
-              SHAWQ is a fragrance house dedicated to creating refined, emotional
-              and enduring scents. With roots in the olfactory heritage of the
-              East, each composition reflects the clarity, balance and
-              craftsmanship that define our atelier — setting new standards for
-              perfumery born in Pakistan.
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p>
-              SHAWQ maintains one of the region&apos;s most private oil libraries —
-              aged ouds, rose attars and rare musks — and composes every
-              fragrance from first maceration to final flacon. It is recognised
-              for one clear vision: to lead the future of Eastern luxury
-              perfumery.
-            </p>
-          </FadeIn>
+    <section ref={sectionRef} className="bg-[#161412] px-6 py-28 sm:px-12 lg:px-24">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className="rounded-sm border border-[#C5A880]/15 bg-[#11100F] p-10 text-center transition-all duration-500 hover:border-[#C5A880]/40"
+            >
+              <span
+                ref={(el) => { refs.current[i] = el; }}
+                className="block font-serif text-6xl font-light text-[#C5A880] drop-shadow-[0_0_20px_rgba(197,168,128,0.15)] sm:text-7xl"
+              >
+                00{s.suffix}
+              </span>
+              <p className="mt-4 text-[10px] uppercase tracking-[0.4em] text-[#E8DED0]/50">
+                {s.label}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
