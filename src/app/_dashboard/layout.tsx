@@ -6,9 +6,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Add your dashboard sidebar, header, or other layout elements here */}
-      <main>{children}</main>
+    <div className="min-h-screen bg-white">
+      {children}
     </div>
   );
 }
