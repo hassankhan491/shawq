@@ -263,8 +263,8 @@ export default function HeroSection() {
                 letterSpacing: "0.03em",
               }}
             >
-              Distinctive compositions of oud, amber and rare botanicals made
-              to linger beyond the moment.
+              Distinctive compositions of oud, amber and rare botanicals made to
+              linger beyond the moment.
             </p>
 
             <Link
