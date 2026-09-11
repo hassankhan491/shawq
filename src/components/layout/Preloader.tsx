@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
-// Global tracking variable to detect internal page transitions vs. hard reloads/first visits
 let isFirstLoad = true;
 
 export default function Preloader() {
@@ -20,21 +19,17 @@ export default function Preloader() {
   useEffect(() => {
     setMounted(true);
 
-    // If not on home page, ensure preloader is inactive and mark that we've left home
     if (pathname !== "/") {
       setDone(true);
       isFirstLoad = false;
       return;
     }
 
-    // If we are on the homepage:
-    // If it's an internal navigation from another page (isFirstLoad is false), skip it!
     if (!isFirstLoad) {
       setDone(true);
       return;
     }
 
-    // Otherwise, it's a fresh session or a hard refresh on the home page
     setDone(false);
   }, [pathname]);
 
@@ -69,7 +64,7 @@ export default function Preloader() {
               document.body.style.overflow = "";
               lenis?.start();
               setDone(true);
-              isFirstLoad = false; // Mark first load complete for future transitions
+              isFirstLoad = false;
             },
           });
 
@@ -86,7 +81,12 @@ export default function Preloader() {
                 countRef.current.textContent = `LOADING SCENE... ${Math.round(counter.v)}%`;
               }
             },
-          })
+          }, 0)
+          .to(".ld-line-progress", {
+            scaleX: 1,
+            duration: 1.5,
+            ease: "power2.inOut",
+          }, 0) // Animate scaleX alongside the counter
           .to(".ld-content-group", {
             opacity: 0,
             y: -15,
@@ -172,7 +172,7 @@ export default function Preloader() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      {/* Central Content Layout - Fully Responsive Width & Text Scaling */}
+      {/* Central Content Layout */}
       <div className="ld-content-group relative z-10 flex flex-col items-center text-center px-4 max-w-xl sm:max-w-2xl mx-auto w-full">
         <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.35em] text-[#E8DED0]/80 font-light mb-2 sm:mb-3">
           WELCOME TO THE
@@ -185,7 +185,7 @@ export default function Preloader() {
           SHAWQ HOUSE
         </h1>
 
-        <div className="w-44 sm:w-60 flex flex-col items-center gap-2.5 sm:gap-3">
+        <div className="w-48 sm:w-64 flex flex-col items-center gap-2.5 sm:gap-3">
           <span
             ref={countRef}
             className="text-[9px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#C5A880]"
@@ -194,9 +194,11 @@ export default function Preloader() {
             LOADING SCENE... 0%
           </span>
           
-          <div className="relative h-[2px] w-full overflow-hidden bg-white/20 rounded-full">
+          {/* Progress bar container */}
+          <div className="relative h-[2px] w-full overflow-visible bg-white/20 rounded-full">
+            {/* Glowing animated line */}
             <div
-              className="ld-line-progress absolute inset-y-0 left-0 w-full h-full bg-[#C5A880]"
+              className="ld-line-progress absolute inset-y-0 left-0 w-full h-full bg-[#C5A880] shadow-[0_0_12px_#C5A880,0_0_4px_#E8DED0]"
             />
           </div>
         </div>
