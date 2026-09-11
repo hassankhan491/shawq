@@ -5,39 +5,41 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import gsap from "gsap";
 
+// Global tracking variable to detect internal page transitions vs. hard reloads/first visits
+let isFirstLoad = true;
+
 export default function Preloader() {
   const pathname = usePathname();
   
-  // ✅ FIX 1: Start as 'true' to perfectly match Server-Side Rendering
   const [done, setDone] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   const countRef = useRef<HTMLSpanElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ✅ FIX 2: Handle mount and pathname changes safely after hydration
   useEffect(() => {
     setMounted(true);
 
-    // If not on home page, keep it done
+    // If not on home page, ensure preloader is inactive and mark that we've left home
     if (pathname !== "/") {
+      setDone(true);
+      isFirstLoad = false;
+      return;
+    }
+
+    // If we are on the homepage:
+    // If it's an internal navigation from another page (isFirstLoad is false), skip it!
+    if (!isFirstLoad) {
       setDone(true);
       return;
     }
 
-    const hasPlayed = sessionStorage.getItem("shawq_preloaded");
-    if (hasPlayed === "true") {
-      setDone(true);
-    } else {
-      setDone(false); // Trigger preloader ONLY on first visit to home
-    }
+    // Otherwise, it's a fresh session or a hard refresh on the home page
+    setDone(false);
   }, [pathname]);
 
   useLayoutEffect(() => {
-    // Only run animation logic if mounted, not done, and on home page
     if (!mounted || done || pathname !== "/") return;
-
-    sessionStorage.setItem("shawq_preloaded", "true");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDone(true);
@@ -67,38 +69,41 @@ export default function Preloader() {
               document.body.style.overflow = "";
               lenis?.start();
               setDone(true);
+              isFirstLoad = false; // Mark first load complete for future transitions
             },
           });
 
-          gsap.set(".ld-title span", { yPercent: 115, opacity: 0, force3D: true });
-          gsap.set(".ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", { opacity: 0, force3D: true });
-          gsap.set(".ld-line", { scaleX: 0, transformOrigin: "left center", force3D: true });
+          gsap.set(".ld-content-group", { opacity: 1, y: 0 });
+          gsap.set(".ld-image-wrapper", { scale: 1, filter: "brightness(0.7)" });
+          gsap.set(".ld-line-progress", { scaleX: 0, transformOrigin: "left center" });
 
-          tl.to(".ld-image img", { scale: 1.04, duration: 1.2, ease: "power2.out" })
-            .to(".ld-eyebrow", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.1)
-            .to(".ld-title span", { yPercent: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.04 }, 0.2)
-            .to(".ld-subtitle span", { yPercent: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 0.3)
-            .to(".ld-corner, .ld-meta", { opacity: 1, duration: 0.5, stagger: 0.04 }, 0.4)
-            .to(".ld-line", { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 0.4)
-            .to(counter, {
-              v: 100,
-              duration: 0.7,
-              ease: "power2.inOut",
-              onUpdate: () => {
-                if (countRef.current) {
-                  countRef.current.textContent = String(Math.round(counter.v)).padStart(3, "0");
-                }
-              },
-            }, 0.4)
-            .to({}, { duration: 0.4 })
-            .to(".ld-title span, .ld-subtitle span, .ld-eyebrow, .ld-meta, .ld-corner", {
-              opacity: 0,
-              y: -8,
-              duration: 0.2,
-              ease: "power2.in",
-            })
-            .to(".ld-image", { yPercent: -100, duration: 0.4, ease: "power4.inOut" }, "-=0.1")
-            .to(".ld-gold", { yPercent: -100, duration: 0.35, ease: "power4.inOut" }, "-=0.3");
+          tl.to(counter, {
+            v: 100,
+            duration: 1.5,
+            ease: "power2.inOut",
+            onUpdate: () => {
+              if (countRef.current) {
+                countRef.current.textContent = `LOADING SCENE... ${Math.round(counter.v)}%`;
+              }
+            },
+          })
+          .to(".ld-content-group", {
+            opacity: 0,
+            y: -15,
+            duration: 0.4,
+            ease: "power2.in",
+          })
+          .to(".ld-image-wrapper", {
+            scale: 1.12,
+            filter: "brightness(1)",
+            duration: 1.1,
+            ease: "power3.inOut",
+          }, "-=0.2")
+          .to(containerRef.current, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out",
+          }, "-=0.3");
         }, containerRef);
       });
     };
@@ -130,128 +135,77 @@ export default function Preloader() {
       img.onerror = initPreloader; 
     }
 
-    safetyTimeout = setTimeout(initPreloader, 1500);
+    safetyTimeout = setTimeout(initPreloader, 2000);
 
-    // ✅ FIX 3: Robust cleanup to prevent removeChild errors on navigation
     return () => {
       clearTimeout(safetyTimeout);
       cancelAnimationFrame(rafId);
       if (ctx) {
-        ctx.revert(); // Safely kills all GSAP animations in this context
+        ctx.revert();
       }
       document.body.style.overflow = "";
       lenis?.start();
     };
   }, [done, pathname, mounted]);
 
-  // ✅ FIX 4: Render nothing on server, and on client until we confirm we need it
   if (!mounted || done) return null;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[100] overflow-hidden bg-[#0d0c0a] pointer-events-auto"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0f0e0d] overflow-hidden pointer-events-auto px-4 sm:px-6"
       aria-hidden="true"
     >
-      <div
-        className="ld-gold absolute inset-0"
-        style={{ background: "linear-gradient(135deg,#0d0c0a,#171410 45%,#0c0b09)" }}
-      />
-
-      <div className="ld-image absolute inset-0 overflow-hidden">
+      {/* Background Image Container */}
+      <div className="ld-image-wrapper absolute inset-0 overflow-hidden">
         <picture className="absolute inset-0 h-full w-full">
           <source media="(max-width: 767px)" srcSet="/images/loader-mob.jpg" />
           <img
             src="/images/loader.webp"
-            alt=""
+            alt="Preloader background"
             decoding="async"
             fetchPriority="high"
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-cover object-center filter brightness-[0.7]"
             draggable={false}
           />
         </picture>
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "linear-gradient(to bottom,rgba(0,0,0,.48),rgba(0,0,0,.12) 40%,rgba(0,0,0,.25) 65%,rgba(0,0,0,.82))",
-          }}
-        />
+      {/* Central Content Layout - Fully Responsive Width & Text Scaling */}
+      <div className="ld-content-group relative z-10 flex flex-col items-center text-center px-4 max-w-xl sm:max-w-2xl mx-auto w-full">
+        <span className="text-[10px] sm:text-xs uppercase tracking-[0.3em] sm:tracking-[0.35em] text-[#E8DED0]/80 font-light mb-2 sm:mb-3">
+          WELCOME TO THE
+        </span>
+        
+        <h1 
+          className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal uppercase tracking-[0.1em] sm:tracking-[0.12em] text-[#F5F0E8] mb-6 sm:mb-8 leading-tight"
+          style={{ fontFamily: "var(--font-decorative)" }}
+        >
+          SHAWQ HOUSE
+        </h1>
 
-        <div className="relative flex h-full w-full items-center justify-center px-6">
-          <div className="ld-eyebrow absolute top-[15%] flex items-center gap-4">
-            <span className="h-px w-8 bg-[#C5A880]/60" />
-            <span
-              className="text-[9px] uppercase tracking-[.5em] text-[#E8DED0]/80 sm:text-[10px]"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              SHAWQ FRAGRANCES
-            </span>
-            <span className="h-px w-8 bg-[#C5A880]/60" />
-          </div>
-
-          <div className="ld-title overflow-visible py-8">
-            <div className="overflow-hidden py-5">
-              <span
-                className="block px-5 py-5 text-[19vw] font-light uppercase leading-[.9] tracking-[.08em] text-[#F5F0E8] sm:text-[14vw] lg:text-[9.5vw]"
-                style={{ fontFamily: "var(--font-decorative)" }}
-              >
-                SHAWQ
-              </span>
-            </div>
-
-            <div className="ld-subtitle mt-2 overflow-hidden text-center">
-              <span
-                className="block text-sm font-light italic tracking-[.32em] text-[#C5A880] sm:text-lg lg:text-xl"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                the soul of scent
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="ld-corner absolute left-7 top-7 h-8 w-8 border-l border-t border-white/25 sm:left-10 sm:top-10" />
-        <div className="ld-corner absolute right-7 top-7 h-8 w-8 border-r border-t border-white/25 sm:right-10 sm:top-10" />
-        <div className="ld-corner absolute bottom-7 left-7 h-8 w-8 border-b border-l border-white/25 sm:bottom-10 sm:left-10" />
-        <div className="ld-corner absolute bottom-7 right-7 h-8 w-8 border-b border-r border-white/25 sm:right-10 sm:bottom-10" />
-
-        <div className="ld-meta absolute inset-x-0 bottom-8 px-7 sm:bottom-10 sm:px-12">
-          <div className="mb-4 flex items-end justify-between">
-            <div className="flex items-baseline gap-2">
-              <span
-                ref={countRef}
-                className="text-[11px] font-medium tracking-[.35em] text-[#D8C09A] sm:text-xs"
-                style={{ fontFamily: "var(--font-body)" }}
-              >
-                000
-              </span>
-              <span className="text-[8px] text-white/30">%</span>
-            </div>
-
-            <span
-              className="text-[8px] uppercase tracking-[.42em] text-white/55 sm:text-[10px]"
-              style={{ fontFamily: "var(--font-body)" }}
-            >
-              Extrait de Parfum
-            </span>
-          </div>
-
-          <div className="relative h-px w-full overflow-hidden bg-white/15">
+        <div className="w-44 sm:w-60 flex flex-col items-center gap-2.5 sm:gap-3">
+          <span
+            ref={countRef}
+            className="text-[9px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#C5A880]"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            LOADING SCENE... 0%
+          </span>
+          
+          <div className="relative h-[2px] w-full overflow-hidden bg-white/20 rounded-full">
             <div
-              className="ld-line absolute inset-y-0 left-0 w-full h-full shadow-[0_0_10px_#E4C995]"
-              style={{ background: "linear-gradient(90deg,#9F8057,#E4C995,#9F8057)" }}
+              className="ld-line-progress absolute inset-y-0 left-0 w-full h-full bg-[#C5A880]"
             />
           </div>
+        </div>
+      </div>
 
-          <div className="mt-3 flex justify-between">
-            <span className="text-[7px] uppercase tracking-[.35em] text-white/30">
-              Karachi · Pakistan
-            </span>
-            <span className="text-[7px] uppercase tracking-[.35em] text-white/30">
-              Est. MMXXVI
-            </span>
-          </div>
+      {/* Bottom Center Brand Badge */}
+      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10">
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/80 border border-white/20 flex items-center justify-center text-white text-xs font-semibold tracking-wider shadow-lg backdrop-blur-md">
+          S.
         </div>
       </div>
     </div>
