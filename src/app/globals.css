@@ -7,43 +7,42 @@
    ═══════════════════════════════════════════════════ */
 
 @font-face {
-  font-family: 'Perfect Girl Sans Serif';
-  src: url('/fonts/PerfectGirl-SansSerif.otf') format('opentype');
+  font-family: "Perfect Girl Sans Serif";
+  src: url("/fonts/PerfectGirl-SansSerif.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Perfect Girl Script';
-  src: url('/fonts/PerfectGirl-Script.otf') format('opentype');
+  font-family: "Perfect Girl Script";
+  src: url("/fonts/PerfectGirl-Script.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Qaftan';
-  src: url('/fonts/Qaftan.otf') format('opentype');
+  font-family: "Qaftan";
+  src: url("/fonts/Qaftan.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Classic-Quality';
-  src: url('/fonts/Classic-Quality.otf') format('opentype');
+  font-family: "Classic-Quality";
+  src: url("/fonts/Classic-Quality.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Okrite';
-  src: url('/fonts/Okrite.otf') format('opentype');
+  font-family: "Okrite";
+  src: url("/fonts/Okrite.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
-
 
 @layer base {
   :root {
@@ -51,41 +50,42 @@
     /* --font-serif: 'Fraunces', Georgia, serif;
     --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; */
 
-    --font-body: 'Okrite', system-ui, sans-serif; /*paras*/
-    --font-sans: 'Qaftan', serif;
-    --font-serif: 'Perfect Girl Sans Serif', system-ui, sans-serif; /*main headings*/ 
-    --font-decorative: 'Classic-Quality', cursive;
-    
+    --font-body: "Okrite", system-ui, sans-serif; /*paras*/
+    --font-sans: "Qaftan", serif;
+    --font-serif:
+      "Perfect Girl Sans Serif", system-ui, sans-serif; /*main headings*/
+    --font-decorative: "Classic-Quality", cursive;
+
     /* ─── Theme Colors (Black & Gold Elegance) ── */
-    --color-bg: #FFFFFF;      /* White */
-    --color-text: #000000;    /* Black */
-    --color-gold: #A48950;    /* Regal Gold  #EDC531*/
-    --color-navy: #14213D;    /* Deep Navy */
-    --color-light: #E5E5E5;   /* Luminous White/Gray */
-    --color-header-font: #B87333;
+    --color-bg: #ffffff; /* White */
+    --color-text: #000000; /* Black */
+    --color-gold: #a48950; /* Regal Gold  #EDC531*/
+    --color-navy: #14213d; /* Deep Navy */
+    --color-light: #e5e5e5; /* Luminous White/Gray */
+    --color-header-font: #b87333;
 
     /* button-secondry-color  */
     /* var(--color-header-font) */
     /* var(--color-text: #000000) */
 
-    --color-old-heliotrope: #6B4773;
-    --font-color-1: #D78F8B;
+    --color-old-heliotrope: #6b4773;
+    --font-color-1: #d78f8b;
 
     /* button-hover-color */
-    --color-royal-fuchsia: #BB3F95;
-    --font-color-2: #F7F5F0;
+    --color-royal-fuchsia: #bb3f95;
+    --font-color-2: #f7f5f0;
 
     /* bg-color */
-    --color-lavender-mist: #E0E1F6;
-    --font-color-3: #4D5A48;
+    --color-lavender-mist: #e0e1f6;
+    --font-color-3: #4d5a48;
 
     /* button-prime-color */
-    --color-space-cadet: #241F48;
-    --font-color-4: #F5F5F2;
+    --color-space-cadet: #241f48;
+    --font-color-4: #f5f5f2;
 
     /* header/footer */
-    --color-tyian-purple: #560A39;
-    --font-color-5: #E09591;
+    --color-tyian-purple: #560a39;
+    --font-color-5: #e09591;
   }
 
   * {
@@ -142,10 +142,41 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #A48950; /* Gold */
+  background: #a48950; /* Gold */
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #14213D; /* Navy on hover */
+  background: #14213d; /* Navy on hover */
+}
+
+/* ─── Lenis Smooth Scroll Required Styles ─── */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ─── Preloader: hide page content ─── */
+html.preloader-active {
+  overflow: hidden !important;
+}
+
+html.preloader-active body > div:not([data-preloader]),
+html.preloader-active header,
+html.preloader-active main,
+html.preloader-active footer {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
