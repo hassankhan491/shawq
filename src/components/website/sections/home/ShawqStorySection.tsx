@@ -124,8 +124,8 @@ export default function ShawqStorySection() {
         });
 
         /* ============================================================
-           01 — UNVEILING: SHAWQ IS THE SCENT
-           ============================================================ */
+            01 — UNVEILING: SHAWQ IS THE SCENT
+            ============================================================ */
         tl.to(
           bgMesh,
           {
@@ -144,8 +144,8 @@ export default function ShawqStorySection() {
           .to(block1Ref.current, { opacity: 0, y: "20px", duration: 0.5 }, 1.2);
 
         /* ============================================================
-           02 — PHILOSOPHY: FRAGRANCE IS IDENTITY
-           ============================================================ */
+            02 — PHILOSOPHY: FRAGRANCE IS IDENTITY
+            ============================================================ */
         tl.to(
           bgMesh,
           {
@@ -170,8 +170,8 @@ export default function ShawqStorySection() {
           .to(bottleContainer, { rotationZ: 0, duration: 0.5 }, 2.7);
 
         /* ============================================================
-           03 — OLFACTORY CRAFT: STAGGERED NOTES REVEAL
-           ============================================================ */
+            03 — OLFACTORY CRAFT: STAGGERED NOTES REVEAL
+            ============================================================ */
         tl.to(
           bgMesh,
           {
@@ -233,8 +233,8 @@ export default function ShawqStorySection() {
           );
 
         /* ============================================================
-           04 — IMPRESSION: A SCENT THAT REMAINS
-           ============================================================ */
+            04 — IMPRESSION: A SCENT THAT REMAINS
+            ============================================================ */
         tl.to(
           bgMesh,
           {
@@ -435,14 +435,17 @@ export default function ShawqStorySection() {
         </p>
 
         <a
-          href="/products"
-          className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-[#C9A962]/50 bg-[#0D0907]/60 px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[#C9A962] hover:shadow-[0_0_25px_rgba(201,169,98,0.3)]"
-        >
-          <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0D0907]">
-            Explore The Signature
-          </span>
-          <div className="absolute inset-0 z-0 bg-[#C9A962] translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0" />
-        </a>
+  href="/products"
+  className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-white/20 bg-[#0D0907] px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[var(--color-header-font)]"
+>
+  <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
+    Explore The Signature
+  </span>
+  <div
+    className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
+    style={{ backgroundColor: "var(--color-header-font)" }}
+  />
+</a>
       </div>
 
       {/* Stage Rig & Bottle Assembly */}

@@ -254,24 +254,34 @@ export default function HeroGalleryScroll() {
           </p>
 
           <div className="pointer-events-auto mt-8 flex flex-col items-center gap-4 sm:flex-row">
+            {/* Primary Button (Red Initially) */}
             <a
               href="/products"
-              className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] bg-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#0F0A08] rounded-none leading-none transition-all duration-500 ease-out hover:bg-[#DFC27B] hover:shadow-lg"
+              className="pointer-events-auto relative group overflow-hidden inline-flex items-center justify-center min-h-[48px] px-8 py-3 border border-[#c73234] bg-[#c73234] text-white font-medium text-xs tracking-[0.2em] uppercase rounded-none leading-none transition-all duration-500 hover:shadow-[0_0_25px_rgba(199,50,52,0.4)]"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              Explore Collection
+              <span className="relative z-10 transition-colors duration-500">
+                Explore Collection
+              </span>
+              <div
+                className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
+                style={{ backgroundColor: "var(--color-header-font)" }}
+              />
             </a>
 
-            {/* Secondary Button (Keeps the Slide-Up Animation) */}
+            {/* Secondary Button */}
             <a
               href="/about"
-              className="pointer-events-auto relative group overflow-hidden flex min-h-[48px] items-center justify-center border border-[#C9A962] px-8 py-3 text-xs font-medium uppercase tracking-[0.2em] text-[#C9A962] rounded-none bg-transparent leading-none transition-all duration-500 ease-out hover:border-[#C9A962]"
+              className="pointer-events-auto relative group overflow-hidden inline-flex items-center justify-center min-h-[48px] px-8 py-3 border border-white/20 bg-black/40 text-[#f5f0eb] font-medium text-xs tracking-[0.2em] uppercase rounded-none leading-none backdrop-blur-md transition-all duration-500 hover:border-[var(--color-header-font)]"
               style={{ fontFamily: "var(--font-body)" }}
             >
-              <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0F0A08]">
+              <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
                 Our Story
               </span>
-              <div className="absolute inset-0 z-0 translate-y-full bg-[#C9A962] transition-transform duration-500 ease-out group-hover:translate-y-0" />
+              <div
+                className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
+                style={{ backgroundColor: "var(--color-header-font)" }}
+              />
             </a>
           </div>
         </motion.div>

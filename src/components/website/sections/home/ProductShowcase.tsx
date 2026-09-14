@@ -382,38 +382,46 @@ export default function ProductShowcase() {
                   <a
                     href="/products"
                     className="
-                    product-button
-                    w-full
-                    pointer-events-auto
-                    inline-flex
-                    items-center
-                    justify-center
-                    rounded-none
-                    border
-                    border-[var(--color-gold)]
-                    bg-[var(--color-gold)]
-                    px-8
-                    py-3.5
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-[0.2em]
-                    text-[var(--font-color-4)]
-                    transition-all
-                    duration-300
-                    hover:bg-[#DFC27B]
-                    hover:shadow-lg
-                    sm:py-4
-                    sm:text-sm
-                    leading-none
-                    text-center
-                  "
+                        product-button
+                        w-full
+                        pointer-events-auto
+                        relative
+                        group
+                        overflow-hidden
+                        inline-flex
+                        items-center
+                        justify-center
+                        rounded-none
+                        border-[1px]
+                        border-white
+                        bg-black
+                        px-8
+                        py-3.5
+                        text-xs
+                        font-medium
+                        uppercase
+                        tracking-[0.2em]
+                        text-[#FAF8F3]
+                        transition-all
+                        duration-500
+                        hover:border-[var(--color-header-font)]
+                        sm:py-4
+                        sm:text-sm
+                        leading-none
+                        text-center
+                      "
                     style={{
                       fontFamily: "var(--font-body)",
                       opacity: 1,
                     }}
                   >
-                    Quick View
+                    <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
+                      Quick View
+                    </span>
+                    <div
+                      className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
+                      style={{ backgroundColor: "var(--color-header-font)" }}
+                    />
                   </a>
                 </div>
               </div>
