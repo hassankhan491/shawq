@@ -1,37 +1,21 @@
-import { Metadata } from "next";
-import AboutHero from "@/components/website/sections/about/AboutHero";
-import HouseIntro from "@/components/website//sections/about/HouseIntro";
-import StoryChapters from "@/components/website/sections/about/StoryChapters";
-import HouseNumbers from "@/components/website/sections/about/HouseNumbers";
-import BukhoorRitual from "@/components/website/sections/about/BukhoorRitual";
-import CollectionSegments from "@/components/website/sections/about/CollectionSegments";
-import TheAtelier from "@/components/website/sections/about/TheAtelier";
+import type { Metadata } from 'next';
+import { Bodoni_Moda } from 'next/font/google';
+import ShawqAboutPage from '@/components/website/sections/about/ShawqAboutPage';
+
+const editorial = Bodoni_Moda({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  weight: ['400', '500', '600'],
+  variable: '--font-editorial',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: "Our Story | SHAWQ Fragrances - The Art of Scent",
+  title: 'About',
   description:
-    "Discover the editorial story behind SHAWQ Fragrances. Handcrafted luxury Extrait de Parfums from Karachi, Pakistan.",
-  openGraph: {
-    title: "Our Story | SHAWQ Fragrances",
-    description: "The artistry, heritage, and soul behind SHAWQ Fragrances.",
-    type: "website",
-    locale: "en_US",
-  },
+    'SHAWQ is an independent, artist-founded fragrance house. Discover the philosophy, craft and world behind our extraits — scent as memory, identity and desire.',
 };
 
 export default function AboutPage() {
-  return (
-    <div>
-      
-      <main className="bg-[#0d0c0a] text-[#F5F0E8]">
-        <AboutHero />
-        <HouseIntro />
-        <StoryChapters />
-        <HouseNumbers />
-        <BukhoorRitual />
-        <CollectionSegments />
-        <TheAtelier />
-      </main>
-    </div>
-  );
+  return <ShawqAboutPage className={editorial.variable} />;
 }

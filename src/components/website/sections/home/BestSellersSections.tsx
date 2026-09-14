@@ -133,7 +133,7 @@ export default function ProductGrid() {
   }, []);
 
   return (
-    <section className="relative w-full bg-white py-12 sm:py-16 lg:py-24">
+    <section className="relative w-full bg-[var(--color-light)] py-12 sm:py-16 lg:py-24">
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8">
         {/* HEADER */}
         <div className="mb-8 flex items-center justify-between border-b border-black/10 pb-5 sm:mb-10 lg:mb-10">

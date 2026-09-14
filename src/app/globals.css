@@ -52,16 +52,16 @@
 
     --font-body: "Okrite", system-ui, sans-serif; /*paras*/
     --font-sans: "Qaftan", serif;
-    --font-serif:
-      "Perfect Girl Sans Serif", system-ui, sans-serif; /*main headings*/
+    --font-serif: "Perfect Girl Sans Serif", system-ui, sans-serif; /*main headings*/
     --font-decorative: "Classic-Quality", cursive;
+    /* --font-editorial : "Perfect Girl Script", cursive; */
 
     /* ─── Theme Colors (Black & Gold Elegance) ── */
     --color-bg: #ffffff; /* White */
     --color-text: #000000; /* Black */
     --color-gold: #a48950; /* Regal Gold  #EDC531*/
     --color-navy: #14213d; /* Deep Navy */
-    --color-light: #e5e5e5; /* Luminous White/Gray */
+    --color-light: #EAE6DF; /* Luminous White/Gray */
     --color-header-font: #c83234;
 
     /* button-secondry-color  */

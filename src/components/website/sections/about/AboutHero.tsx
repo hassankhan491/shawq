@@ -1,89 +1,119 @@
-"use client";
+'use client';
 
-import { useLayoutEffect, useRef } from "react";
-import Image from "next/image";
-import gsap from "gsap";
+import { useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { drawPath } from '@/lib/animations/svgPath';
+import { prefersReducedMotion } from '@/lib/animations/scrollReveal';
+import { SafeImage } from './SafeImage';
 
-export default function AboutHero() {
-  const containerRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLDivElement>(null);
+gsap.registerPlugin(ScrollTrigger);
+
+/* Replace later with /images/shawq/about/hero.webp */
+const HERO_IMG =
+  '/images/aaa.jpeg';
+
+export function AboutHero() {
+  const ref = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        textRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.4, ease: "power3.out", delay: 0.2 }
-      );
-      gsap.fromTo(
-        imgRef.current,
-        { scale: 1.08, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.6, ease: "power3.out", delay: 0.4 }
-      );
-    }, containerRef);
+      const reduced = prefersReducedMotion();
+
+      if (!reduced) {
+        gsap.set('.shq-hero__line > span', { yPercent: 118 });
+        gsap.set(['.shq-hero__top', '.shq-hero__meta > *', '.shq-hero__cue'], { autoAlpha: 0, y: 14 });
+
+        const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+        tl.fromTo('.shq-hero__frame-img', { scale: 1.28 }, { scale: 1, duration: 2.4, ease: 'power3.inOut' }, 0)
+          .to('.shq-hero__line > span', { yPercent: 0, duration: 1.4, stagger: 0.12 }, 0.45)
+          .to('.shq-hero__top', { autoAlpha: 1, y: 0, duration: 0.9 }, '-=0.9')
+          .to('.shq-hero__meta > *', { autoAlpha: 1, y: 0, duration: 0.7, stagger: 0.08 }, '-=0.6')
+          .to('.shq-hero__cue', { autoAlpha: 1, y: 0, duration: 0.8 }, '-=0.4');
+
+        /* PERF: transform-only (no borderRadius / no scale on the clipped frame) */
+        gsap.to('.shq-hero__frame', {
+          yPercent: -8,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: 1 },
+        });
+
+        gsap.to('.shq-hero__type', {
+          yPercent: 18,
+          autoAlpha: 0.2,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: 'bottom 30%', scrub: 1 },
+        });
+
+        gsap.to('.shq-hero__cue', {
+          autoAlpha: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: '+=30%', scrub: 1 },
+        });
+
+        gsap.to('.shq-hero__cue-arrow', {
+          y: 7,
+          duration: 0.9,
+          yoyo: true,
+          repeat: -1,
+          ease: 'sine.inOut',
+        });
+      }
+
+      // drawPath('.shq-hero__trail--1', { trigger: section, start: 'top 85%', end: 'bottom 45%' });
+      // drawPath('.shq-hero__trail--2', { trigger: section, start: 'top 70%', end: 'bottom 30%' });
+      // floatPath('.shq-hero__trail--2', 12, 6);
+      /* PERF: no per-image ScrollTrigger.refresh() here anymore */
+
+      // ✅ trails now draw once, timed (replace the two drawPath calls):
+      drawPath('.shq-hero__trail--1', { trigger: section, start: 'top 75%', duration: 2 });
+      drawPath('.shq-hero__trail--2', { trigger: section, start: 'top 65%', duration: 2.4 });
+
+    }, ref);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen bg-[#11100F] px-6 pt-32 pb-20 text-[#F5F0E8] sm:px-12 lg:px-24 lg:pt-40"
-    >
-      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-12">
-        {/* Left Editorial Text */}
-        <div ref={textRef} className="lg:col-span-6">
-          <div className="flex items-center gap-3">
-            <span className="h-px w-12 bg-[#C5A880]" />
-            <span className="text-[10px] uppercase tracking-[0.5em] text-[#C5A880]">
-              est. mmxxvi · karachi
-            </span>
-          </div>
+    <section ref={ref} className="shq-hero" aria-label="SHAWQ — scent becomes memory">
+      <div className="shq-hero__frame" aria-hidden="true">
+        <SafeImage className="shq-hero__frame-img" src={HERO_IMG} alt="" loading="eager" fetchPriority="high" />
+        <div className="shq-hero__veil" />
+      </div>
 
-          <h1 className="mt-8 font-serif text-5xl leading-[1.08] sm:text-6xl lg:text-7xl">
-            the anatomy of <span className="italic text-[#C5A880]">scent</span>
-          </h1>
+      <svg
+        className="shq-hero__trails"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path className="shq-hero__trail--1" d="M-60,640 C240,560 430,780 730,650 C1010,530 1210,430 1500,540" />
+        <path className="shq-hero__trail--2" d="M-60,290 C300,380 540,170 840,255 C1120,335 1290,380 1500,235" />
+      </svg>
 
-          <p className="mt-8 max-w-xl text-base leading-[2] text-[#E8DED0]/70">
-            SHAWQ is born from a uncompromising dedication to liquid poetry. 
-            We bypass ordinary perfumery constraints, curating private extraits 
-            that capture the depth of the East with modernist architectural precision.
-          </p>
+      <div className="shq-hero__type">
+        <p className="shq-overline shq-hero__top">SHAWQ FRAGRANCES — EST. 2026</p>
+        <h1 className="shq-display shq-hero__title">
+          <span className="shq-hero__line"><span>SCENT</span></span>
+          <span className="shq-hero__line shq-hero__line--italic"><span>becomes</span></span>
+          <span className="shq-hero__line"><span>MEMORY</span></span>
+        </h1>
+      </div>
 
-          <div className="mt-12 flex items-center gap-8">
-            <div>
-              <span className="block font-serif text-3xl text-[#C5A880]">100%</span>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[#E8DED0]/40">independent house</span>
-            </div>
-            <div className="h-10 w-px bg-[#C5A880]/20" />
-            <div>
-              <span className="block font-serif text-3xl text-[#C5A880]">Private</span>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-[#E8DED0]/40">oil reserves</span>
-            </div>
-          </div>
-        </div>
+      <div className="shq-hero__meta" aria-hidden="true">
+        <span>EST. 2026</span>
+        <span>SCENT / MEMORY / DESIRE</span>
+        <span>KARACHI ATELIER</span>
+        <span>01 / 06</span>
+      </div>
 
-        {/* Right Floating Image Composition */}
-        <div ref={imgRef} className="relative lg:col-span-6">
-          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-[#1A1816] shadow-2xl">
-            <Image
-              src="/images/about-1.jpeg"
-              alt="SHAWQ luxury extrait flacon"
-              fill
-              priority
-              sizes="(max-width: 1024px) 92vw, 50vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#11100F]/60 via-transparent to-transparent" />
-          </div>
-
-          {/* Floating secondary badge box */}
-          <div className="absolute -bottom-6 -left-6 hidden rounded-sm border border-[#C5A880]/20 bg-[#161412]/90 p-6 backdrop-blur-md sm:block">
-            <p className="font-serif text-lg text-[#C5A880]">Handcrafted flacons</p>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.3em] text-[#E8DED0]/50">Karachi atelier</p>
-          </div>
-        </div>
+      <div className="shq-hero__cue" aria-hidden="true">
+        <span>SCROLL TO DISCOVER</span>
+        <span className="shq-hero__cue-arrow">↓</span>
       </div>
     </section>
   );
