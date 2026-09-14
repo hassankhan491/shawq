@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import CursorGlow from "@/components/website/sections/about/CursorGlow";
 import AboutHero from "@/components/website/sections/about/AboutHero";
 import HouseIntro from "@/components/website//sections/about/HouseIntro";
 import StoryChapters from "@/components/website/sections/about/StoryChapters";
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div>
-      <CursorGlow />
+      
       <main className="bg-[#0d0c0a] text-[#F5F0E8]">
         <AboutHero />
         <HouseIntro />
