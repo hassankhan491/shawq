@@ -172,9 +172,45 @@ export function AboutGallery() {
     });
 
     /* ── Mobile: native swipe (CSS snap) ── */
+        /* ── Mobile: native swipe (CSS snap) + live counter ── */
     mm.add('(max-width: 767px)', () => {
       gsap.set(track, { clearProps: 'transform' });
-      return () => {};
+
+      const viewport = section.querySelector<HTMLElement>('.shq-gallery__viewport');
+      const counter = section.querySelector<HTMLElement>('.shq-gallery__count-now');
+      if (!viewport || !counter) return () => {};
+
+      const figures = gsap.utils.toArray<HTMLElement>('.shq-gallery__figure', track);
+      let raf = 0;
+
+      const update = () => {
+        raf = 0;
+        const center = viewport.scrollLeft + viewport.clientWidth / 2;
+        let idx = 0;
+        let best = Infinity;
+        figures.forEach((fig, i) => {
+          const figCenter = fig.offsetLeft + fig.offsetWidth / 2;
+          const dist = Math.abs(figCenter - center);
+          if (dist < best) {
+            best = dist;
+            idx = i;
+          }
+        });
+        const txt = String(idx + 1).padStart(2, '0');
+        if (counter.textContent !== txt) counter.textContent = txt;
+      };
+
+      const onScroll = () => {
+        if (!raf) raf = requestAnimationFrame(update);
+      };
+
+      viewport.addEventListener('scroll', onScroll, { passive: true });
+      update();
+
+      return () => {
+        viewport.removeEventListener('scroll', onScroll);
+        if (raf) cancelAnimationFrame(raf);
+      };
     });
 
     return () => mm.revert();

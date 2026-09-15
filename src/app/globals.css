@@ -132,24 +132,6 @@
   }
 }
 
-/* ─── Custom Scrollbar (Gold Accent) ─── */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #a48950; /* Gold */
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #14213d; /* Navy on hover */
-}
-
 /* ─── Lenis Smooth Scroll Required Styles ─── */
 html.lenis {
   height: auto;

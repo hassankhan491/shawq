@@ -80,40 +80,35 @@ export function AboutFragranceJourney() {
     );
 
     /* ── Mobile OR reduced motion: normal scroll, sticky visual ── */
-    mm.add("(max-width: 767px), (prefers-reduced-motion: reduce)", () => {
-      const section = pinRef.current;
-      if (!section) return;
+        /* ── Mobile OR reduced motion: normal scroll, per-stage inline images ── */
+    mm.add('(max-width: 767px), (prefers-reduced-motion: reduce)', () => {
+      const journeySection = pinRef.current;
+      if (!journeySection) return;
 
-      section.classList.add("is-static");
-      const items = gsap.utils.toArray<HTMLElement>(
-        ".shq-journey__item",
-        section,
-      );
-      const imgs = gsap.utils.toArray<HTMLElement>(
-        ".shq-journey__img",
-        section,
-      );
+      journeySection.classList.add('is-static');
+      const items = gsap.utils.toArray<HTMLElement>('.shq-journey__item', journeySection);
+      const imgs = gsap.utils.toArray<HTMLElement>('.shq-journey__img', journeySection);
       let current = 0;
 
       const setStage = (i: number) => {
         if (i === current) return;
         current = i;
-        items.forEach((el, k) => el.classList.toggle("is-active", k === i));
-        imgs.forEach((el, k) => el.classList.toggle("is-active", k === i));
+        items.forEach((el, k) => el.classList.toggle('is-active', k === i));
+        imgs.forEach((el, k) => el.classList.toggle('is-active', k === i));
       };
 
       const triggers = items.map((item, i) =>
         ScrollTrigger.create({
           trigger: item,
-          start: "top 60%",
-          end: "bottom 60%",
+          start: 'top 60%',
+          end: 'bottom 60%',
           onEnter: () => setStage(i),
           onEnterBack: () => setStage(i),
-        }),
+        })
       );
 
       return () => {
-        section.classList.remove("is-static");
+        journeySection.classList.remove('is-static');
         triggers.forEach((t) => t.kill());
       };
     });
