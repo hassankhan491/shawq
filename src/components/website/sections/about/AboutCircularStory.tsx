@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Replace later with /images/shawq/about/story.webp */
 const STORY_IMG =
-  '/images/circle.jpg';
+  '/images/kl.jpeg';
 
 const RING_TEXT =
   'CRAFTED FOR THE SENSES · MEMORY · DESIRE · PRESENCE · IDENTITY · ' +

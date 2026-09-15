@@ -4,18 +4,18 @@ import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { shawqJourneyStages } from "@/data/about/journey";
-import { shawqGalleryItems } from "@/data/about/gallery";
+import { shawqInterludes } from "@/data/about/interludes";
 import { imageReveal } from "@/lib/animations/imageReveal";
 import { fadeUp } from "@/lib/animations/scrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* Scene 08 interludes — reuse gallery imagery (swap later) */
-const INTERLUDES = [
-  shawqGalleryItems[1], // DESIRE
-  shawqGalleryItems[2], // MEMORY
-  shawqGalleryItems[4], // PRESENCE
-];
+// const INTERLUDES = [
+//   shawqGalleryItems[1],
+//   shawqGalleryItems[2],
+//   shawqGalleryItems[4],
+// ];
 
 export function AboutFragranceJourney() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -156,7 +156,10 @@ export function AboutFragranceJourney() {
         <div className="shq-journey__stage">
           <div className="shq-journey__visual">
             {shawqJourneyStages.map((s, i) => (
-              <div key={s.index} className={`shq-journey__img ${i === 0 ? 'is-active' : ''}`}>
+              <div
+                key={s.index}
+                className={`shq-journey__img ${i === 0 ? "is-active" : ""}`}
+              >
                 <img src={s.image} alt={s.alt} loading="lazy" />
               </div>
             ))}
@@ -188,15 +191,15 @@ export function AboutFragranceJourney() {
 
       {/* Scene 08 — alternating image / huge word compositions */}
       <div className="shq-interludes">
-        {INTERLUDES.map((it, i) => (
+        {shawqInterludes.map((it, i) => (
           <div
-            key={it.title}
+            key={it.word}
             className={`shq-interlude ${i % 2 ? "shq-interlude--rev" : ""}`}
           >
             <div className="shq-interlude__img">
               <img src={it.image} alt={it.alt} loading="lazy" />
             </div>
-            <h3 className="shq-interlude__word">{it.title}</h3>
+            <h3 className="shq-interlude__word">{it.word}</h3>
           </div>
         ))}
       </div>
