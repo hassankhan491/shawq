@@ -15,7 +15,7 @@ export const shawqJourneyStages: ShawqJourneyStage[] = [
     notes: ['Bergamot', 'Saffron'],
     description:
       'The first breath — bright, spiced, immediate. A flash of light before the room settles.',
-    image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1800&auto=format&fit=crop',
+    image: '/images/01.JPEG',
     alt: 'Bright citrus light on glass flacon',
   },
   {
@@ -24,7 +24,7 @@ export const shawqJourneyStages: ShawqJourneyStage[] = [
     notes: ['Rose', 'Iris'],
     description:
       'The body of the scent unfolds slowly — floral, powdery, intimate. This is where memory begins.',
-    image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?q=80&w=1800&auto=format&fit=crop',
+    image: '/images/Rose_and_iris.JPEG',
     alt: 'Rose and iris petals in soft shadow',
   },
   {
@@ -33,7 +33,7 @@ export const shawqJourneyStages: ShawqJourneyStage[] = [
     notes: ['Oud', 'Amber', 'Musk'],
     description:
       'What remains hours later — resinous, warm, unmistakable. The signature you leave behind.',
-    image: 'https://images.unsplash.com/photo-1595425970377-c97339096c4b?q=80&w=1800&auto=format&fit=crop',
+    image: '/images/Oud -Amber-Musk.JPEG',
     alt: 'Dark amber resin and smoke',
   },
 ];

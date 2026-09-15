@@ -378,7 +378,7 @@
   position: absolute;
   font-family:
     var(--font-editorial, var(--font-serif, Georgia)), Georgia, serif;
-  font-size: clamp(5rem, 16vw, 17rem);
+  font-size: clamp(5rem, 15vw, 16rem);
   line-height: 1;
   color: rgba(23, 19, 19, 0.06);
   text-transform: uppercase;
