@@ -32,6 +32,8 @@ export function AboutGallery() {
       }
 
       const getDistance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      const counter = section.querySelector<HTMLElement>('.shq-gallery__count-now');
+      const total = shawqGalleryItems.length;
 
       const tween = gsap.to(track, {
         x: () => -getDistance(),
@@ -44,11 +46,58 @@ export function AboutGallery() {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            if (!counter) return;
+            const idx = Math.min(total, Math.floor(self.progress * total) + 1);
+            const txt = String(idx).padStart(2, '0');
+            if (counter.textContent !== txt) counter.textContent = txt;
+          },
         },
       });
       const st = tween.scrollTrigger;
 
-      /* Drag follows pointer (respects global Lenis) */
+      /* Entrance: figures rise once */
+      gsap.from('.shq-gallery__figure', {
+        y: 70,
+        autoAlpha: 0,
+        duration: 1,
+        stagger: 0.09,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 75%', once: true },
+      });
+
+      /* Title line-mask reveal */
+      gsap.from('.shq-gallery__title-line > span', {
+        yPercent: 110,
+        duration: 1.1,
+        ease: 'power4.out',
+        scrollTrigger: { trigger: section, start: 'top 80%', once: true },
+      });
+
+      /* Inner-image parallax (depth while the track moves) */
+      gsap.fromTo(
+        '.shq-gallery__imgwrap img',
+        { xPercent: 6, scale: 1.18 },
+        {
+          xPercent: -6,
+          scale: 1.18,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + getDistance(), scrub: 1, invalidateOnRefresh: true },
+        }
+      );
+
+      /* Ghost words drift slower than the track */
+      gsap.fromTo(
+        '.shq-gallery__ghost',
+        { xPercent: 4 },
+        {
+          xPercent: -20,
+          ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + getDistance(), scrub: 1, invalidateOnRefresh: true },
+        }
+      );
+
+      /* Pointer drag (respects global Lenis) */
       let dragging = false;
       let startX = 0;
       let startScroll = 0;
@@ -75,7 +124,7 @@ export function AboutGallery() {
       window.addEventListener('pointerup', onUp);
       window.addEventListener('pointercancel', onUp);
 
-      /* Hover: scale, brighten, tiny label */
+      /* Hover: inner zoom + label (frame is pure CSS) */
       const figureCleanups = gsap.utils
         .toArray<HTMLElement>('.shq-gallery__figure', section)
         .map((fig) => {
@@ -84,11 +133,11 @@ export function AboutGallery() {
           if (!img || !hover) return () => {};
 
           const enter = () => {
-            gsap.to(img, { scale: 1.05, filter: 'brightness(1.08)', duration: 0.7, ease: 'power2.out' });
+            gsap.to(img, { scale: 1.26, filter: 'brightness(1.06)', duration: 0.8, ease: 'power2.out' });
             gsap.to(hover, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' });
           };
           const leave = () => {
-            gsap.to(img, { scale: 1, filter: 'brightness(1)', duration: 0.7, ease: 'power2.out' });
+            gsap.to(img, { scale: 1.18, filter: 'brightness(1)', duration: 0.8, ease: 'power2.out' });
             gsap.to(hover, { autoAlpha: 0, y: 8, duration: 0.3, ease: 'power2.in' });
           };
           fig.addEventListener('mouseenter', enter);
@@ -99,7 +148,7 @@ export function AboutGallery() {
           };
         });
 
-      /* Progress line reacts to scroll */
+      /* Progress line fill */
       const fill = section.querySelector('.shq-gallery__line-fill');
       if (fill) {
         gsap.fromTo(
@@ -108,13 +157,7 @@ export function AboutGallery() {
           {
             scaleX: 1,
             ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top top',
-              end: () => '+=' + getDistance(),
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
+            scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + getDistance(), scrub: true, invalidateOnRefresh: true },
           }
         );
       }
@@ -128,7 +171,7 @@ export function AboutGallery() {
       };
     });
 
-    /* ── Mobile: native swipe (CSS handles snap) ── */
+    /* ── Mobile: native swipe (CSS snap) ── */
     mm.add('(max-width: 767px)', () => {
       gsap.set(track, { clearProps: 'transform' });
       return () => {};
@@ -140,19 +183,42 @@ export function AboutGallery() {
   return (
     <section ref={sectionRef} className="shq-gallery" data-cursor="drag" aria-label="SHAWQ scent gallery">
       <div className="shq-gallery__sticky">
+        {/* Ghost editorial layer */}
+        <div className="shq-gallery__ghost" aria-hidden="true">
+          {shawqGalleryItems.map((item) => (
+            <span key={item.index}>{item.title}</span>
+          ))}
+        </div>
+
         <header className="shq-gallery__head">
           <p className="shq-overline">05 — HORIZONTAL SCENT GALLERY</p>
           <h2 className="shq-gallery__title-lg">
-            FIVE <em>moments</em> OF SCENT
+            <span className="shq-gallery__title-line">
+              <span>
+                FIVE <em>moments</em> OF SCENT
+              </span>
+            </span>
           </h2>
+          <p className="shq-gallery__count" aria-hidden="true">
+            <span className="shq-gallery__count-now">01</span> / {String(shawqGalleryItems.length).padStart(2, '0')}
+          </p>
         </header>
 
-        <div className="shq-gallery__viewport" data-lenis-prevent>
+        {/* NOTE: no data-lenis-prevent here — it was killing wheel scroll on desktop */}
+        <div className="shq-gallery__viewport">
           <div ref={trackRef} className="shq-gallery__track">
-            {shawqGalleryItems.map((item) => (
-              <figure key={item.index} className="shq-gallery__figure" data-cursor="view">
+            {shawqGalleryItems.map((item, i) => (
+              <figure
+                key={item.index}
+                className={`shq-gallery__figure ${i % 2 ? 'shq-gallery__figure--low' : ''}`}
+                data-cursor="view"
+              >
+                <span className="shq-gallery__num" aria-hidden="true">
+                  {item.index}
+                </span>
                 <div className="shq-gallery__imgwrap">
                   <img src={item.image} alt={item.alt} loading="lazy" />
+                  <span className="shq-gallery__frame" aria-hidden="true" />
                   <span className="shq-gallery__hover">EXPLORE SCENT {item.index}</span>
                 </div>
                 <figcaption className="shq-gallery__cap">
@@ -165,11 +231,16 @@ export function AboutGallery() {
           </div>
         </div>
 
-        <div className="shq-gallery__line" aria-hidden="true">
-          <span className="shq-gallery__line-fill" />
-          <span className="shq-gallery__line-label shq-gallery__line-label--drag">DRAG</span>
-          <span className="shq-gallery__line-label shq-gallery__line-label--swipe">SWIPE</span>
-        </div>
+        <footer className="shq-gallery__foot">
+          <div className="shq-gallery__line" aria-hidden="true">
+            <span className="shq-gallery__line-fill" />
+            {shawqGalleryItems.map((item, i) => (
+              <span key={item.index} className="shq-gallery__line-tick" style={{ left: `${(i / (shawqGalleryItems.length - 1)) * 100}%` }} />
+            ))}
+            <span className="shq-gallery__line-label shq-gallery__line-label--drag">DRAG</span>
+            <span className="shq-gallery__line-label shq-gallery__line-label--swipe">SWIPE</span>
+          </div>
+        </footer>
       </div>
     </section>
   );
