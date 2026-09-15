@@ -561,7 +561,7 @@
   justify-self: end;
   font-size: 0.72rem;
   letter-spacing: 0.3em;
-  color: var(--shq-muted);
+  color: var(--shq-red);
 }
 .shq-gallery__count-now { color: var(--shq-red); }
 
@@ -601,6 +601,13 @@
   color: transparent;
   -webkit-text-stroke: 1px var(--shq-red);
   pointer-events: none;
+}
+@media (max-width: 767px){
+  .shq-gallery__num {
+  position: absolute;
+  top: 0;
+  left: -0.18em;
+}
 }
 
 .shq-gallery__imgwrap {
