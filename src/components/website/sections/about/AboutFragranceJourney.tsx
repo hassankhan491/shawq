@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { shawqJourneyStages } from '@/data/about/journey';
-import { shawqGalleryItems } from '@/data/about/gallery';
-import { imageReveal } from '@/lib/animations/imageReveal';
-import { fadeUp } from '@/lib/animations/scrollReveal';
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { shawqJourneyStages } from "@/data/about/journey";
+import { shawqGalleryItems } from "@/data/about/gallery";
+import { imageReveal } from "@/lib/animations/imageReveal";
+import { fadeUp } from "@/lib/animations/scrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,94 +25,123 @@ export function AboutFragranceJourney() {
     const mm = gsap.matchMedia();
 
     /* ── Desktop + motion allowed: pinned 3-stage journey ── */
-    mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-      const section = pinRef.current;
-      if (!section) return;
+    mm.add(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const section = pinRef.current;
+        if (!section) return;
 
-      const items = gsap.utils.toArray<HTMLElement>('.shq-journey__item', section);
-      const imgs = gsap.utils.toArray<HTMLElement>('.shq-journey__img', section);
-      const fill = section.querySelector<HTMLElement>('.shq-journey__progress-fill');
-      let current = 0;
-
-      const setStage = (i: number) => {
-        if (i === current) return;
-        current = i;
-        items.forEach((el, k) => el.classList.toggle('is-active', k === i));
-        imgs.forEach((el, k) =>
-          gsap.to(el, {
-            autoAlpha: k === i ? 1 : 0,
-            scale: k === i ? 1 : 1.07,
-            duration: 1,
-            ease: 'power2.inOut',
-          })
+        const items = gsap.utils.toArray<HTMLElement>(
+          ".shq-journey__item",
+          section,
         );
-      };
+        const imgs = gsap.utils.toArray<HTMLElement>(
+          ".shq-journey__img",
+          section,
+        );
+        const fill = section.querySelector<HTMLElement>(
+          ".shq-journey__progress-fill",
+        );
+        let current = 0;
 
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: '+=220%',
-        pin: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          if (fill) gsap.set(fill, { scaleX: self.progress });
-          setStage(Math.min(items.length - 1, Math.floor(self.progress * items.length)));
-        },
-      });
+        const setStage = (i: number) => {
+          if (i === current) return;
+          current = i;
+          items.forEach((el, k) => el.classList.toggle("is-active", k === i));
+          imgs.forEach((el, k) =>
+            gsap.to(el, {
+              autoAlpha: k === i ? 1 : 0,
+              scale: k === i ? 1 : 1.07,
+              duration: 1,
+              ease: "power2.inOut",
+            }),
+          );
+        };
 
-      return () => st.kill();
-    });
+        const st = ScrollTrigger.create({
+          trigger: section,
+          start: "top top",
+          end: "+=220%",
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            if (fill) gsap.set(fill, { scaleX: self.progress });
+            setStage(
+              Math.min(
+                items.length - 1,
+                Math.floor(self.progress * items.length),
+              ),
+            );
+          },
+        });
+
+        return () => st.kill();
+      },
+    );
 
     /* ── Mobile OR reduced motion: normal scroll, sticky visual ── */
-    mm.add('(max-width: 767px), (prefers-reduced-motion: reduce)', () => {
+    mm.add("(max-width: 767px), (prefers-reduced-motion: reduce)", () => {
       const section = pinRef.current;
       if (!section) return;
 
-      section.classList.add('is-static');
-      const items = gsap.utils.toArray<HTMLElement>('.shq-journey__item', section);
-      const imgs = gsap.utils.toArray<HTMLElement>('.shq-journey__img', section);
+      section.classList.add("is-static");
+      const items = gsap.utils.toArray<HTMLElement>(
+        ".shq-journey__item",
+        section,
+      );
+      const imgs = gsap.utils.toArray<HTMLElement>(
+        ".shq-journey__img",
+        section,
+      );
       let current = 0;
 
       const setStage = (i: number) => {
         if (i === current) return;
         current = i;
-        items.forEach((el, k) => el.classList.toggle('is-active', k === i));
-        imgs.forEach((el, k) => el.classList.toggle('is-active', k === i));
+        items.forEach((el, k) => el.classList.toggle("is-active", k === i));
+        imgs.forEach((el, k) => el.classList.toggle("is-active", k === i));
       };
 
       const triggers = items.map((item, i) =>
         ScrollTrigger.create({
           trigger: item,
-          start: 'top 60%',
-          end: 'bottom 60%',
+          start: "top 60%",
+          end: "bottom 60%",
           onEnter: () => setStage(i),
           onEnterBack: () => setStage(i),
-        })
+        }),
       );
 
       return () => {
-        section.classList.remove('is-static');
+        section.classList.remove("is-static");
         triggers.forEach((t) => t.kill());
       };
     });
 
     /* ── Interlude reveals (all modes) ── */
     const revCtx = gsap.context(() => {
-      fadeUp('.shq-journey__label', { y: 20 });
-      gsap.utils.toArray<HTMLElement>('.shq-interlude__img').forEach((img) => {
-        imageReveal(img, { trigger: img, start: 'top 82%' });
+      fadeUp(".shq-journey__label", { y: 20 });
+      gsap.utils.toArray<HTMLElement>(".shq-interlude__img").forEach((img) => {
+        imageReveal(img, { trigger: img, start: "top 82%" });
       });
-      gsap.utils.toArray<HTMLElement>('.shq-interlude__word').forEach((word, i) => {
-        gsap.fromTo(
-          word,
-          { xPercent: i % 2 ? 14 : -14 },
-          {
-            xPercent: 0,
-            ease: 'none',
-            scrollTrigger: { trigger: word, start: 'top 92%', end: 'top 40%', scrub: true },
-          }
-        );
-      });
+      gsap.utils
+        .toArray<HTMLElement>(".shq-interlude__word")
+        .forEach((word, i) => {
+          gsap.fromTo(
+            word,
+            { xPercent: i % 2 ? 14 : -14 },
+            {
+              xPercent: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: word,
+                start: "top 92%",
+                end: "top 40%",
+                scrub: true,
+              },
+            },
+          );
+        });
     }, wrapRef);
 
     return () => {
@@ -137,13 +166,18 @@ export function AboutFragranceJourney() {
           </div>
 
           <div className="shq-journey__list">
-            <p className="shq-overline shq-journey__label">06 — THE FRAGRANCE JOURNEY</p>
+            <p className="shq-overline shq-journey__label">
+              06 — THE FRAGRANCE JOURNEY
+            </p>
             {shawqJourneyStages.map((s, i) => (
-              <article key={s.index} className={`shq-journey__item ${i === 0 ? 'is-active' : ''}`}>
+              <article
+                key={s.index}
+                className={`shq-journey__item ${i === 0 ? "is-active" : ""}`}
+              >
                 <span className="shq-journey__num">{s.index}</span>
                 <div>
                   <h3>{s.title}</h3>
-                  <p className="shq-journey__notes">{s.notes.join(' · ')}</p>
+                  <p className="shq-journey__notes">{s.notes.join(" · ")}</p>
                   <p className="shq-journey__desc">{s.description}</p>
                 </div>
               </article>
@@ -155,7 +189,10 @@ export function AboutFragranceJourney() {
       {/* Scene 08 — alternating image / huge word compositions */}
       <div className="shq-interludes">
         {INTERLUDES.map((it, i) => (
-          <div key={it.title} className={`shq-interlude ${i % 2 ? 'shq-interlude--rev' : ''}`}>
+          <div
+            key={it.title}
+            className={`shq-interlude ${i % 2 ? "shq-interlude--rev" : ""}`}
+          >
             <div className="shq-interlude__img">
               <img src={it.image} alt={it.alt} loading="lazy" />
             </div>

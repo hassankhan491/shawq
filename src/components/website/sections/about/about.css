@@ -134,10 +134,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;   /* true center */
+  object-position: center center;  
   transform-origin: center center;
   display: block;
-  /* filter: saturate(0.85) contrast(1.06); */
+  filter: saturate(0.85) contrast(1.06);
 }
 .shq-hero__veil {
   position: absolute;
@@ -418,8 +418,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.55;
-  filter: saturate(0.7) contrast(1.05);
+  /* opacity: 0.55; */
+  /* filter: saturate(0.7) contrast(1.05); */
 }
 .shq-world__shade {
   position: absolute;

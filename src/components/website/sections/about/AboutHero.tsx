@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Replace later with /images/shawq/about/hero.webp */
 const HERO_IMG =
-  '/images/aaa.jpeg';
+  '/images/n baner.jpeg';
 
 export function AboutHero() {
   const ref = useRef<HTMLElement>(null);

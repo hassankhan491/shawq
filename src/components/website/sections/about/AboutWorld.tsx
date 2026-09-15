@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Replace later with /images/shawq/about/world.webp */
 const WORLD_IMG =
-  'https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&w=2400&auto=format&fit=crop';
+  '/images/manifesto.jpeg';
 
 export function AboutWorld() {
   const ref = useRef<HTMLElement>(null);
