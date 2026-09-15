@@ -172,7 +172,25 @@ export function AboutFragranceJourney() {
             <p className="shq-overline shq-journey__label">
               06 — THE FRAGRANCE JOURNEY
             </p>
-              {shawqJourneyStages.map((s, i) => (
+            {shawqJourneyStages.map((s, i) => (
+  <article
+    key={s.index}
+    className={`shq-journey__item ${i === 0 ? "is-active" : ""}`}
+  >
+    {/* Mobile / reduced-motion only: per-stage inline image (hidden on desktop) */}
+    <div className="shq-journey__item-img" aria-hidden="true">
+      <img src={s.image} alt="" loading="lazy" />
+    </div>
+
+    <span className="shq-journey__num">{s.index}</span>
+    <div>
+      <h3>{s.title}</h3>
+      <p className="shq-journey__notes">{s.notes.join(" · ")}</p>
+      <p className="shq-journey__desc">{s.description}</p>
+    </div>
+  </article>
+))}
+              {/* {shawqJourneyStages.map((s, i) => (
                 <article
                   key={s.index}
                   className={`shq-journey__item ${i === 0 ? "is-active" : ""}`}
@@ -184,7 +202,7 @@ export function AboutFragranceJourney() {
                     <p className="shq-journey__desc">{s.description}</p>
                   </div>
                 </article>
-              ))}
+              ))} */}
           </div>
         </div>
       </section>

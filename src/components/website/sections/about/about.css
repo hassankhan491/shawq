@@ -806,7 +806,7 @@
 }
 
 /* Static fallback (mobile / reduced motion) */
-.is-static .shq-journey__stage {
+/* .is-static .shq-journey__stage {
   grid-template-columns: 1fr;
   min-height: auto;
 }
@@ -827,15 +827,42 @@
   .is-static .shq-journey__img {
     transition: none !important;
   }
+} */
+ /* ─── Static mode (mobile + reduced motion): no pin, no sticky, no overlap ─── */
+.shq-journey__item-img { display: none; }          /* desktop pinned mode: hidden */
+
+.is-static .shq-journey__visual { display: none; }  /* kill the sticky visual */
+.is-static .shq-journey__progress { display: none; }
+
+.is-static .shq-journey__stage {
+  grid-template-columns: 1fr;
+  min-height: auto;
 }
 
+.is-static .shq-journey__item-img {
+  display: block;
+  grid-column: 1 / -1;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--shq-ink);
+  margin-bottom: 1.4rem;
+}
+.is-static .shq-journey__item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
 /* Interludes */
+/* Interludes — uniform, viewport-safe frames */
 .shq-interludes {
   background: var(--shq-cream);
-  padding: 18vh 6vw;
+  padding: 16vh 6vw;
   display: flex;
   flex-direction: column;
-  gap: 18vh;
+  gap: 16vh;
   overflow: clip;
 }
 .shq-interlude {
@@ -848,7 +875,10 @@
   order: 2;
 }
 .shq-interlude__img {
-  aspect-ratio: 4 / 5;
+  width: min(100%, 34vw);      /* uniform width — never the full column */
+  aspect-ratio: 4 / 5;         /* uniform shape — ignores natural image ratio */
+  max-height: 80vh;            /* never bleeds off the viewport */
+  margin-inline: auto;         /* centered in its column */
   overflow: hidden;
   background: var(--shq-sand);
 }
@@ -856,14 +886,26 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 .shq-interlude__word {
-  font-family:
-    var(--font-editorial, var(--font-serif, Georgia)), Georgia, serif;
+  font-family: var(--font-editorial, var(--font-serif, Georgia)), Georgia, serif;
   font-size: clamp(3.4rem, 9vw, 10rem);
   line-height: 0.9;
   text-transform: uppercase;
   will-change: transform;
+}
+
+@media (max-width: 767px) {
+  .shq-interlude {
+    grid-template-columns: 1fr;
+    gap: 3vh;
+  }
+  .shq-interlude--rev .shq-interlude__img { order: 0; }
+  .shq-interlude__img {
+    width: 100%;
+    max-height: none;
+  }
 }
 
 /* ═══════════════════════════════════════════════════
