@@ -1,10 +1,10 @@
 // src/components/website/sections/checkout/CheckoutForm.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 
-// Section Component
+// --- Section Component ---
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-6">
@@ -14,7 +14,7 @@ export function Section({ title, children }: { title: string; children: React.Re
   );
 }
 
-// Email Field
+// --- Email Field ---
 export function Email({
   value,
   onChange,
@@ -53,7 +53,7 @@ export function Email({
   );
 }
 
-// Delivery Form
+// --- Delivery Form ---
 export function Delivery({
   formData,
   onChange,
@@ -175,7 +175,7 @@ export function Delivery({
   );
 }
 
-// Gift Options
+// --- Gift Options ---
 export function GiftOptions({
   giftWrapping,
   onGiftWrappingChange,
@@ -239,7 +239,7 @@ export function GiftOptions({
   );
 }
 
-// Shipping Method
+// --- Shipping Method ---
 export function ShippingMethod() {
   return (
     <div className="p-4 bg-[#EFEAE0] border border-[#2A2520]/10 text-center text-sm text-[#2A2520]/60">
@@ -248,45 +248,128 @@ export function ShippingMethod() {
   );
 }
 
-// Recommendations
+// --- Recommendations Slider ---
+  // src/components/website/sections/checkout/CheckoutForm.tsx
+
+// ... (keep all your other imports and components like Section, Email, etc.)
+
+// --- Recommendations Slider (REPLACE THIS ENTIRE FUNCTION) ---
 export function Recommendations({ products }: { products: any[] }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeDot, setActiveDot] = useState(0);
+
+  // We assume 3 items per view on desktop for dot calculation
+  const itemsPerView = 3; 
+  const totalPages = Math.max(1, Math.ceil(products.length / itemsPerView));
+
+  const scrollToPage = (pageIndex: number) => {
+    if (scrollRef.current) {
+      // FIX: Scroll by the exact width of the container, not a fixed 300px
+      const scrollAmount = scrollRef.current.clientWidth * pageIndex;
+      scrollRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
+      setActiveDot(pageIndex);
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const scrollLeft = scrollRef.current.scrollLeft;
+      const pageWidth = scrollRef.current.clientWidth;
+      const newIndex = Math.round(scrollLeft / pageWidth);
+      
+      // Only update if it actually changed to prevent infinite loops
+      if (newIndex !== activeDot && newIndex >= 0 && newIndex < totalPages) {
+        setActiveDot(newIndex);
+      }
+    }
+  };
+
+  if (!products || products.length === 0) return null;
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-4">
-        {products.map((product) => (
-          <div key={product.id} className="space-y-2">
-            <div className="aspect-square bg-[#EFEAE0] relative overflow-hidden">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                sizes="33vw"
-                className="object-contain p-2"
-              />
+      <div className="relative group">
+        {/* Scrollable Track */}
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-hide scroll-smooth"
+        >
+          <style>{`
+            .scrollbar-hide::-webkit-scrollbar { display: none; }
+            .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+          `}</style>
+
+          {products.map((product) => (
+            <div 
+              key={product.id} 
+              // Perfect responsive widths
+              className="min-w-full sm:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.666rem)] snap-start flex-shrink-0"
+            >
+              <div className="space-y-3">
+                <div className="aspect-square bg-[#EFEAE0] relative overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4 transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-[#2A2520] truncate">{product.name}</p>
+                  <p className="text-xs text-[#2A2520]/60 mt-1">${product.price}</p>
+                </div>
+                <button className="w-full py-3 bg-[#2A2520] text-[#FAF7F2] text-[10px] uppercase tracking-wider hover:bg-[#B8935A] transition-colors">
+                  Add
+                </button>
+              </div>
             </div>
-            <p className="text-xs font-medium text-[#2A2520] line-clamp-2">{product.name}</p>
-            <p className="text-xs text-[#2A2520]/60">${product.price}</p>
-            <button className="w-full py-2 bg-[#2A2520] text-[#FAF7F2] text-xs uppercase tracking-wider hover:bg-[#B8935A] transition-colors">
-              Add
-            </button>
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-center">
-        <div className="flex gap-2">
-          <button className="w-2 h-2 rounded-full bg-[#2A2520]" />
-          <button className="w-2 h-2 rounded-full bg-[#2A2520]/20" />
+          ))}
         </div>
+
+        {/* Navigation Arrows */}
+        {totalPages > 1 && (
+          <>
+            <button 
+              onClick={() => scrollToPage(Math.max(0, activeDot - 1))}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#2A2520] shadow-sm hover:bg-white transition-all z-10"
+              aria-label="Scroll left"
+            >
+              ←
+            </button>
+            <button 
+              onClick={() => scrollToPage(Math.min(totalPages - 1, activeDot + 1))}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#2A2520] shadow-sm hover:bg-white transition-all z-10"
+              aria-label="Scroll right"
+            >
+              →
+            </button>
+          </>
+        )}
       </div>
+
+      {/* Dots Navigation */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2">
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => scrollToPage(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                activeDot === index ? 'bg-[#2A2520] w-4' : 'bg-[#2A2520]/20 w-2'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
-// Payment Form
-// src/components/website/sections/checkout/CheckoutForm.tsx
-// ... (keep the other components like Section, Email, Delivery, etc. as they are)
+// ... (keep your Payment component and the CheckoutForm export at the bottom)
 
-// Replace the Payment component with this:
+// --- Payment Form ---
 export function Payment({
   formData,
   onChange,
@@ -347,7 +430,7 @@ export function Payment({
         )}
       </div>
 
-      {/* 2. Billing Address Section (Moved Up) */}
+      {/* 2. Billing Address Section */}
       <div className="pt-2">
         <h3 className="text-sm font-medium text-[#2A2520] mb-3">Billing address</h3>
         
@@ -377,8 +460,7 @@ export function Payment({
 
         {/* Conditional Billing Form */}
         {!formData.billingSameAsShipping && (
-          <div className="mt-4 space-y-4 p-5 bg-[#FAF7F2] border border-[#2A2520]/10 rounded-sm animate-in fade-in slide-in-from-top-2 duration-300">
-            {/* Country */}
+          <div className="mt-4 space-y-4 p-5 bg-[#FAF7F2] border border-[#2A2520]/10 rounded-sm transition-all duration-300 ease-in-out">
             <select className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm text-[#2A2520] focus:outline-none focus:ring-1 focus:ring-[#B8935A]">
               <option>United States</option>
               <option>Canada</option>
@@ -386,54 +468,25 @@ export function Payment({
               <option>Australia</option>
             </select>
 
-            {/* Name Row */}
             <div className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                placeholder="First name (optional)"
-                className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-              />
+              <input type="text" placeholder="First name (optional)" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
+              <input type="text" placeholder="Last name" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
             </div>
 
-            {/* Company */}
-            <input
-              type="text"
-              placeholder="Company (optional)"
-              className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-            />
+            <input type="text" placeholder="Company (optional)" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
 
-            {/* Address */}
             <div className="relative">
-              <input
-                type="text"
-                placeholder="Address"
-                className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-              />
+              <input type="text" placeholder="Address" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
               <svg className="absolute right-3 top-3.5 w-4 h-4 text-[#2A2520]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
 
-            {/* Apartment */}
-            <input
-              type="text"
-              placeholder="Apartment, suite, etc. (optional)"
-              className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-            />
+            <input type="text" placeholder="Apartment, suite, etc. (optional)" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
 
-            {/* City, State, Zip */}
             <div className="grid grid-cols-6 gap-3">
               <div className="col-span-3">
-                <input
-                  type="text"
-                  placeholder="City"
-                  className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-                />
+                <input type="text" placeholder="City" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
               </div>
               <div className="col-span-2">
                 <select className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm text-[#2A2520] focus:outline-none focus:ring-1 focus:ring-[#B8935A]">
@@ -444,21 +497,12 @@ export function Payment({
                 </select>
               </div>
               <div className="col-span-1">
-                <input
-                  type="text"
-                  placeholder="ZIP code"
-                  className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-                />
+                <input type="text" placeholder="ZIP code" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
               </div>
             </div>
 
-            {/* Phone */}
             <div className="relative">
-              <input
-                type="tel"
-                placeholder="Phone (optional)"
-                className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-[#B8935A]"
-              />
+              <input type="tel" placeholder="Phone (optional)" className="w-full p-3 border border-[#2A2520]/20 bg-white text-sm pr-10 focus:outline-none focus:ring-1 focus:ring-[#B8935A]" />
               <svg className="absolute right-3 top-3.5 w-4 h-4 text-[#2A2520]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -467,35 +511,19 @@ export function Payment({
         )}
       </div>
 
-      {/* 3. Other Payment Methods (Shop Pay, PayPal, Afterpay) */}
+      {/* 3. Other Payment Methods */}
       <div className="space-y-2 pt-2">
         <label className="flex items-center justify-between p-4 border border-[#2A2520]/20 rounded-sm cursor-pointer hover:bg-[#FAF7F2] transition-colors">
           <div className="flex items-center gap-3">
-            <input
-              type="radio"
-              name="payment"
-              value="shop"
-              checked={paymentMethod === 'shop'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-4 h-4 accent-[#2A2520]"
-            />
-            <span className="text-sm text-[#2A2520]">
-              Shop Pay <span className="text-[#2A2520]/60 font-normal">• Pay in full or in installments</span>
-            </span>
+            <input type="radio" name="payment" value="shop" checked={paymentMethod === 'shop'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4 accent-[#2A2520]" />
+            <span className="text-sm text-[#2A2520]">Shop Pay <span className="text-[#2A2520]/60 font-normal">• Pay in full or in installments</span></span>
           </div>
           <span className="text-purple-600 font-bold text-sm">shop</span>
         </label>
 
         <label className="flex items-center justify-between p-4 border border-[#2A2520]/20 rounded-sm cursor-pointer hover:bg-[#FAF7F2] transition-colors">
           <div className="flex items-center gap-3">
-            <input
-              type="radio"
-              name="payment"
-              value="paypal"
-              checked={paymentMethod === 'paypal'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-4 h-4 accent-[#2A2520]"
-            />
+            <input type="radio" name="payment" value="paypal" checked={paymentMethod === 'paypal'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4 accent-[#2A2520]" />
             <span className="text-sm text-[#2A2520]">PayPal</span>
           </div>
           <span className="text-blue-600 font-bold text-sm">PayPal</span>
@@ -503,14 +531,7 @@ export function Payment({
 
         <label className="flex items-center justify-between p-4 border border-[#2A2520]/20 rounded-sm cursor-pointer hover:bg-[#FAF7F2] transition-colors">
           <div className="flex items-center gap-3">
-            <input
-              type="radio"
-              name="payment"
-              value="afterpay"
-              checked={paymentMethod === 'afterpay'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              className="w-4 h-4 accent-[#2A2520]"
-            />
+            <input type="radio" name="payment" value="afterpay" checked={paymentMethod === 'afterpay'} onChange={(e) => setPaymentMethod(e.target.value)} className="w-4 h-4 accent-[#2A2520]" />
             <span className="text-sm text-[#2A2520]">Afterpay</span>
           </div>
           <span className="text-teal-500 font-bold text-sm">Afterpay</span>
@@ -520,17 +541,10 @@ export function Payment({
       {/* 4. Save Info & Pay Button */}
       <div className="pt-6 border-t border-[#2A2520]/10">
         <label className="flex items-start gap-3 cursor-pointer mb-6">
-          <input
-            type="checkbox"
-            checked={formData.saveInfo}
-            onChange={(e) => onChange('saveInfo', e.target.checked)}
-            className="w-4 h-4 mt-1 accent-[#2A2520]"
-          />
+          <input type="checkbox" checked={formData.saveInfo} onChange={(e) => onChange('saveInfo', e.target.checked)} className="w-4 h-4 mt-1 accent-[#2A2520]" />
           <div className="flex-1">
             <p className="text-sm text-[#2A2520] font-medium">Save my information for a faster checkout</p>
-            <p className="text-xs text-[#2A2520]/60 mt-1">
-              By paying, you agree to create a Shop account subject to Shop's Terms and Privacy Policy
-            </p>
+            <p className="text-xs text-[#2A2520]/60 mt-1">By paying, you agree to create a Shop account subject to Shop's Terms and Privacy Policy</p>
           </div>
           <button className="text-xs text-[#2A2520]/60 hover:text-[#2A2520] whitespace-nowrap">Not now</button>
         </label>
@@ -543,7 +557,7 @@ export function Payment({
   );
 }
 
-// Compound component export
+// --- Compound Component Export ---
 export const CheckoutForm = {
   Section,
   Email,
