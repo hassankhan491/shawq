@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import ProductCard from '@/components/website/sections/collection/ProductCard';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
@@ -44,6 +45,8 @@ export default function ProductClient({
   product: Product; 
   recommendedProducts: Product[]; 
 }) {
+  const router = useRouter(); // ✅ MOVED HERE - inside function body
+  
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -202,11 +205,19 @@ export default function ProductClient({
         </div>
       )}
 
-      {/* Cart Drawer */}
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} items={cartItems} total={cartTotal} onRemove={handleRemove} onUpdate={handleUpdateQty} />
+      {/* Cart Drawer - Pass router as prop */}
+      <CartDrawer 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        items={cartItems} 
+        total={cartTotal} 
+        onRemove={handleRemove} 
+        onUpdate={handleUpdateQty}
+        router={router} // ✅ Pass router to CartDrawer
+      />
 
-        {/* Recommended Products */}
-        {recommendedProducts.length > 0 && (
+      {/* Recommended Products */}
+      {recommendedProducts.length > 0 && (
         <section className="px-6 md:px-12 lg:px-24 py-20 border-t border-[#2A2520]/10">
           <div className="max-w-[1600px] mx-auto">
             <h2 className="font-serif text-3xl md:text-4xl text-center mb-12 text-[#2A2520]">
@@ -224,7 +235,7 @@ export default function ProductClient({
                     type: recProduct.type,
                     description: recProduct.description,
                     price: recProduct.price,
-                    image: recProduct.images[0], // Use the first image for the card
+                    image: recProduct.images[0],
                   }}
                 />
               ))}
@@ -232,14 +243,28 @@ export default function ProductClient({
           </div>
         </section>
       )}
-
-
     </main>
   );
 }
 
 // --- Cart Drawer Component ---
-function CartDrawer({ isOpen, onClose, items, total, onRemove, onUpdate }: { isOpen: boolean; onClose: () => void; items: CartItem[]; total: number; onRemove: (s: string) => void; onUpdate: (s: string, q: number) => void }) {
+function CartDrawer({ 
+  isOpen, 
+  onClose, 
+  items, 
+  total, 
+  onRemove, 
+  onUpdate,
+  router, // ✅ Accept router as prop
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  items: CartItem[]; 
+  total: number; 
+  onRemove: (s: string) => void; 
+  onUpdate: (s: string, q: number) => void;
+  router: any; // ✅ Add router type
+}) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
 
@@ -294,7 +319,12 @@ function CartDrawer({ isOpen, onClose, items, total, onRemove, onUpdate }: { isO
               <span className="text-xs uppercase tracking-[0.25em] opacity-60">Subtotal</span>
               <span className="text-lg font-serif">${total}</span>
             </div>
-            <button className="w-full bg-[#2A2520] text-[#FAF7F2] py-4 text-xs uppercase tracking-[0.25em] hover:bg-[#B8935A] transition-colors">Checkout</button>
+            <button 
+              onClick={() => router.push('/checkout')} // ✅ Now router works!
+              className="w-full bg-[#2A2520] text-[#FAF7F2] py-4 text-xs uppercase tracking-[0.25em] hover:bg-[#B8935A] transition-colors"
+            >
+              Checkout
+            </button>
           </div>
         )}
       </div>
