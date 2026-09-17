@@ -33,6 +33,8 @@ interface OrderSummaryProps {
   discountCode: string;
   onDiscountCodeChange: (value: string) => void;
   upsellProduct: UpsellProduct;
+  onRemoveItem?: (id: string, size: string) => void; // Optional prop
+  onUpdateQuantity?: (id: string, size: string, quantity: number) => void; // Optional prop
 }
 
 export function OrderSummary({
@@ -40,6 +42,8 @@ export function OrderSummary({
   discountCode,
   onDiscountCodeChange,
   upsellProduct,
+  onRemoveItem,
+  onUpdateQuantity,
 }: OrderSummaryProps) {
   const [appliedDiscount, setAppliedDiscount] = useState<string | null>(null);
 
@@ -53,31 +57,59 @@ export function OrderSummary({
     <div className="space-y-6 lg:sticky lg:top-32">
       {/* Cart Items */}
       <div className="space-y-4">
-        {cart.items.map((item: CartItem, index: number) => (
-          <div key={`${item.id}-${index}`} className="flex gap-4">
-            <div className="relative">
-              <div className="w-20 h-24 bg-[#EFEAE0] relative">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  fill
-                  className="object-contain p-2"
-                />
+        {cart.items.length === 0 ? (
+          <p className="text-center py-8 text-[#2A2520]/60">Your cart is empty</p>
+        ) : (
+          cart.items.map((item: CartItem, index: number) => (
+            <div key={`${item.id}-${item.size}`} className="flex gap-4">
+              <div className="relative">
+                <div className="w-20 h-24 bg-[#EFEAE0] relative">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    className="object-contain p-2"
+                  />
+                </div>
+                <div className="absolute -top-2 -left-2 w-5 h-5 bg-[#2A2520] text-[#FAF7F2] rounded-full flex items-center justify-center text-xs">
+                  {index + 1}
+                </div>
               </div>
-              <div className="absolute -top-2 -left-2 w-5 h-5 bg-[#2A2520] text-[#FAF7F2] rounded-full flex items-center justify-center text-xs">
-                {index + 1}
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-[#2A2520]">{item.name}</h3>
+                <p className="text-xs text-[#2A2520]/60">{item.size}</p>
+                {onRemoveItem && (
+                  <button 
+                    onClick={() => onRemoveItem(item.id, item.size)}
+                    className="text-xs text-[#2A2520]/60 underline mt-1 hover:text-[#2A2520]"
+                  >
+                    remove
+                  </button>
+                )}
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-[#2A2520]">${item.price.toFixed(2)}</p>
+                {onUpdateQuantity && (
+                  <div className="flex items-center justify-end gap-2 mt-2">
+                    <button
+                      onClick={() => onUpdateQuantity(item.id, item.size, item.quantity - 1)}
+                      className="w-6 h-6 flex items-center justify-center border border-[#2A2520]/20 text-xs hover:border-[#2A2520]"
+                    >
+                      −
+                    </button>
+                    <span className="text-xs w-6 text-center">{item.quantity}</span>
+                    <button
+                      onClick={() => onUpdateQuantity(item.id, item.size, item.quantity + 1)}
+                      className="w-6 h-6 flex items-center justify-center border border-[#2A2520]/20 text-xs hover:border-[#2A2520]"
+                    >
+                      +
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-medium text-[#2A2520]">{item.name}</h3>
-              <p className="text-xs text-[#2A2520]/60">{item.size}</p>
-              <button className="text-xs text-[#2A2520]/60 underline mt-1 hover:text-[#2A2520]">
-                remove
-              </button>
-            </div>
-            <p className="text-sm text-[#2A2520]">${item.price.toFixed(2)}</p>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Discount Code */}
@@ -106,8 +138,16 @@ export function OrderSummary({
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-[#2A2520]/70">Shipping</span>
-          <span className="text-[#2A2520]/60">Enter shipping address</span>
+          <span className="text-[#2A2520]/60">
+            {cart.shipping > 0 ? `$${cart.shipping.toFixed(2)}` : 'Enter shipping address'}
+          </span>
         </div>
+        {cart.tax > 0 && (
+          <div className="flex justify-between text-sm">
+            <span className="text-[#2A2520]/70">Taxes</span>
+            <span className="text-[#2A2520]">${cart.tax.toFixed(2)}</span>
+          </div>
+        )}
         <div className="flex justify-between items-center pt-3 border-t border-[#2A2520]/10">
           <span className="text-base font-medium text-[#2A2520]">Total</span>
           <span className="text-lg font-medium text-[#2A2520]">USD ${cart.total.toFixed(2)}</span>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/context/CartContext'; // 1. Import the global cart
 import ProductCard from '@/components/website/sections/collection/ProductCard';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
@@ -31,12 +32,6 @@ export interface Product {
   }[];
 }
 
-interface CartItem {
-  product: Product;
-  size: string;
-  quantity: number;
-}
-
 // --- Main Component ---
 export default function ProductClient({ 
   product, 
@@ -45,12 +40,14 @@ export default function ProductClient({
   product: Product; 
   recommendedProducts: Product[]; 
 }) {
-  const router = useRouter(); // ✅ MOVED HERE - inside function body
+  const router = useRouter();
   
+  // 2. Connect to Global Cart Context
+  const { items, addToCart, removeFromCart, updateQuantity, subtotal } = useCart();
+
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [selectedImage, setSelectedImage] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -59,40 +56,18 @@ export default function ProductClient({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 3. Add to Global Cart instead of local state
   const handleAddToCart = () => {
-    setCartItems((prev) => {
-      const existing = prev.find(
-        (item) => item.product.id === product.id && item.size === selectedSize.size
-      );
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id && item.size === selectedSize.size
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prev, { product, size: selectedSize.size, quantity: 1 }];
+    addToCart({
+      id: product.id,
+      name: product.name,
+      size: selectedSize.size,
+      price: selectedSize.price,
+      quantity: 1,
+      image: product.images[0],
     });
     setIsCartOpen(true);
   };
-
-  const handleRemove = (size: string) => {
-    setCartItems((prev) => prev.filter((item) => !(item.product.id === product.id && item.size === size)));
-  };
-
-  const handleUpdateQty = (size: string, qty: number) => {
-    if (qty < 1) return handleRemove(size);
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.product.id === product.id && item.size === size ? { ...item, quantity: qty } : item
-      )
-    );
-  };
-
-  const cartTotal = cartItems.reduce((sum, item) => {
-    const price = item.product.sizes.find((s) => s.size === item.size)?.price || 0;
-    return sum + price * item.quantity;
-  }, 0);
 
   return (
     <main className="bg-[#FAF7F2] text-[#2A2520] min-h-screen">
@@ -205,17 +180,6 @@ export default function ProductClient({
         </div>
       )}
 
-      {/* Cart Drawer - Pass router as prop */}
-      <CartDrawer 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
-        items={cartItems} 
-        total={cartTotal} 
-        onRemove={handleRemove} 
-        onUpdate={handleUpdateQty}
-        router={router} // ✅ Pass router to CartDrawer
-      />
-
       {/* Recommended Products */}
       {recommendedProducts.length > 0 && (
         <section className="px-6 md:px-12 lg:px-24 py-20 border-t border-[#2A2520]/10">
@@ -243,6 +207,17 @@ export default function ProductClient({
           </div>
         </section>
       )}
+
+      {/* Cart Drawer - Connected to Global Context */}
+      <CartDrawer 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        items={items} // ✅ Uses global items
+        total={subtotal} // ✅ Uses global subtotal
+        onRemove={removeFromCart} // ✅ Uses global remove
+        onUpdate={updateQuantity} // ✅ Uses global update
+        router={router} 
+      />
     </main>
   );
 }
@@ -255,15 +230,15 @@ function CartDrawer({
   total, 
   onRemove, 
   onUpdate,
-  router, // ✅ Accept router as prop
+  router,
 }: { 
   isOpen: boolean; 
   onClose: () => void; 
-  items: CartItem[]; 
+  items: any[]; 
   total: number; 
-  onRemove: (s: string) => void; 
-  onUpdate: (s: string, q: number) => void;
-  router: any; // ✅ Add router type
+  onRemove: (id: string, size: string) => void; 
+  onUpdate: (id: string, size: string, qty: number) => void;
+  router: any;
 }) {
   const drawerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -291,27 +266,24 @@ function CartDrawer({
           <button onClick={onClose} className="text-2xl">×</button>
         </div>
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {items.length === 0 ? <p className="text-center py-12 opacity-60">Cart is empty</p> : items.map((item) => {
-            const price = item.product.sizes.find(s => s.size === item.size)?.price || 0;
-            return (
-              <div key={item.size} className="flex gap-4">
+          {items.length === 0 ? <p className="text-center py-12 opacity-60">Cart is empty</p> : items.map((item) => (
+              <div key={`${item.id}-${item.size}`} className="flex gap-4">
                 <div className="w-20 h-24 bg-[#EFEAE0] relative flex-shrink-0">
-                  <Image src={item.product.images[0]} alt={item.product.name} fill className="object-contain p-2" />
+                  <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-serif text-sm">{item.product.name}</h3>
+                  <h3 className="font-serif text-sm">{item.name}</h3>
                   <p className="text-xs opacity-60 mt-1">{item.size}</p>
-                  <p className="text-sm mt-2">${price}</p>
+                  <p className="text-sm mt-2">${item.price}</p>
                   <div className="flex items-center gap-3 mt-3">
-                    <button onClick={() => onUpdate(item.size, item.quantity - 1)} className="w-6 h-6 border border-[#2A2520]/20 flex items-center justify-center">-</button>
+                    <button onClick={() => onUpdate(item.id, item.size, item.quantity - 1)} className="w-6 h-6 border border-[#2A2520]/20 flex items-center justify-center">-</button>
                     <span className="text-xs w-6 text-center">{item.quantity}</span>
-                    <button onClick={() => onUpdate(item.size, item.quantity + 1)} className="w-6 h-6 border border-[#2A2520]/20 flex items-center justify-center">+</button>
-                    <button onClick={() => onRemove(item.size)} className="ml-auto text-[10px] uppercase tracking-wider opacity-60 hover:opacity-100">Remove</button>
+                    <button onClick={() => onUpdate(item.id, item.size, item.quantity + 1)} className="w-6 h-6 border border-[#2A2520]/20 flex items-center justify-center">+</button>
+                    <button onClick={() => onRemove(item.id, item.size)} className="ml-auto text-[10px] uppercase tracking-wider opacity-60 hover:opacity-100">Remove</button>
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
         </div>
         {items.length > 0 && (
           <div className="border-t border-[#2A2520]/10 p-6 space-y-4">
@@ -320,9 +292,8 @@ function CartDrawer({
               <span className="text-lg font-serif">${total}</span>
             </div>
             <button 
-              onClick={() => router.push('/checkout')} // ✅ Now router works!
-              className="w-full bg-[#2A2520] text-[#FAF7F2] py-4 text-xs uppercase tracking-[0.25em] hover:bg-[#B8935A] transition-colors"
-            >
+              onClick={() => router.push('/checkout')}
+              className="w-full bg-[#2A2520] text-[#FAF7F2] py-4 text-xs uppercase tracking-[0.25em] hover:bg-[#B8935A] transition-colors">
               Checkout
             </button>
           </div>

@@ -2,6 +2,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/providers/LenisProvider";
+import { CartProvider } from "@/context/CartContext"; // <-- 1. Add this import
 
 export const metadata: Metadata = {
   title: {
@@ -16,6 +17,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   themeColor: "#A48950", // Your gold color
 };
+
 export default function RootLayout({
   children,
 }: {
@@ -27,7 +29,10 @@ export default function RootLayout({
         className="antialiased bg-black text-white"
         suppressHydrationWarning
       >
-        <LenisProvider>{children}</LenisProvider>
+        {/* 2. Wrap everything inside the CartProvider */}
+        <CartProvider>
+          <LenisProvider>{children}</LenisProvider>
+        </CartProvider>
       </body>
     </html>
   );
