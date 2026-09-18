@@ -14,6 +14,7 @@ const products = [
     description:
       "A regal blend of aged oud wood, saffron, and amber. This luxurious fragrance embodies sophistication and timeless elegance.",
     image: "/images/image (11).png",
+    href: "/products/oud-royale",
   },
   {
     id: 2,
@@ -21,6 +22,7 @@ const products = [
     description:
       "Warm amber notes intertwined with vanilla and sandalwood. A captivating scent that leaves a lasting impression.",
     image: "/images/products-02.jpeg",
+    href: "/products/amber-dusk",
   },
 ];
 
@@ -380,7 +382,7 @@ export default function ProductShowcase() {
 
                   {/* BUTTON */}
                   <a
-                    href="/products"
+                    href={product.href}
                     className="
                         product-button
                         w-full

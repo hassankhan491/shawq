@@ -7,23 +7,26 @@ const collectionProducts = [
   {
     id: 1,
     category: "FLORAL EDITIONS",
-    name: "MIDNIGHT JASMINE SPRAY",
+    name: "Midnight Oud",
     price: "$299.00",
     image: "/images/NB-13.png",
+    href: "/products/midnight-oud",
   },
   {
     id: 2,
     category: "ESSENTIALS",
-    name: "AMBER NOIR EXTRACT",
+    name: "Rose Afterglow",
     price: "$279.00",
     image: "/images/NB-12.png",
+    href: "/products/rose-afterglow",
   },
   {
     id: 3,
     category: "LIMITED EDITION",
-    name: "GOLDEN MUSK ESSENCE",
+    name: "White Tea Ritual",
     price: "$199.00",
     image: "/images/NB-14.png",
+    href: "/products/white-tea-ritual",
   },
 ];
 
@@ -237,7 +240,7 @@ export default function ProductGrid() {
 
                 {/* VIEW DETAILS */}
                 <a
-                  href={`/products/${product.id}`}
+                  href={product.href}
                   ref={(el) => {
                     buttonRefs.current[index] =
                       el as unknown as HTMLButtonElement;

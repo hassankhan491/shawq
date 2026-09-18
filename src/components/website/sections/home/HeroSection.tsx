@@ -267,8 +267,8 @@ export default function HeroSection() {
               linger beyond the moment.
             </p>
 
-            <Link
-              href="/products"
+            <a
+              href="/collections"
               className="pointer-events-auto inline-flex items-center justify-center min-h-[48px] px-9 sm:px-10 py-3 border border-white/20 bg-black/40 text-[#f5f0eb] font-medium text-xs sm:text-sm tracking-[0.22em] uppercase rounded-none relative group overflow-hidden backdrop-blur-md transition-all duration-500 hover:border-[var(--color-header-font)]"
             >
               <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
@@ -278,7 +278,7 @@ export default function HeroSection() {
                 className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
                 style={{ backgroundColor: "var(--color-header-font)" }}
               />
-            </Link>
+            </a>
 
             <div className="flex items-center gap-2 text-[#e8e0d5]/80 text-[9px] sm:text-[10px] tracking-[0.3em] uppercase font-medium">
               <span>Scroll to Discover</span>

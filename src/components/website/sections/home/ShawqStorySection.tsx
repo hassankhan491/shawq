@@ -435,17 +435,17 @@ export default function ShawqStorySection() {
         </p>
 
         <a
-  href="/products"
-  className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-white/20 bg-[#0D0907] px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[var(--color-header-font)]"
->
-  <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
-    Explore The Signature
-  </span>
-  <div
-    className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
-    style={{ backgroundColor: "var(--color-header-font)" }}
-  />
-</a>
+          href="/collections"
+          className="pointer-events-auto mt-8 relative group overflow-hidden rounded-none border border-white/20 bg-[#0D0907] px-9 py-4 inline-flex items-center justify-center text-xs font-medium tracking-[0.35em] text-[#FAF8F3] uppercase backdrop-blur-md transition-all duration-500 hover:border-[var(--color-header-font)]"
+        >
+          <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
+            Explore The Signature
+          </span>
+          <div
+            className="absolute inset-0 z-0 translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"
+            style={{ backgroundColor: "var(--color-header-font)" }}
+          />
+        </a>
       </div>
 
       {/* Stage Rig & Bottle Assembly */}

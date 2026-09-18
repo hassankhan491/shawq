@@ -256,7 +256,7 @@ export default function HeroGalleryScroll() {
           <div className="pointer-events-auto mt-8 flex flex-col items-center gap-4 sm:flex-row">
             {/* Primary Button (Red Initially) */}
             <a
-              href="/products"
+              href="/collections"
               className="pointer-events-auto relative group overflow-hidden inline-flex items-center justify-center min-h-[48px] px-8 py-3 border border-[#c73234] bg-[#c73234] text-white font-medium text-xs tracking-[0.2em] uppercase rounded-none leading-none transition-all duration-500 hover:shadow-[0_0_25px_rgba(199,50,52,0.4)]"
               style={{ fontFamily: "var(--font-body)" }}
             >
