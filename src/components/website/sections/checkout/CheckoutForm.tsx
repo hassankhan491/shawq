@@ -1,4 +1,3 @@
-// src/components/website/sections/checkout/CheckoutForm.tsx
 'use client';
 
 import { useState, useRef } from 'react';
@@ -249,22 +248,26 @@ export function ShippingMethod() {
 }
 
 // --- Recommendations Slider ---
-  // src/components/website/sections/checkout/CheckoutForm.tsx
+// src/components/website/sections/checkout/CheckoutForm.tsx
 
-// ... (keep all your other imports and components like Section, Email, etc.)
+// ... (keep Section, Email, Delivery, GiftOptions, ShippingMethod exactly as they are)
 
-// --- Recommendations Slider (REPLACE THIS ENTIRE FUNCTION) ---
-export function Recommendations({ products }: { products: any[] }) {
+// --- Recommendations Slider (UPDATED) ---
+export function Recommendations({ 
+  products, 
+  onAdd 
+}: { 
+  products: any[]; 
+  onAdd?: (product: any) => void; // ✅ Added onAdd prop
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
 
-  // We assume 3 items per view on desktop for dot calculation
   const itemsPerView = 3; 
   const totalPages = Math.max(1, Math.ceil(products.length / itemsPerView));
 
   const scrollToPage = (pageIndex: number) => {
     if (scrollRef.current) {
-      // FIX: Scroll by the exact width of the container, not a fixed 300px
       const scrollAmount = scrollRef.current.clientWidth * pageIndex;
       scrollRef.current.scrollTo({ left: scrollAmount, behavior: 'smooth' });
       setActiveDot(pageIndex);
@@ -277,7 +280,6 @@ export function Recommendations({ products }: { products: any[] }) {
       const pageWidth = scrollRef.current.clientWidth;
       const newIndex = Math.round(scrollLeft / pageWidth);
       
-      // Only update if it actually changed to prevent infinite loops
       if (newIndex !== activeDot && newIndex >= 0 && newIndex < totalPages) {
         setActiveDot(newIndex);
       }
@@ -289,7 +291,6 @@ export function Recommendations({ products }: { products: any[] }) {
   return (
     <div className="space-y-4">
       <div className="relative group">
-        {/* Scrollable Track */}
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
@@ -303,7 +304,6 @@ export function Recommendations({ products }: { products: any[] }) {
           {products.map((product) => (
             <div 
               key={product.id} 
-              // Perfect responsive widths
               className="min-w-full sm:min-w-[calc(50%-0.5rem)] lg:min-w-[calc(33.333%-0.666rem)] snap-start flex-shrink-0"
             >
               <div className="space-y-3">
@@ -319,7 +319,11 @@ export function Recommendations({ products }: { products: any[] }) {
                   <p className="text-sm font-medium text-[#2A2520] truncate">{product.name}</p>
                   <p className="text-xs text-[#2A2520]/60 mt-1">${product.price}</p>
                 </div>
-                <button className="w-full py-3 bg-[#2A2520] text-[#FAF7F2] text-[10px] uppercase tracking-wider hover:bg-[#B8935A] transition-colors">
+                {/* ✅ Added onClick handler here */}
+                <button 
+                  onClick={() => onAdd?.(product)}
+                  className="w-full py-3 bg-[#2A2520] text-[#FAF7F2] text-[10px] uppercase tracking-wider hover:bg-[#B8935A] transition-colors"
+                >
                   Add
                 </button>
               </div>
@@ -327,7 +331,6 @@ export function Recommendations({ products }: { products: any[] }) {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
         {totalPages > 1 && (
           <>
             <button 
@@ -348,7 +351,6 @@ export function Recommendations({ products }: { products: any[] }) {
         )}
       </div>
 
-      {/* Dots Navigation */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2">
           {Array.from({ length: totalPages }).map((_, index) => (
@@ -367,8 +369,7 @@ export function Recommendations({ products }: { products: any[] }) {
   );
 }
 
-// ... (keep your Payment component and the CheckoutForm export at the bottom)
-
+// ... (keep Payment and CheckoutForm export exactly as they are)
 // --- Payment Form ---
 export function Payment({
   formData,

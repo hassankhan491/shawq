@@ -3,13 +3,11 @@
 
 import { useState } from 'react';
 import { useCart } from "@/context/CartContext";
-import Image from "next/image";
 import { CheckoutForm } from "@/components/website/sections/checkout/CheckoutForm";
 import { OrderSummary } from "@/components/website/sections/checkout/OrderSummary";
 import { ExpressCheckout } from "@/components/website/sections/checkout/ExpressCheckout";
 import { ComplimentarySample } from "@/components/website/sections/checkout/ComplimentarySample";
 
-// ✅ ADD THIS ARRAY - Mock recommended products
 const RECOMMENDED_PRODUCTS = [
   { id: '3', name: 'Pocket Perfume Enhancer', price: 80, image: '/images/NB-03.jpg' },
   { id: '4', name: 'Big Sur After Rain Candle', price: 75, image: '/images/NB-04.jpg' },
@@ -27,39 +25,57 @@ const UPSELL_PRODUCT = {
 };
 
 export default function CheckoutPage() {
-  const { items, removeFromCart, updateQuantity, subtotal } = useCart();
-
+  // ✅ 1. Destructure addToCart from useCart
+  const { items, addToCart, removeFromCart, updateQuantity, subtotal } = useCart();
+  
   const [addedSampleId, setAddedSampleId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    country: "United States",
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    phone: "",
-    company: "",
-    apartment: "",
-    newsletter: false,
-    smsNewsletter: false,
-    giftWrapping: false,
-    giftMessage: "",
-    giftFrom: "",
-    giftTo: "",
-    discountCode: "",
-    billingSameAsShipping: true,
-    saveInfo: false,
+    email: "", firstName: "", lastName: "", country: "United States", address: "",
+    city: "", state: "", zipCode: "", phone: "", company: "", apartment: "",
+    newsletter: false, smsNewsletter: false, giftWrapping: false, giftMessage: "",
+    giftFrom: "", giftTo: "", discountCode: "", billingSameAsShipping: true, saveInfo: false,
   });
 
   const handleInputChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  // ✅ 2. Actually add the sample to the cart when clicked
   const handleAddSample = (sample: any) => {
     setAddedSampleId(sample.id);
-    console.log("Sample added:", sample);
+    addToCart({
+      id: sample.id,
+      name: sample.name,
+      size: "Sample",
+      price: 0,
+      quantity: 1,
+      image: sample.image,
+      isFreeSample: true,
+    });
+  };
+
+  // ✅ 3. Handler for recommended products
+  const handleAddRecommended = (product: any) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      size: "Default",
+      price: product.price,
+      quantity: 1,
+      image: product.image,
+    });
+  };
+
+  // ✅ 4. Handler for upsell product
+  const handleAddUpsell = (product: any) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      size: "1 card",
+      price: product.price,
+      quantity: 1,
+      image: product.image,
+    });
   };
 
   return (
@@ -69,11 +85,11 @@ export default function CheckoutPage() {
           onAddSample={handleAddSample}
           addedSampleId={addedSampleId}
         />
-
+        
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 px-6 md:px-12 lg:px-24 py-12">
           <div className="space-y-12">
             <ExpressCheckout />
-
+            
             <CheckoutForm.Section title="Contact">
               <CheckoutForm.Email
                 value={formData.email}
@@ -84,10 +100,7 @@ export default function CheckoutPage() {
             </CheckoutForm.Section>
 
             <CheckoutForm.Section title="Delivery">
-              <CheckoutForm.Delivery
-                formData={formData}
-                onChange={handleInputChange}
-              />
+              <CheckoutForm.Delivery formData={formData} onChange={handleInputChange} />
             </CheckoutForm.Section>
 
             <CheckoutForm.Section title="Gift Options">
@@ -107,32 +120,29 @@ export default function CheckoutPage() {
               <CheckoutForm.ShippingMethod />
             </CheckoutForm.Section>
 
+            {/* ✅ 5. Pass the onAdd handler to Recommendations */}
             <CheckoutForm.Section title="You Might Like">
-              <CheckoutForm.Recommendations products={RECOMMENDED_PRODUCTS} />
+              <CheckoutForm.Recommendations 
+                products={RECOMMENDED_PRODUCTS} 
+                onAdd={handleAddRecommended}
+              />
             </CheckoutForm.Section>
 
             <CheckoutForm.Section title="Payment">
-              <CheckoutForm.Payment
-                formData={formData}
-                onChange={handleInputChange}
-              />
+              <CheckoutForm.Payment formData={formData} onChange={handleInputChange} />
             </CheckoutForm.Section>
           </div>
 
           <div className="lg:sticky lg:top-32 lg:self-start">
+            {/* ✅ 6. Pass the onAddUpsell handler to OrderSummary */}
             <OrderSummary
-              cart={{
-                items,
-                subtotal,
-                shipping: 0,
-                tax: 0,
-                total: subtotal,
-              }}
+              cart={{ items, subtotal, shipping: 0, tax: 0, total: subtotal }}
               discountCode={formData.discountCode}
               onDiscountCodeChange={(value: string) => handleInputChange("discountCode", value)}
               upsellProduct={UPSELL_PRODUCT}
               onRemoveItem={removeFromCart}
               onUpdateQuantity={updateQuantity}
+              onAddUpsell={handleAddUpsell}
             />
           </div>
         </div>

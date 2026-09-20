@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/providers/LenisProvider";
 import { CartProvider } from "@/context/CartContext"; // <-- 1. Add this import
+import { CartDrawer } from "@/components/website/sections/product/CartDrawer";
 
 export const metadata: Metadata = {
   title: {

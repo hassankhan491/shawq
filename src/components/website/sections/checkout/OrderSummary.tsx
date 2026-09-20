@@ -1,4 +1,3 @@
-// src/components/website/sections/checkout/OrderSummary.tsx
 'use client';
 
 import { useState } from 'react';
@@ -33,8 +32,9 @@ interface OrderSummaryProps {
   discountCode: string;
   onDiscountCodeChange: (value: string) => void;
   upsellProduct: UpsellProduct;
-  onRemoveItem?: (id: string, size: string) => void; // Optional prop
-  onUpdateQuantity?: (id: string, size: string, quantity: number) => void; // Optional prop
+  onRemoveItem?: (id: string, size: string) => void;
+  onUpdateQuantity?: (id: string, size: string, quantity: number) => void;
+  onAddUpsell?: (product: UpsellProduct) => void; // Added for the "Add" button
 }
 
 export function OrderSummary({
@@ -44,6 +44,7 @@ export function OrderSummary({
   upsellProduct,
   onRemoveItem,
   onUpdateQuantity,
+  onAddUpsell,
 }: OrderSummaryProps) {
   const [appliedDiscount, setAppliedDiscount] = useState<string | null>(null);
 
@@ -171,7 +172,10 @@ export function OrderSummary({
             <p className="text-xs text-[#2A2520]/60">1 card</p>
             <p className="text-sm text-[#2A2520] mt-1">${upsellProduct.price.toFixed(2)}</p>
           </div>
-          <button className="px-4 py-2 bg-[#2A2520] text-[#FAF7F2] text-xs uppercase tracking-wider hover:bg-[#B8935A] transition-colors">
+          <button 
+            onClick={() => onAddUpsell?.(upsellProduct)}
+            className="px-4 py-2 bg-[#2A2520] text-[#FAF7F2] text-xs uppercase tracking-wider hover:bg-[#B8935A] transition-colors"
+          >
             Add
           </button>
         </div>
