@@ -11,7 +11,7 @@ import { ComplimentarySample } from "@/components/website/sections/checkout/Comp
 const RECOMMENDED_PRODUCTS = [
   { id: '3', name: 'Pocket Perfume Enhancer', price: 80, image: '/images/NB-03.jpg' },
   { id: '4', name: 'Big Sur After Rain Candle', price: 75, image: '/images/NB-04.jpg' },
-  { id: '5', name: 'Big Sur After Rain Auto Fragrance', price: 18, image: '/images/NB-05.jpg' },
+  { id: '5', name: 'Big Sur After Rain', price: 18, image: '/images/NB-05.jpg' },
   { id: '7', name: 'Oud Royale Travel Spray', price: 65, image: '/images/NB-06.jpg' },
   { id: '8', name: 'Velvet Saffron Candle', price: 85, image: '/images/NB-07.jpg' },
   { id: '9', name: 'Neroli Memory Rollerball', price: 45, image: '/images/NB-08.jpg' },
@@ -28,8 +28,9 @@ export default function CheckoutPage() {
   // ✅ 1. Destructure addToCart from useCart
   const { items, addToCart, removeFromCart, updateQuantity, subtotal } = useCart();
   
-  const [addedSampleId, setAddedSampleId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
+// ✅ derive from cart => removing the free item auto-unlocks the picker
+const selectedSample = items.find((i) => i.isFreeSample);
+const addedSampleId = selectedSample?.id ?? null;  const [formData, setFormData] = useState({
     email: "", firstName: "", lastName: "", country: "United States", address: "",
     city: "", state: "", zipCode: "", phone: "", company: "", apartment: "",
     newsletter: false, smsNewsletter: false, giftWrapping: false, giftMessage: "",
@@ -42,17 +43,17 @@ export default function CheckoutPage() {
 
   // ✅ 2. Actually add the sample to the cart when clicked
   const handleAddSample = (sample: any) => {
-    setAddedSampleId(sample.id);
-    addToCart({
-      id: sample.id,
-      name: sample.name,
-      size: "Sample",
-      price: 0,
-      quantity: 1,
-      image: sample.image,
-      isFreeSample: true,
-    });
-  };
+  if (addedSampleId) return;                 // already locked, ignore
+  addToCart({
+    id: sample.id,
+    name: sample.name,
+    size: 'Sample',
+    price: 0,
+    quantity: 1,
+    image: sample.image,
+    isFreeSample: true,
+  });
+};
 
   // ✅ 3. Handler for recommended products
   const handleAddRecommended = (product: any) => {

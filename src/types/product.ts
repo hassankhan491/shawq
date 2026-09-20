@@ -20,6 +20,8 @@ export interface Review {
 // Main Product ka structure
 export interface Product {
   id: string;
+  name: string; // Changed from title
+  type: string; // Changed from category  
   title: string;
   slug: string; // URL ke liye (e.g., 'blue-t-shirt')
   description: string;

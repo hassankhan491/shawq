@@ -1,5 +1,6 @@
 // src/context/CartContext.tsx
 'use client';
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface CartItem {
@@ -31,8 +32,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false); // <-- NEW
 
-  // ... (keep your existing localStorage effects and addToCart/removeFromCart logic exactly as is) ...
-
   // Load cart from browser storage on initial load
   useEffect(() => {
     const savedCart = localStorage.getItem('shawq-cart');
@@ -50,7 +49,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === newItem.id && i.size === newItem.size);
       if (existing) {
-        return prev.map((i) => i.id === newItem.id && i.size === newItem.size ? { ...i, quantity: i.quantity + 1 } : i);
+        return prev.map((i) =>
+          i.id === newItem.id && i.size === newItem.size
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
       }
       return [...prev, newItem];
     });
@@ -61,8 +64,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (id: string, size: string, quantity: number) => {
-    if (quantity < 1) { removeFromCart(id, size); return; }
-    setItems((prev) => prev.map((i) => (i.id === id && i.size === size ? { ...i, quantity } : i)));
+    if (quantity < 1) {
+      removeFromCart(id, size);
+      return;
+    }
+    setItems((prev) =>
+      prev.map((i) => (i.id === id && i.size === size ? { ...i, quantity } : i))
+    );
   };
 
   const clearCart = () => setItems([]);
@@ -71,8 +79,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider value={{ 
-      items, addToCart, removeFromCart, updateQuantity, clearCart, subtotal, totalItems,
-      isCartOpen, setIsCartOpen // <-- NEW
+      items, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      clearCart, 
+      subtotal, 
+      totalItems,
+      isCartOpen,      // <-- NEW
+      setIsCartOpen    // <-- NEW
     }}>
       {children}
     </CartContext.Provider>
