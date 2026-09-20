@@ -1,34 +1,32 @@
 // src/types/product.ts
+// Canonical shared catalog type — MUST match src/data/products.ts.
+// NOTE: CollectionClient.tsx and ProductClient.tsx use their OWN local
+// interfaces and do NOT import from here. Changing this file is safe.
 
-// Product ki image ka structure
 export interface ProductImage {
   id: string;
   url: string;
   altText: string;
 }
 
-// Product ki review ka structure
 export interface Review {
   id: string;
   userId: string;
   userName: string;
-  rating: number; // 1 se 5 tak
+  rating: number;
   comment: string;
   createdAt: string;
 }
 
-// Main Product ka structure
 export interface Product {
   id: string;
-  name: string; // Changed from title
-  type: string; // Changed from category  
-  title: string;
-  slug: string; // URL ke liye (e.g., 'blue-t-shirt')
+  title: string;            // ← matches data (was wrongly "name")
+  slug: string;
   description: string;
   price: number;
-  compareAtPrice?: number; // Purani price (discount dikhane ke liye)
-  images: ProductImage[];
-  category: string;
+  compareAtPrice?: number;  // optional — only some products have it
+  images: ProductImage[];   // { id, url, altText } — matches data
+  category: string;         // ← matches data (was wrongly "type")
   tags: string[];
   rating: number;
   reviewCount: number;
