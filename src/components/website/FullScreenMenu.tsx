@@ -9,32 +9,35 @@ interface FullScreenMenuProps {
   onClose: () => void;
 }
 
+// ✅ UPDATED LINKS ONLY - Pointing to real /collections/[slug] pages
 const menuSections = [
   {
     title: 'Shop',
     links: [
-      { name: 'All Perfumes', href: '/products' },
-      { name: 'New Arrivals', href: '/products?filter=new' },
-      { name: 'Best Sellers', href: '/products?filter=bestsellers' },
-      { name: 'Limited Edition', href: '/products?filter=limited' },
+      { name: 'All Perfumes', href: '/collections/all' },
+      { name: 'New Arrivals', href: '/collections/new-arrivals' },
+      { name: 'Best Sellers', href: '/collections/best-sellers' },
+      { name: 'Limited Edition', href: '/collections/limited-edition' },
     ],
   },
   {
     title: 'Categories',
     links: [
-      { name: 'Oud & Woody', href: '/categories/oud-woody' },
-      { name: 'Fresh & Aquatic', href: '/categories/fresh-aquatic' },
-      { name: 'Floral & Romantic', href: '/categories/floral-romantic' },
-      { name: 'Citrus & Zesty', href: '/categories/citrus-zesty' },
+      { name: 'Oud & Woody', href: '/collections/oud-woody' },
+      { name: 'Fresh & Aquatic', href: '/collections/fresh-aquatic' },
+      { name: 'Floral & Romantic', href: '/collections/floral-romantic' },
+      { name: 'Citrus & Zesty', href: '/collections/citrus-zesty' },
     ],
   },
   {
     title: 'Collections',
     links: [
-      { name: 'Signature Scents', href: '/collections/signature' },
-      { name: 'Evening Elegance', href: '/collections/evening' },
-      { name: 'Daily Fresh', href: '/collections/daily' },
-      { name: 'Gift Sets', href: '/collections/gifts' },
+      // Note: Ensure these slugs exist in your data/categories.ts 
+      // If they don't yet, they will still resolve to valid URLs once we build the dynamic page
+      { name: 'Signature Scents', href: '/collections/signature-scents' },
+      { name: 'Evening Elegance', href: '/collections/evening-elegance' },
+      { name: 'Daily Fresh', href: '/collections/daily-fresh' },
+      { name: 'Gift Sets', href: '/collections/gift-sets' },
     ],
   },
   {
