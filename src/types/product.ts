@@ -3,6 +3,25 @@
 // NOTE: CollectionClient.tsx and ProductClient.tsx use their OWN local
 // interfaces and do NOT import from here. Changing this file is safe.
 
+
+export interface ProductSize {
+  size: string; // e.g., '50ml'
+  price: number;
+}
+
+export interface ProductNotes {
+  top: string[];
+  heart: string[];
+  base: string[];
+}
+
+export interface ProductIngredient {
+  name: string;
+  description: string;
+  image: string;
+}
+
+
 export interface ProductImage {
   id: string;
   url: string;
@@ -20,13 +39,13 @@ export interface Review {
 
 export interface Product {
   id: string;
-  title: string;            // ← matches data (was wrongly "name")
+  title: string;
   slug: string;
   description: string;
   price: number;
-  compareAtPrice?: number;  // optional — only some products have it
-  images: ProductImage[];   // { id, url, altText } — matches data
-  category: string;         // ← matches data (was wrongly "type")
+  compareAtPrice?: number;
+  images: ProductImage[];
+  category: string;
   tags: string[];
   rating: number;
   reviewCount: number;
@@ -34,4 +53,8 @@ export interface Product {
   reviews: Review[];
   createdAt: string;
   updatedAt: string;
+  sizes?: ProductSize[];
+  notes?: ProductNotes;
+  intensity?: number;
+  ingredients?: ProductIngredient[];
 }
